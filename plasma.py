@@ -1,5 +1,4 @@
 from numpy import *
-import png
 
 didCancel = False
 
@@ -308,14 +307,16 @@ def getValue(noiseLevel, values):
     result = (noiseLevel * randomValue) + ((1 - noiseLevel) * averageValue)
     
     return result
-
+    
+# for debugging
 def printAllowCancel(matrix):
     
     newMatrix = around(matrix, 2)
     print newMatrix
         
     response = raw_input('ctl_c to stop >')
-    
+ 
+#normalizes the matrix to a given min and max   
 def normalize(matrix, min = 0, max = 1):
     maxValue = amax(matrix)
     minValue = amin(matrix)
@@ -324,7 +325,8 @@ def normalize(matrix, min = 0, max = 1):
     newMatrix = (newMatrix * (max - min)) + min;
 
     return newMatrix
-        
+  
+#flattens the values of the matrix to a given min and max      
 def flatten(matrix, minVal, maxVal):
 
     newMatrix = zeros(matrix.shape)
@@ -332,55 +334,29 @@ def flatten(matrix, minVal, maxVal):
         for y in range(0, matrix.shape[1]):
             newMatrix[x, y] = max(minVal, min(maxVal, matrix[x,y]))
                             
-    return newMatrix
+    return newMatrix    
     
-def toHeat(matrix, levels = [.9, .8, 1]):
-    newMatrix = zeros((matrix.shape[0], matrix.shape[1] * 3))
-    for i in range(matrix.shape[0]):
-        for j in range(matrix.shape[1]): 
-            red = green = blue = 0
-            a = matrix[i, j] * 20
-            if a < 5:
-                red = 0
-                green = 0
-                blue = a
-            elif a < 10:
-                red = 0
-                green = a - 5
-                blue = 5
-            elif a < 15:
-                red = a-10
-                green = 5
-                blue = 15 - a
-            else:
-                red = 5
-                green = 20-a
-                blue = 0
-                
-            if red<0 or green <0 or blue<0:
-            	print "********", i, j, matrix[i, j], red, green, blue
-            k = j*3
-            newMatrix[i, k] = red * 51 * levels[0]
-            newMatrix[i, k+1] = green * 51 * levels[1]
-            newMatrix[i, k+2] = blue * 51 * levels[2]
-    
-    return newMatrix.astype(int)    
-    
+# creates a gaussian filter that can be applied to a 
+# plasma matrix in order to add a round-ish frame
+# size: size of the matrix
+# points: list of points, each of which should be a tuple 
+# including x, y, sigmaX and sigmaY
+# sigmas are used to make the frame larger
+# in the x and y dimension
 # use numpy.multiply to apply the filter to a matrix.               
-def gaussianFilter(size, points, sigma):
+def gaussianFilter(size, points):
     
     matrix = zeros((size, size))
     
-    x2SigmaSquared = pow(sigma[0], 2) * 2
-    y2SigmaSquared = pow(sigma[1], 2) * 2
-    
     for point in points:
-        tempMatrix = zeros((size, size))
         x0 = point[0]
         y0 = point[1]
+    	x2SigmaSquared = pow(point[2] * size/4, 2) * 2
+    	y2SigmaSquared = pow(point[3] * size/4, 2) * 2
+        tempMatrix = zeros((size, size))
         for x in range(0, size):
             for y in range(0, size):
-                tempMatrix[x, y] = exp(-1 * \
+                tempMatrix[y, x] = exp(-1 * \
                     (math.pow(x-x0, 2)/x2SigmaSquared + math.pow(y-y0, 2)/y2SigmaSquared))
                       
         matrix = add(matrix, tempMatrix)
@@ -389,53 +365,3 @@ def gaussianFilter(size, points, sigma):
 
     return matrix
 
-def toGradient(matrix, fromColor, toColor):
-    
-    rgbOffset = [fromColor[0]/float(255), fromColor[1]/float(255), fromColor[2]/float(255)]
-    rgbSlope = [toColor[0]/float(255) - rgbOffset[0], 
-                 toColor[1]/float(255) - rgbOffset[1], 
-                 toColor[2]/float(255) - rgbOffset[2]]
-    
-    
-    print "rgbSlope =", rgbSlope, "rgbOffset = ", rgbOffset
-    
-    shape = matrix.shape
-    
-    colorMatrix = zeros((shape[0], shape[1] * 3))
-    
-    for i in range(shape[0]):
-        for j in range(shape[1]): 
-            k = j * 3       
-            colorMatrix[i,k] = matrix[i,j] * rgbSlope[0] + rgbOffset[0]
-            colorMatrix[i, k+1] = matrix[i,j] * rgbSlope[1] + rgbOffset[1]
-            colorMatrix[i, k+2] = matrix[i,j] * rgbSlope[2] + rgbOffset[2]           
-                  
-    colorMatrix = flatten(colorMatrix, 0, 1)
-
-    colorMatrix = (colorMatrix * 255).astype(int)
- 
-    print "result mean =", colorMatrix.mean(), "result std = ", colorMatrix.std()
-    return colorMatrix    
-
-def savePng(filename, matrix):
-
-    pngfile = open(filename, 'wb')
-    writer = png.Writer(matrix.shape[0], matrix.shape[1]/3)
-    writer.write(pngfile, matrix)
-    pngfile.close()
-   
-def saveGradient(filename, matrix, fromColor, toColor):
-
-    color = toGradient(matrix, fromColor, toColor)
-    savePng(filename, color)
-
-    
-def saveHeat(filename, matrix, levels = None):
-
-	heat = []
-	if None == levels:
-		heat = toHeat(matrix)
-	else:
-		heat = toHeat(matrix, levels)
-		
-	savePng(filename, heat)
