@@ -1,16 +1,47 @@
-
+# Fractal Project Specific
 .DS_Store
-
 aFilter.png
-
 aNebula.png
-
 aPlasma.png
-
 images/dsf102522.png
-
 *.png
-
 plasma copy.py
-
 plasma copy2.py
+
+#Compiled
+*.py[cod]
+
+# C extensions
+*.so
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
+__pycache__
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+
+# Translations
+*.mo
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
