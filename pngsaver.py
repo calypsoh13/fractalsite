@@ -1,5 +1,6 @@
 from numpy import *
 import png
+import matrixfix
 
 def toHeat(matrix, levels = [.9, .8, 1]):
     newMatrix = zeros((matrix.shape[0], matrix.shape[1] * 3))
@@ -34,6 +35,7 @@ def toHeat(matrix, levels = [.9, .8, 1]):
     return newMatrix.astype(int)    
 
 def toGradient(matrix, fromColor, toColor):
+    import plasma
     
     rgbOffset = [fromColor[0]/float(255), fromColor[1]/float(255), fromColor[2]/float(255)]
     rgbSlope = [toColor[0]/float(255) - rgbOffset[0], 
@@ -54,7 +56,7 @@ def toGradient(matrix, fromColor, toColor):
             colorMatrix[i, k+1] = matrix[i,j] * rgbSlope[1] + rgbOffset[1]
             colorMatrix[i, k+2] = matrix[i,j] * rgbSlope[2] + rgbOffset[2]           
                   
-    colorMatrix = flatten(colorMatrix, 0, 1)
+    colorMatrix = matrixfix.flatten(colorMatrix, 0, 1)
 
     colorMatrix = (colorMatrix * 255).astype(int)
  

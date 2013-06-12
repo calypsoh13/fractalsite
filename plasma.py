@@ -1,4 +1,5 @@
 from numpy import *
+import matrixfix
 
 didCancel = False
 
@@ -317,26 +318,7 @@ def printAllowCancel(matrix):
     print newMatrix
         
     response = raw_input('ctl_c to stop >')
- 
-#normalizes the matrix to a given min and max   
-def normalize(matrix, min = 0, max = 1):
-    maxValue = amax(matrix)
-    minValue = amin(matrix)
-    
-    newMatrix = (matrix - minValue) / (maxValue - minValue) 
-    newMatrix = (newMatrix * (max - min)) + min;
-
-    return newMatrix
   
-#flattens the values of the matrix to a given min and max      
-def flatten(matrix, minVal, maxVal):
-
-    newMatrix = zeros(matrix.shape)
-    for x in range(0, matrix.shape[0]):
-        for y in range(0, matrix.shape[1]):
-            newMatrix[x, y] = max(minVal, min(maxVal, matrix[x,y]))
-                            
-    return newMatrix    
 
 """
 creates a gaussian filter that can be applied to a 
@@ -366,7 +348,7 @@ def gaussianFilter(size, points):
                       
         matrix = add(matrix, tempMatrix)
               
-    matrix = flatten(matrix, 0, 1)
+    matrix = matrixfix.flatten(matrix, 0, 1)
 
     return matrix
 
