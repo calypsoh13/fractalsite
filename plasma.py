@@ -2,25 +2,27 @@ from numpy import *
 
 didCancel = False
 
-# plasma function using the diamond square algorithm
-# returns a square matrix of values between 0 and 1
-# size: the length and width of the square matrix. 
-# For best results, the size should be = 2^n+1 where n is and integer.
-# (9, 17, 33, 65, etc).  
-# If a size is entered that doesn't meet this criteria, a fractal will 
-# be calculated for the next largest size and the function will return
-# a slice of the result.
-# roughness (from 0 to 1): the overall noise level 
-# perturbance (from 0 to 1): the size-proportional noise level
-# cornerValues: a list of initial values.  If the list contains 1 value, it's used
-# for all four corners.  If it contains 2 values, the first is used for tl and br and 
-# second is used for the other corners.  If it contains 4 values, they are placed at
-# tl, tr, bl and br.
-# edgeError: whether to apply the noise level to the edges of the fractal squares.
-# midError: whether to apply the noise level to the midpoint of the fractal squares. 
-# (Either edgeError or midError should be true to produce some variability.)
-# hasBorder: whether to ignore the noise level to the perimeter of the fractal.
-# numpy.savetxt("matrix.txt", matrix) can be used to save the result as a text file
+"""
+plasma function using the diamond square algorithm
+returns a square matrix of values between 0 and 1
+size: the length and width of the square matrix. 
+For best results, the size should be = 2^n+1 where n is and integer.
+(9, 17, 33, 65, etc).  
+If a size is entered that doesn't meet this criteria, a fractal will 
+be calculated for the next largest size and the function will return
+a slice of the result.
+roughness (from 0 to 1): the overall noise level 
+perturbance (from 0 to 1): the size-proportional noise level
+cornerValues: a list of initial values.  If the list contains 1 value, it's used
+for all four corners.  If it contains 2 values, the first is used for tl and br and 
+second is used for the other corners.  If it contains 4 values, they are placed at
+tl, tr, bl and br.
+edgeError: whether to apply the noise level to the edges of the fractal squares.
+midError: whether to apply the noise level to the midpoint of the fractal squares. 
+(Either edgeError or midError should be true to produce some variability.)
+hasBorder: whether to ignore the noise level to the perimeter of the fractal.
+numpy.savetxt("matrix.txt", matrix) can be used to save the result as a text file
+"""
 
 def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
                          cornerValues = None, edgeError = True, midError = True, 
@@ -335,15 +337,18 @@ def flatten(matrix, minVal, maxVal):
             newMatrix[x, y] = max(minVal, min(maxVal, matrix[x,y]))
                             
     return newMatrix    
-    
-# creates a gaussian filter that can be applied to a 
-# plasma matrix in order to add a round-ish frame
-# size: size of the matrix
-# points: list of points, each of which should be a tuple 
-# including x, y, sigmaX and sigmaY
-# sigmas are used to make the frame larger
-# in the x and y dimension
-# use numpy.multiply to apply the filter to a matrix.               
+
+"""
+creates a gaussian filter that can be applied to a 
+plasma matrix in order to add a round-ish frame
+size: size of the matrix
+points: list of points, each of which should be a tuple 
+including x, y, sigmaX and sigmaY
+sigmas are used to make the frame larger
+in the x and y dimension
+use numpy.multiply to apply the filter to a matrix.               
+"""
+
 def gaussianFilter(size, points):
     
     matrix = zeros((size, size))
