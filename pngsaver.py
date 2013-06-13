@@ -2,7 +2,7 @@ from numpy import *
 import png
 import matrixfix
 
-def toHeat(matrix, levels = [.9, .8, 1]):
+def toHeatOld(matrix, levels = [.9, .8, 1]):
     newMatrix = zeros((matrix.shape[0], matrix.shape[1] * 3))
     for i in range(matrix.shape[0]):
         for j in range(matrix.shape[1]): 
@@ -33,7 +33,21 @@ def toHeat(matrix, levels = [.9, .8, 1]):
             newMatrix[i, k+2] = blue * 51 * levels[2]
     
     return newMatrix.astype(int)    
-
+    
+def toHeat(matrix):
+    cosinevector = vectorize(getcosine)
+    expandedMatrix = (matrix * .75) + .25
+    red = cosinevector(expandedMatrix)
+    green = cosinevector(expandedMatrix + .3)
+    blue = cosinevector(expandedMatrix + .5)
+    
+    return mergeColors(red, green, blue)
+    
+def getcosine(x):
+    rad = (x * 2 * math.pi)
+    result = cos(rad)
+    return result
+    
 def toGradient(matrix, fromColor, toColor):
     import plasma
     
@@ -42,31 +56,53 @@ def toGradient(matrix, fromColor, toColor):
                  toColor[1]/float(255) - rgbOffset[1], 
                  toColor[2]/float(255) - rgbOffset[2]]
     
-    
-    print "rgbSlope =", rgbSlope, "rgbOffset = ", rgbOffset
-    
-    shape = matrix.shape
-    
-    colorMatrix = zeros((shape[0], shape[1] * 3))
-    
-    for i in range(shape[0]):
-        for j in range(shape[1]): 
-            k = j * 3       
-            colorMatrix[i,k] = matrix[i,j] * rgbSlope[0] + rgbOffset[0]
-            colorMatrix[i, k+1] = matrix[i,j] * rgbSlope[1] + rgbOffset[1]
-            colorMatrix[i, k+2] = matrix[i,j] * rgbSlope[2] + rgbOffset[2]           
-                  
-    colorMatrix = matrixfix.flatten(colorMatrix, 0, 1)
+    # print "rgbSlope =", rgbSlope, "rgbOffset = ", rgbOffset
+   
+    red = matrix * rgbSlope[0] + rgbOffset[0]
+    green = matrix * rgbSlope[1] + rgbOffset[1]
+    blue = matrix * rgbSlope[2] + rgbOffset[2]
 
-    colorMatrix = (colorMatrix * 255).astype(int)
+    colorMatrix = mergeColors(red, green, blue)
+
  
-    print "result mean =", colorMatrix.mean(), "result std = ", colorMatrix.std()
-    return colorMatrix    
+    # print "result mean =", colorMatrix.mean(), "result std = ", colorMatrix.std()
+    return colorMatrix
 
-def savePng(filename, matrix):
+def mergeColors(redValues, greenValues, blueValues, alphaValues = None):
+    
+    red = (redValues * 255).astype(int)
+    green = (greenValues * 255).astype(int)
+    blue = (blueValues * 255).astype(int)
+
+    rows = red.shape[0]
+
+    colors = 3
+    if (alphaValues != None):
+        alpha = (alphaValues * 255).astype(int)
+        colors = 4
+    colorMatrix = zeros((rows, red.shape[1] * colors))
+    
+    for i in range(0, red.shape[0]):
+        redcol = i * colors
+        colorMatrix[:, redcol] = red[:,i]
+        colorMatrix[:, redcol+1]= green[:,i]
+        colorMatrix[:, redcol+2] = blue[:,i]
+    
+        if (alphaValues != None):
+            colorMatrix[:,redcol + 3] = alpha[:,i]
+            
+    colorMatrix = matrixfix.flatten(colorMatrix, 0, 255)
+    return colorMatrix.astype(int)
+     
+def savePng(filename, matrix, hasAlpha = False):
 
     pngfile = open(filename, 'wb')
-    writer = png.Writer(matrix.shape[0], matrix.shape[1]/3)
+    height = matrix.shape[0]
+    width = matrix.shape[1] / 3
+    if (hasAlpha):
+        width  = matrix.shape[1] / 4
+    
+    writer = png.Writer(height, width, alpha = hasAlpha)
     writer.write(pngfile, matrix)
     pngfile.close()
    
@@ -76,12 +112,17 @@ def saveGradient(filename, matrix, fromColor, toColor):
     savePng(filename, color)
 
     
-def saveHeat(filename, matrix, levels = None):
+def saveHeat(filename, matrix):
 
-    heat = []
-    if None == levels:
-        heat = toHeat(matrix)
-    else:
-        heat = toHeat(matrix, levels)
-        
+    heat = toHeat(matrixfix.normalize(matrix))
     savePng(filename, heat)
+    
+def saveColors(filename, redMatrix, greenMatrix, blueMatrix, alphaMatrix = None):
+
+    if (alphaMatrix == None):
+        merged = mergeColors(redMatrix, greenMatrix, blueMatrix)
+    else:
+        merged = mergeColors(redMatrix, greenMatrix, blueMatrix, alphaMatrix)
+        
+    savePng(filename, merged, alphaMatrix != None)
+
