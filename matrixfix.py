@@ -19,3 +19,22 @@ def flatten(matrix, minVal, maxVal):
             newMatrix[x, y] = max(minVal, min(maxVal, matrix[x,y]))
         
     return newMatrix 
+    
+
+def expand(matrix):
+    oldSize = matrix.shape[0]
+    newSize = oldSize * 2 -1
+    result = numpy.zeros((newSize, newSize))
+    for i in range(oldSize):
+        for j in range(oldSize):
+            result[i*2, j*2] = matrix[i,j]
+    return result
+    
+def setStd(matrix, desiredSd):
+    givenMean = numpy.sum(matrix)/float(matrix.size)
+    givenSd = numpy.std(matrix)
+    sdDif = desiredSd/float(givenSd);
+    newMatrix = matrix * sdDif
+    adjMean = numpy.sum(newMatrix)/matrix.size
+    newMatrix = newMatrix + (givenMean - adjMean)
+    return newMatrix

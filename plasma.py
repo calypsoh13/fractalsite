@@ -190,6 +190,21 @@ def diamondSquarePopulate(matrix, row, maxRow, col, maxCol, roughness, perturban
     #printAllowCancel(matrix)
     return [midRow, midCol]
 
+
+def double(matrix, roughness, perturbance):
+
+	size = matrix.shape[0]
+	
+	result = matrixfix.expand(matrix)
+	
+	for i in range(size-1):
+		for j in range(size-1):
+			row = i * 2
+			col = j * 2
+			diamondSquarePopulate(result, row, row+2, col, col+2, roughness, perturbance,\
+			True, True, False) 
+	return result
+
 """
 plasma function using the midpoiont displacement algorithm
 returns a square matrix of values between 0 and 1.
