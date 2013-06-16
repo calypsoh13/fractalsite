@@ -193,17 +193,18 @@ def diamondSquarePopulate(matrix, row, maxRow, col, maxCol, roughness, perturban
 
 def double(matrix, roughness, perturbance):
 
-	size = matrix.shape[0]
-	
-	result = matrixfix.expand(matrix)
-	
-	for i in range(size-1):
-		for j in range(size-1):
-			row = i * 2
-			col = j * 2
-			diamondSquarePopulate(result, row, row+2, col, col+2, roughness, perturbance,\
-			True, True, False) 
-	return result
+    size = matrix.shape[0]
+    
+    result = matrixfix.expand(matrix)
+    
+    for i in range(size-1):
+        for j in range(size-1):
+            row = i * 2
+            col = j * 2
+            diamondSquarePopulate(result, row, row+2, col, col+2, roughness, perturbance,\
+            True, True, False) 
+    return result
+    
 
 """
 plasma function using the midpoiont displacement algorithm
@@ -247,7 +248,7 @@ def midpointDisplacementFractal(size, roughness = .5, perturbance = .5,\
     applyCornerValues(matrix, corners, roughness)
     
     midpointDisplacementPopulate(matrix, 0, fractalsize-1, 0, fractalsize-1, roughness, 
-    	perturbance, edgeError, midError, hasBorder)
+        perturbance, edgeError, midError, hasBorder)
     
     return matrix[0:size, 0:size]
     
@@ -409,7 +410,7 @@ def getValue(noiseLevel, values):
     result = (noiseLevel * randomValue) + ((1 - noiseLevel) * averageValue)
     
     return result
-    
+
 # for debugging
 def printAllowCancel(matrix):
     
