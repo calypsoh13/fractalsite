@@ -3,31 +3,32 @@ import matrixfix
 
 didCancel = False
 
-"""
-plasma function using the diamond square algorithm
-returns a square matrix of values between 0 and 1
-size: the length and width of the square matrix. 
-For best results, the size should be = 2^n+1 where n is and integer.
-(9, 17, 33, 65, etc).  
-If a size is entered that doesn't meet this criteria, a fractal will 
-be calculated for the next largest size and the function will return
-a slice of the result.
-roughness (from 0 to 1): the overall noise level 
-perturbance (from 0 to 1): the size-proportional noise level
-cornerValues: a list of initial values.  If the list contains 1 value, it's used
-for all four corners.  If it contains 2 values, the first is used for tl and br and 
-second is used for the other corners.  If it contains 4 values, they are placed at
-tl, tr, bl and br.
-edgeError: whether to apply the noise level to the edges of the fractal squares.
-midError: whether to apply the noise level to the midpoint of the fractal squares. 
-(Either edgeError or midError should be true to produce some variability.)
-hasBorder: whether to ignore the noise level to the perimeter of the fractal.
-numpy.savetxt("matrix.txt", matrix) can be used to save the result as a text file
-"""
-
 def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
                          cornerValues = None, edgeError = True, midError = True, 
                          hasBorder = False):
+    
+    """Create a plasma function using the diamond square algorithm.  
+
+    This returns a square matrix of values between 0 and 1.  
+    Keyword arguments:
+    size -- the length and width of the square matrix. 
+    For best results, the size should be = 2^n+1 where n is an integer.
+    (9, 17, 33, 65, etc).   
+    If a size is entered that doesn't meet this criteria, a fractal will 
+    be calculated for the next largest size and the function will return
+    a slice of the result.  
+    roughness -- (from 0 to 1) the overall noise level.  
+    perturbance -- (from 0 to 1) the size-proportional noise level.  
+    cornerValues -- a list of initial values.  If the list contains 1 value, it's used
+    for all four corners.  If it contains 2 values, the first is used for tl and br and 
+    second is used for the other corners.  If it contains 4 values, they are placed at
+    tl, tr, bl and br.  
+    edgeError -- whether to apply the noise level to the edges of the fractal squares.  
+    midError -- whether to apply the noise level to the midpoint of the fractal squares.  
+    (Either edgeError or midError should be true to produce some variability.)  
+    hasBorder -- whether to ignore the noise level to the perimeter of the fractal.  
+    numpy.savetxt("matrix.txt", matrix) can be used to save the result as a text file.  
+    """
     
     fractalsize = int(math.pow(2, math.ceil(math.log(size-1, 2)))) + 1 
     
@@ -76,9 +77,10 @@ def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
 
     return matrix[0:size, 0:size]
 
-# diamondSquarePopulate inner method to populate a square 
 def diamondSquarePopulate(matrix, row, maxRow, col, maxCol, roughness, perturbance,\
                           midError, edgeError, hasBorder):
+
+    """ Populate a square for use in diamondSquareFractal"""
     
     rowRange = maxRow - row + 1
     colRange = maxCol - col + 1
@@ -164,11 +166,12 @@ def diamondSquarePopulate(matrix, row, maxRow, col, maxCol, roughness, perturban
         #printAllowCancel(matrix)
     return [midRow, midCol]
 
-# plasma function using the midpoint displacement algorithm
 def midpointDisplacementFractal(size, roughness = .5, perturbance = .5,\
                          cornerValues = None, edgeError = True, midError = True, 
                          hasBorder = False):
-                         
+
+    """ Create a plasma function using the midpoint displacement algorithm"""
+
     fractalsize = int(math.pow(2, math.ceil(math.log(size-1, 2)))) + 1 
     
     matrix = zeros((fractalsize, fractalsize))
@@ -190,6 +193,8 @@ def midpointDisplacementFractal(size, roughness = .5, perturbance = .5,\
 def midpointDisplacementPopulate(matrix, row, maxRow, col, maxCol, 
                                  roughness, perturbance,\
                                  edgeError, midError, hasBorder):
+
+    """ Populate a square for midpointDisplacementFractal"""
     
     rowRange = maxRow - row + 1
     colRange = maxCol - col + 1
@@ -259,16 +264,16 @@ def midpointDisplacementPopulate(matrix, row, maxRow, col, maxCol,
     
     midpointDisplacementPopulate(matrix, row, midRow, col, midCol, \
                                  roughness, perturbance, 
-                                 edgeError, midError)
+                                 edgeError, midError, hasBorder)
     midpointDisplacementPopulate(matrix, row, midRow, midCol, maxCol, \
                                  roughness, perturbance, 
-                                 edgeError, midError)
+                                 edgeError, midError, hasBorder)
     midpointDisplacementPopulate(matrix, midRow, maxRow, col, midCol, \
                                  roughness, perturbance,
-                                 edgeError, midError)
+                                 edgeError, midError, hasBorder)
     midpointDisplacementPopulate(matrix, midRow, maxRow, midCol, maxCol, \
                                  roughness, perturbance,
-                                 edgeError, midError)
+                                 edgeError, midError, hasBorder)
 
 def applyCornerValues(matrix, cornerValues, roughness):
 
@@ -297,10 +302,13 @@ def applyCornerValues(matrix, cornerValues, roughness):
         matrix[size-1, size-1] = random.random() * roughness
 
 def perturbanceFactor(lenWhole, lenPart, perturbance):
+
+    """ Returns the perturbance factor."""
+
+
     k = 1 - perturbance
     return lenPart ** k / lenWhole ** k
     
-
 def getValue(noiseLevel, values):
         
     randomValue = random.random()
@@ -311,28 +319,28 @@ def getValue(noiseLevel, values):
     
     return result
     
-# for debugging
 def printAllowCancel(matrix):
+    
+    """ A function for debugging. """
     
     newMatrix = around(matrix, 2)
     print newMatrix
         
     response = raw_input('ctl_c to stop >')
   
-
-"""
-creates a gaussian filter that can be applied to a 
-plasma matrix in order to add a round-ish frame
-size: size of the matrix
-points: list of points, each of which should be a tuple 
-including x, y, sigmaX and sigmaY
-sigmas are used to make the frame larger
-in the x and y dimension
-use numpy.multiply to apply the filter to a matrix.               
-"""
-
 def gaussianFilter(size, points):
     
+    """
+    creates a gaussian filter that can be applied to a 
+    plasma matrix in order to add a round-ish frame
+    size: size of the matrix
+    points: list of points, each of which should be a tuple 
+    including x, y, sigmaX and sigmaY
+    sigmas are used to make the frame larger
+    in the x and y dimension
+    use numpy.multiply to apply the filter to a matrix.               
+    """
+
     matrix = zeros((size, size))
     
     for point in points:
