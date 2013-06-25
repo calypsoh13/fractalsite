@@ -45,3 +45,9 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+images/movie2.mov
+
+*.mov
+
+3D ideas.rtf
