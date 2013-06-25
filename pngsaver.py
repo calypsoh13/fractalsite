@@ -1,41 +1,10 @@
-from numpy import *
+import numpy
 import png
 import matrixfix
-
-def toHeatOld(matrix, levels = [.9, .8, 1]):
-    newMatrix = zeros((matrix.shape[0], matrix.shape[1] * 3))
-    for i in range(matrix.shape[0]):
-        for j in range(matrix.shape[1]): 
-            red = green = blue = 0
-            a = matrix[i, j] * 20
-            if a < 5:
-                red = 0
-                green = 0
-                blue = a
-            elif a < 10:
-                red = 0
-                green = a - 5
-                blue = 5
-            elif a < 15:
-                red = a-10
-                green = 5
-                blue = 15 - a
-            else:
-                red = 5
-                green = 20-a
-                blue = 0
-                
-            if red<0 or green <0 or blue<0:
-                print "********", i, j, matrix[i, j], red, green, blue
-            k = j*3
-            newMatrix[i, k] = red * 51 * levels[0]
-            newMatrix[i, k+1] = green * 51 * levels[1]
-            newMatrix[i, k+2] = blue * 51 * levels[2]
-    
-    return newMatrix.astype(int)    
+import math
     
 def toHeat(matrix):
-    cosinevector = vectorize(getcosine)
+    cosinevector = numpy.vectorize(getcosine)
     expandedMatrix = (matrix * .75) + .25
     red = cosinevector(expandedMatrix)
     green = cosinevector(expandedMatrix + .3)
@@ -45,7 +14,7 @@ def toHeat(matrix):
     
 def getcosine(x):
     rad = (x * 2 * math.pi)
-    result = cos(rad)
+    result = math.cos(rad)
     return result
     
 def toGradient(matrix, fromColor, toColor):
@@ -80,7 +49,7 @@ def mergeColors(redValues, greenValues, blueValues, alphaValues = None):
     if (alphaValues != None):
         alpha = (alphaValues * 255).astype(int)
         colors = 4
-    colorMatrix = zeros((rows, red.shape[1] * colors))
+    colorMatrix = numpy.zeros((rows, red.shape[1] * colors))
     
     for i in range(0, red.shape[0]):
         redcol = i * colors
@@ -126,3 +95,51 @@ def saveColors(filename, redMatrix, greenMatrix, blueMatrix, alphaMatrix = None)
         
     savePng(filename, merged, alphaMatrix != None)
 
+def saveGradient3D(fileName, matrix, fromColor = [0,0,255], toColor =[255,255,255],\
+     ask = True):
+
+    numberImages = matrix.shape[2]
+    
+    print "This method will create",  numberImages, "image files."
+    if (ask):
+        answer = raw_input("Is that okay?")
+        if answer == "N" or answer == "n" or answer=="No" or answer=="no":
+            return
+    fileNumber = 0
+    for f in range(numberImages):
+
+        file = "{0}{1}.png".format(fileName, fileNumber)
+        if (fileNumber < 10):
+            file = "{0}00{1}.png".format(fileName,fileNumber)
+        elif (fileNumber< 100):
+            file = "{0}0{1}.png".format(fileName,fileNumber)
+        fileNumber += 1
+
+        slice = matrix[:,:,f]
+        print "saving", file
+        saveGradient(file, slice, [0,0,255], [255,255,255])
+
+def saveHeat3D(fileName, matrix, ask = True):
+
+    numberImages = matrix.shape[2]
+    
+    print "This method will create",  numberImages, "image files."
+    if (ask):
+        answer = raw_input("Is that okay?")
+        if answer == "N" or answer == "n" or answer=="No" or answer=="no":
+            return
+    fileNumber = 0
+    normalized = matrixfix.normalize(matrix)
+    for f in range(numberImages):
+
+        file = "{0}{1}.png".format(fileName, fileNumber)
+        if (fileNumber < 10):
+            file = "{0}00{1}.png".format(fileName,fileNumber)
+        elif (fileNumber< 100):
+            file = "{0}0{1}.png".format(fileName,fileNumber)
+        fileNumber += 1
+
+        slice = normalized[:,:,f]
+        print "saving", file
+        heat = toHeat(slice)
+        savePng(file, heat)

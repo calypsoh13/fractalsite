@@ -1,5 +1,7 @@
-from numpy import *
+import numpy
 import matrixfix
+import math
+import random
 
 didCancel = False
 
@@ -33,7 +35,7 @@ def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
     #calculate the fractal based on the next highest 2^n + 1
     fractalsize = int(math.pow(2, math.ceil(math.log(size-1, 2)))) + 1 
    
-    matrix = zeros((fractalsize, fractalsize))
+    matrix = numpy.zeros((fractalsize, fractalsize))
     
     if None == cornerValues :
         corners = []
@@ -139,8 +141,8 @@ def diamondSquarePopulate(matrix, row, maxRow, col, maxCol, roughness, perturban
     #print "setting center ", midRow, midCol
     
     # do diamond step (edges)
-    leftNeighborCenter = col - (midCol - col)
-    topNeighborCenter = row - (midRow - row)    
+    leftNeighborCenter = col - int(rowRange/2)
+    topNeighborCenter = row -  int(rowRange/2)    
 
     # always do the left side
     if hasBorder and 0 == col:
@@ -189,21 +191,6 @@ def diamondSquarePopulate(matrix, row, maxRow, col, maxCol, roughness, perturban
         
     #printAllowCancel(matrix)
     return [midRow, midCol]
-
-
-def double(matrix, roughness, perturbance):
-
-    size = matrix.shape[0]
-    
-    result = matrixfix.expand(matrix)
-    
-    for i in range(size-1):
-        for j in range(size-1):
-            row = i * 2
-            col = j * 2
-            diamondSquarePopulate(result, row, row+2, col, col+2, roughness, perturbance,\
-            True, True, False) 
-    return result
     
 
 """
@@ -236,7 +223,7 @@ def midpointDisplacementFractal(size, roughness = .5, perturbance = .5,\
                          
     fractalsize = int(math.pow(2, math.ceil(math.log(size-1, 2)))) + 1 
     
-    matrix = zeros((fractalsize, fractalsize))
+    matrix = numpy.zeros((fractalsize, fractalsize))
     
     if None == cornerValues:
         corners = []
@@ -433,20 +420,20 @@ use numpy.multiply to apply the filter to a matrix.
 
 def gaussianFilter(size, points):
     
-    matrix = zeros((size, size))
+    matrix = numpy.zeros((size, size))
     
     for point in points:
         x0 = point[0]
         y0 = point[1]
         x2SigmaSquared = pow(point[2] * size/4, 2) * 2
         y2SigmaSquared = pow(point[3] * size/4, 2) * 2
-        tempMatrix = zeros((size, size))
+        tempMatrix = numpy.zeros((size, size))
         for x in range(0, size):
             for y in range(0, size):
-                tempMatrix[y, x] = exp(-1 * \
+                tempMatrix[y, x] = math.exp(-1 * \
                     (math.pow(x-x0, 2)/x2SigmaSquared + math.pow(y-y0, 2)/y2SigmaSquared))
                       
-        matrix = add(matrix, tempMatrix)
+        matrix = numpy.add(matrix, tempMatrix)
               
     matrix = matrixfix.flatten(matrix, 0, 1)
 
