@@ -98,7 +98,7 @@ def saveGradient(filename, matrix, fromColor, toColor):
     """ 
     saves a matrix of values between 0 and 1 to a 
     png with a given gradient.
-    """"
+    """
     color = toGradient(matrix, fromColor, toColor)
     savePng(filename, color)
 
@@ -123,14 +123,14 @@ def saveColors(filename, redMatrix, greenMatrix, blueMatrix, alphaMatrix = None)
         
     savePng(filename, merged, alphaMatrix != None)
 
-def saveGradient3D(fileName, matrix, fromColor = [0,0,255], toColor =[255,255,255],\
-    ask = True):
-     """ 
+def saveGradient3D(fileName, matrix, fromColor = [0,0,255], toColor =[255,255,255], ask = True):
+    """ 
     saves a 3d matrix of values between 0 and 1 to a 
     series of png files with a given gradient.
     The png files can be merged into a movie file using 
     Sequimago or other movie making tools.
-    """"
+    """
+    
     numberImages = matrix.shape[2]
     
     print "This method will create",  numberImages, "image files."
@@ -153,12 +153,12 @@ def saveGradient3D(fileName, matrix, fromColor = [0,0,255], toColor =[255,255,25
         saveGradient(file, slice, [0,0,255], [255,255,255])
 
 def saveHeat3D(fileName, matrix, ask = True):
-     """ 
+    """ 
     saves a 3d matrix of values between 0 and 1 to a 
     series of png files as a heat map.
     The png files can be merged into a movie file using 
     Sequimago or other movie making tools.
-    """"
+    """
     numberImages = matrix.shape[2]
     
     print "This method will create",  numberImages, "image files."
