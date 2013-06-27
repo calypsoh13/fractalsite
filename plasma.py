@@ -198,14 +198,13 @@ def diamondSquarePopulate(matrix, row, maxRow, col, maxCol, roughness, perturban
     return [midRow, midCol]
 
 def double(matrix, roughness, perturbance):
-	"""
-	Internal method
-	Double is used by the zoom module to expand a fractal.
-	 
-	Doubles the size of a fractal by expanding it to a larger matrix,
-	and using the populate method to fill in the missing cells
-	""" 
-	 
+    """
+    Internal method
+    Double is used by the zoom module to expand a fractal.
+     
+    Doubles the size of a fractal by expanding it to a larger matrix,
+    and using the populate method to fill in the missing cells
+    """ 
     size = matrix.shape[0]
 
     result = matrixfix.expand(matrix)
@@ -250,8 +249,8 @@ def midpointDisplacementFractal(size, roughness = .5, perturbance = .5,\
     """
 
     fractalsize = int(math.pow(2, math.ceil(math.log(size-1, 2)))) + 1 
-	
-	matrix = numpy.zeros((fractalsize, fractalsize))
+    
+    matrix = numpy.zeros((fractalsize, fractalsize))
     
     if None == cornerValues:
         corners = []
