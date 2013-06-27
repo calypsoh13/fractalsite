@@ -1,6 +1,11 @@
 import numpy
 
 def shrink(oldList, newSize):
+    """
+    Shrinks (scales) a list of values to a new size by averaging neighboring cells
+    Used for scaling images
+    """
+    
     oldIndex = 0
     newIndex = 0
 
@@ -37,6 +42,9 @@ def shrink(oldList, newSize):
 
 
 def shrinkMatrix(oldMatrix, newSize):
+    """
+    Shrinks (scales) a matrix to a new size by averaging neighboring cells
+    """
     oldSize = oldMatrix.shape[0]
     rowMatrix = numpy.zeros((oldSize, newSize))
     for i in range(oldSize):

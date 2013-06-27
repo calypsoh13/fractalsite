@@ -9,7 +9,7 @@ def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
                          cornerValues = None, edgeError = True, midError = True, 
                          hasBorder = False):
     """
-    Create a plasma function using the diamond square algorithm.
+    Create a plasma fractal using the diamond square algorithm.
 
     This returns a square matrix of values between 0 and 1.
 
@@ -36,15 +36,9 @@ def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
 
     #calculate the fractal based on the next highest 2^n + 1
     fractalsize = int(math.pow(2, math.ceil(math.log(size-1, 2)))) + 1 
-<<<<<<< HEAD
    
     matrix = numpy.zeros((fractalsize, fractalsize))
-    
-=======
 
-    matrix = zeros((fractalsize, fractalsize))
-
->>>>>>> 4f3b76c6fe73c06c6fbb9698c298a7f9eed4d619
     if None == cornerValues :
         corners = []
     elif isinstance(cornerValues, list) :
@@ -105,6 +99,7 @@ def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
 def diamondSquarePopulate(matrix, row, maxRow, col, maxCol, roughness, perturbance,\
                           midError, edgeError, hasBorder):
     """
+    Internal method
     Populate a square using the diamond square algorithm.
 
     This function is internal to diamondSquareFractal().
@@ -201,24 +196,27 @@ def diamondSquarePopulate(matrix, row, maxRow, col, maxCol, roughness, perturban
 
     #printAllowCancel(matrix)
     return [midRow, midCol]
-<<<<<<< HEAD
-    
-=======
 
 def double(matrix, roughness, perturbance):
-
+	"""
+	Internal method
+	Double is used by the zoom module to expand a fractal.
+	 
+	Doubles the size of a fractal by expanding it to a larger matrix,
+	and using the populate method to fill in the missing cells
+	""" 
+	 
     size = matrix.shape[0]
 
     result = matrixfix.expand(matrix)
 
-    for i in range(size-1):
-        for j in range(size-1):
+    for i in range(size):
+        for j in range(size):
             row = i * 2
             col = j * 2
             diamondSquarePopulate(result, row, row+2, col, col+2, roughness, perturbance,\
             True, True, False) 
     return result
->>>>>>> 4f3b76c6fe73c06c6fbb9698c298a7f9eed4d619
 
 def midpointDisplacementFractal(size, roughness = .5, perturbance = .5,\
                          cornerValues = None, edgeError = True, midError = True, 
@@ -252,15 +250,9 @@ def midpointDisplacementFractal(size, roughness = .5, perturbance = .5,\
     """
 
     fractalsize = int(math.pow(2, math.ceil(math.log(size-1, 2)))) + 1 
-<<<<<<< HEAD
+	
+	matrix = numpy.zeros((fractalsize, fractalsize))
     
-    matrix = numpy.zeros((fractalsize, fractalsize))
-    
-=======
-
-    matrix = zeros((fractalsize, fractalsize))
-
->>>>>>> 4f3b76c6fe73c06c6fbb9698c298a7f9eed4d619
     if None == cornerValues:
         corners = []
     elif isinstance(cornerValues, list):
@@ -279,6 +271,7 @@ def midpointDisplacementPopulate(matrix, row, maxRow, col, maxCol,
                                  roughness, perturbance,\
                                  edgeError, midError, hasBorder):
     """ 
+    Internal method
     Populate a square using the midpoint displacement algorithm.
 
     This is an iterative function and internal to midpointDisplacementFractal().
@@ -376,6 +369,7 @@ def midpointDisplacementPopulate(matrix, row, maxRow, col, maxCol,
     
 def applyCornerValues(matrix, cornerValues, roughness):
     """ 
+    Internal method
     Determine number of corner values available and place them in the matrix.
     
     1 value: all four corners
@@ -411,6 +405,7 @@ def applyCornerValues(matrix, cornerValues, roughness):
     
 def perturbanceFactor(lenWhole, lenPart, perturbance):
     """ 
+    Internal method
     Return a perturbance factor based on matrix properties.
     
     We want the error for small squares to be smaller than the error
@@ -422,8 +417,8 @@ def perturbanceFactor(lenWhole, lenPart, perturbance):
     return lenPart ** k / lenWhole ** k
     
 def getValue(noiseLevel, values):
-    
     """ 
+    Internal method
     Calculate a single cell in the fractal.
     
     Finds an average value with an error.
@@ -450,11 +445,7 @@ def printAllowCancel(matrix):
         
     response = raw_input('ctl_c to stop >')
 
-def gaussianFilter(size, points):
-    
-<<<<<<< HEAD
-    matrix = numpy.zeros((size, size))
-=======
+def gaussianFilter(size, points): 
     """
     Create a gaussian filter that can be applied to a matrix.
     
@@ -470,7 +461,6 @@ def gaussianFilter(size, points):
     """
     
     matrix = zeros((size, size))
->>>>>>> 4f3b76c6fe73c06c6fbb9698c298a7f9eed4d619
     
     for point in points:
         x0 = point[0]

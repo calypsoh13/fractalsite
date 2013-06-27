@@ -4,20 +4,34 @@ import matrixfix
 import math
     
 def toHeat(matrix):
+    """
+    creates a heat map from an array of normalized values (range 0 to 1) 
+    """
     cosinevector = numpy.vectorize(getcosine)
-    expandedMatrix = (matrix * .75) + .25
-    red = cosinevector(expandedMatrix)
-    green = cosinevector(expandedMatrix + .3)
-    blue = cosinevector(expandedMatrix + .5)
+    # jiggle the values a bit so that the range will be from .25 to 1
+    modifiedMatrix = (matrix * .75) + .25
+    # values near 1 will be red
+    red = cosinevector(modifiedMatrix)
+    # values near .7 will be green
+    green = cosinevector(modifiedMatrix + .3)
+    # values near .5 will be blue
+    blue = cosinevector(modifiedMatrix + .5)
+    # values near .25 will be black
     
     return mergeColors(red, green, blue)
     
 def getcosine(x):
+    """
+    Gets the cosine of a value between 0 and 1
+    returns cos(2piX)
+    """
     rad = (x * 2 * math.pi)
     result = math.cos(rad)
     return result
     
 def toGradient(matrix, fromColor, toColor):
+    """
+    """
     import plasma
     
     rgbOffset = [fromColor[0]/float(255), fromColor[1]/float(255), fromColor[2]/float(255)]
@@ -38,7 +52,10 @@ def toGradient(matrix, fromColor, toColor):
     return colorMatrix
 
 def mergeColors(redValues, greenValues, blueValues, alphaValues = None):
-    
+    """
+    merges arrays representing red, blue, and green and (optionally) alpha
+    into an array ready to export to a png file
+    """
     red = (redValues * 255).astype(int)
     green = (greenValues * 255).astype(int)
     blue = (blueValues * 255).astype(int)
@@ -64,7 +81,9 @@ def mergeColors(redValues, greenValues, blueValues, alphaValues = None):
     return colorMatrix.astype(int)
      
 def savePng(filename, matrix, hasAlpha = False):
-
+    """
+    saves an array to a png file.
+    """
     pngfile = open(filename, 'wb')
     height = matrix.shape[0]
     width = matrix.shape[1] / 3
@@ -76,18 +95,27 @@ def savePng(filename, matrix, hasAlpha = False):
     pngfile.close()
    
 def saveGradient(filename, matrix, fromColor, toColor):
-
+    """ 
+    saves a matrix of values between 0 and 1 to a 
+    png with a given gradient.
+    """"
     color = toGradient(matrix, fromColor, toColor)
     savePng(filename, color)
 
     
 def saveHeat(filename, matrix):
-
+    """
+    saves a matrix of values between 0 and 1 to a 
+    png as a heat map
+    """
     heat = toHeat(matrixfix.normalize(matrix))
     savePng(filename, heat)
     
 def saveColors(filename, redMatrix, greenMatrix, blueMatrix, alphaMatrix = None):
-
+    """
+    merges a red, green, blue and (optional) alpha matrix and saves
+    them as a png file.
+    """
     if (alphaMatrix == None):
         merged = mergeColors(redMatrix, greenMatrix, blueMatrix)
     else:
@@ -96,8 +124,13 @@ def saveColors(filename, redMatrix, greenMatrix, blueMatrix, alphaMatrix = None)
     savePng(filename, merged, alphaMatrix != None)
 
 def saveGradient3D(fileName, matrix, fromColor = [0,0,255], toColor =[255,255,255],\
-     ask = True):
-
+    ask = True):
+     """ 
+    saves a 3d matrix of values between 0 and 1 to a 
+    series of png files with a given gradient.
+    The png files can be merged into a movie file using 
+    Sequimago or other movie making tools.
+    """"
     numberImages = matrix.shape[2]
     
     print "This method will create",  numberImages, "image files."
@@ -120,7 +153,12 @@ def saveGradient3D(fileName, matrix, fromColor = [0,0,255], toColor =[255,255,25
         saveGradient(file, slice, [0,0,255], [255,255,255])
 
 def saveHeat3D(fileName, matrix, ask = True):
-
+     """ 
+    saves a 3d matrix of values between 0 and 1 to a 
+    series of png files as a heat map.
+    The png files can be merged into a movie file using 
+    Sequimago or other movie making tools.
+    """"
     numberImages = matrix.shape[2]
     
     print "This method will create",  numberImages, "image files."

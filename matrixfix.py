@@ -1,7 +1,9 @@
 import numpy
 
-#normalizes a matrix to a given min and max   
 def normalize(matrix, min = 0, max = 1):
+    """
+    Adjusts the values in a matrix to a given range
+    """
     maxValue = numpy.amax(matrix)
     minValue = numpy.amin(matrix)
     
@@ -9,28 +11,24 @@ def normalize(matrix, min = 0, max = 1):
     newMatrix = (newMatrix * (max - min)) + min;
 
     return newMatrix
-  
-#flattens the values of a matrix to a given min and max      
-def flatten(matrix, minVal, maxVal):
 
-    newMatrix = numpy.zeros(matrix.shape)
-    for x in range(0, matrix.shape[0]):
-        for y in range(0, matrix.shape[1]):
-            newMatrix[x, y] = max(minVal, min(maxVal, matrix[x,y]))
+def flatten(matrix, minVal, maxVal):
+    """
+    Adjusts any values in a matrix that fall outside a range
+    to the given min or max
+    """
+    newMatrix = numpy.copy(matrix)
+    
+    for x in numpy.nditer(newMatrix, op_flags=['readwrite']):
+        x[...] = max(minVal, min(maxVal, x))
         
     return newMatrix 
     
-
-def expand(matrix):
-    oldSize = matrix.shape[0]
-    newSize = oldSize * 2 -1
-    result = numpy.zeros((newSize, newSize))
-    for i in range(oldSize):
-        for j in range(oldSize):
-            result[i*2, j*2] = matrix[i,j]
-    return result
-    
 def setStd(matrix, desiredSd):
+    """ 
+    Adjusts a matrix so that it has a given standard deviation, 
+    without changing the mean.
+    """  
     givenMean = numpy.sum(matrix)/float(matrix.size)
     givenSd = numpy.std(matrix)
     sdDif = desiredSd/float(givenSd);
