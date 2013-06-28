@@ -36,15 +36,9 @@ def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
 
     #calculate the fractal based on the next highest 2^n + 1
     fractalsize = int(math.pow(2, math.ceil(math.log(size-1, 2)))) + 1 
-<<<<<<< HEAD
    
     matrix = numpy.zeros((fractalsize, fractalsize))
-    
-=======
 
-    matrix = zeros((fractalsize, fractalsize))
-
->>>>>>> 4f3b76c6fe73c06c6fbb9698c298a7f9eed4d619
     if None == cornerValues :
         corners = []
     elif isinstance(cornerValues, list) :
