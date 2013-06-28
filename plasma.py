@@ -195,9 +195,6 @@ def diamondSquarePopulate(matrix, row, maxRow, col, maxCol, roughness, perturban
 
     #printAllowCancel(matrix)
     return [midRow, midCol]
-<<<<<<< HEAD
-    
-=======
 
 def double(matrix, roughness, perturbance):
 
@@ -212,7 +209,6 @@ def double(matrix, roughness, perturbance):
             diamondSquarePopulate(result, row, row+2, col, col+2, roughness, perturbance,\
             True, True, False) 
     return result
->>>>>>> 4f3b76c6fe73c06c6fbb9698c298a7f9eed4d619
 
 def midpointDisplacementFractal(size, roughness = .5, perturbance = .5,\
                          cornerValues = None, edgeError = True, midError = True, 
@@ -246,15 +242,9 @@ def midpointDisplacementFractal(size, roughness = .5, perturbance = .5,\
     """
 
     fractalsize = int(math.pow(2, math.ceil(math.log(size-1, 2)))) + 1 
-<<<<<<< HEAD
     
     matrix = numpy.zeros((fractalsize, fractalsize))
-    
-=======
 
-    matrix = zeros((fractalsize, fractalsize))
-
->>>>>>> 4f3b76c6fe73c06c6fbb9698c298a7f9eed4d619
     if None == cornerValues:
         corners = []
     elif isinstance(cornerValues, list):
@@ -446,9 +436,6 @@ def printAllowCancel(matrix):
 
 def gaussianFilter(size, points):
     
-<<<<<<< HEAD
-    matrix = numpy.zeros((size, size))
-=======
     """
     Create a gaussian filter that can be applied to a matrix.
     
@@ -463,8 +450,7 @@ def gaussianFilter(size, points):
     use numpy.multiply to apply the filter to a matrix.
     """
     
-    matrix = zeros((size, size))
->>>>>>> 4f3b76c6fe73c06c6fbb9698c298a7f9eed4d619
+    matrix = numpy.zeros((size, size))
     
     for point in points:
         x0 = point[0]
