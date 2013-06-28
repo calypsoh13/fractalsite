@@ -7,6 +7,8 @@ def normalize(matrix, min = 0, max = 1):
     maxValue = numpy.amax(matrix)
     minValue = numpy.amin(matrix)
     
+    if maxValue == minValue: return numpy.copy(matrix)
+    
     newMatrix = (matrix - minValue) / (maxValue - minValue) 
     newMatrix = (newMatrix * (max - min)) + min;
 
