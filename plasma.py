@@ -113,9 +113,6 @@ def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
                 matrix[currentsize:limit:currentsize, currentsize::currentsize],\
                 matrix[midsize:limit:currentsize, midsize::currentsize],\
                 matrix[currentsize+midsize::currentsize, midsize::currentsize]])
-            
-            #print "horizontal edges:"
-            printAllowCancel(matrix)
         
         #decrement 
         currentsize = currentsize/2
@@ -195,6 +192,39 @@ def getValue(noiseLevel, values):
     
     return result
 
+def gaussianFilter(size, points): 
+    """
+    Create a gaussian filter that can be applied to a matrix.
+    
+    Applying this filter will give a roundish frame to your fractal.
+    
+    Keyword arguments:
+    size: size of the matrix
+    points: list of points, each of which should be a tuple 
+    including x, y, sigmaX and sigmaY
+    sigmas are used to make the frame larger
+    in the x and y dimension
+    use numpy.multiply to apply the filter to a matrix.
+    """
+    
+    matrix = zeros((size, size))
+    
+    for point in points:
+        x0 = point[0]
+        y0 = point[1]
+        x2SigmaSquared = pow(point[2] * size/4, 2) * 2
+        y2SigmaSquared = pow(point[3] * size/4, 2) * 2
+        tempMatrix = numpy.zeros((size, size))
+        for x in range(0, size):
+            for y in range(0, size):
+                tempMatrix[y, x] = math.exp(-1 * \
+                    (math.pow(x-x0, 2)/x2SigmaSquared + math.pow(y-y0, 2)/y2SigmaSquared))
+                      
+        matrix = numpy.add(matrix, tempMatrix)
+              
+    matrix = matrixfix.flatten(matrix, 0, 1)
+    
+    return matrix
 
 # for debugging
 def printAllowCancel(matrix):
