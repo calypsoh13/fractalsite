@@ -121,7 +121,6 @@ def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
     
 def applyCornerValues(matrix, cornerValues, roughness):
     """ 
-    Internal method
     Determine number of corner values available and place them in the matrix.
     
     1 value: all four corners
@@ -157,7 +156,6 @@ def applyCornerValues(matrix, cornerValues, roughness):
     
 def perturbanceFactor(lenWhole, lenPart, perturbance):
     """ 
-    Internal method
     Return a perturbance factor based on matrix properties.
     
     We want the error for small squares to be smaller than the error
@@ -170,7 +168,6 @@ def perturbanceFactor(lenWhole, lenPart, perturbance):
     
 def getValue(noiseLevel, values):
     """ 
-    Internal method
     Calculate a single cell in the fractal.
     
     Finds an average value with an error.
