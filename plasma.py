@@ -1,6 +1,7 @@
 import numpy
 import math
 import random
+import matrixfix
 
 
 def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
@@ -204,7 +205,7 @@ def gaussianFilter(size, points):
     use numpy.multiply to apply the filter to a matrix.
     """
     
-    matrix = zeros((size, size))
+    matrix = numpy.zeros((size, size))
     
     for point in points:
         x0 = point[0]
