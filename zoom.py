@@ -5,24 +5,25 @@ import matrixfix
 import numpy
 import math
 
-""" 
-saves a series of png files that, when animated, show the viewer zooming
-into a plasma fractal.
-filename: the starting name for the png file series.  A series index will
-be appended to each file.  Ex: filename = "plasma" with 16 files would produce
-plasma000.png through plasma015.png.
-numberOfZooms: The number of times the image width is halved.  
-(After the image width is halved, a new fractal is created based on the previous values.)
-The number of images will be 16 x numberOfZooms.
-roughness (from 0 to 1): the overall noise level 
-perturbance (from 0 to 1): the size-proportional noise level
-fromColor: the starting point for the image gradient as [r,g,b] (default is blue)
-toColor: the ending point for the image gradient as [r,g,b] (default is white)
-ask: set to False to avoid a user prompt.
-"""
+
 def zoom(fileName, size, numberofzooms, roughness, perturbance, \
         fromColor = [0,0,255], toColor = [255,255,255], ask = True):
-
+    """ 
+    Saves a series of png files that, when animated, show the viewer zooming
+    into a plasma fractal.
+    filename: the starting name for the png file series.  A series index will
+    be appended to each file.  Ex: filename = "plasma" with 16 files would produce
+    plasma000.png through plasma015.png.
+    numberOfZooms: The number of times the image width is halved.  
+    (After the image width is halved, a new fractal is created based on the previous values.)
+    The number of images will be 16 x numberOfZooms.
+    roughness (from 0 to 1): the overall noise level 
+    perturbance (from 0 to 1): the size-proportional noise level
+    fromColor: the starting point for the image gradient as [r,g,b] (default is blue)
+    toColor: the ending point for the image gradient as [r,g,b] (default is white)
+    ask: set to False to avoid a user prompt.
+    """
+    
     # check whether the size is valid
     n = math.log(size-1, 2)
     if n != float(int(n)):
@@ -64,4 +65,4 @@ def zoom(fileName, size, numberofzooms, roughness, perturbance, \
             mat = shrink.shrinkMatrix(slice, size)
             print "saving", file
             pngsaver.saveGradient(file, mat, [0,0,255], [255,255,255])
-
+            
