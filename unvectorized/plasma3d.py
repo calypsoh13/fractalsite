@@ -2,6 +2,7 @@ import numpy
 import math
 import random
 import matrixfix
+import time
 
 """ 
 these arrays include the information needed to determine the center, face and edge 
@@ -47,6 +48,7 @@ def diamondSquareFractal3D(size, roughness = .5, perturbance = .5):
     numpy.savetxt("matrix.txt", matrix) can be used to save the result as a text file
     pngsaver has routines for converting the fractal to an series of images. 
     """
+    start = time.time()
     count = 0;
     
     #calculate the fractal based on the next highest 2^n + 1
@@ -140,7 +142,7 @@ def diamondSquareFractal3D(size, roughness = .5, perturbance = .5):
             queue.append([midRow, midCol, midFrame, midRange])
 
     #print "result mean =", matrix.mean(), "result std = ", matrix.std()
-
+    print "elapsed seconds =", time.time() - start
     # return the requested size
     return matrix[0:size, 0:size]
 

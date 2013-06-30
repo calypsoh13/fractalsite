@@ -2,6 +2,7 @@ import numpy
 import math
 import random
 import matrixfix
+import time
 
 def diamondSquareFractal3D(size, roughness = .5, perturbance = .5):
     """
@@ -22,6 +23,8 @@ def diamondSquareFractal3D(size, roughness = .5, perturbance = .5):
     pngsaver has routines for converting the fractal to an image. 
     """
     
+    start = time.time()
+    
     #calculate the fractal based on the next highest 2^n + 1
     n = math.log(size-1, 2)
     if n != float(int(n)):
@@ -29,8 +32,13 @@ def diamondSquareFractal3D(size, roughness = .5, perturbance = .5):
         print "65, 129, 257, 513, 1025, etc."
         return
    
-    matrix = numpy.zeros((size, size, size)) * -100
+    matrix = numpy.array(range(size*size*size)) * -1
+    matrix = matrix.reshape((size,size,size)).astype(float)
     
+    for i in range(size):
+        for j in range(size):
+            for k in range(size):
+                matrix[i,j,k] = float(i*100 + k*10 + j) * -1 
     applyCornerValues(matrix, roughness)
     
     matrixsize = size
@@ -38,374 +46,366 @@ def diamondSquareFractal3D(size, roughness = .5, perturbance = .5):
     
     while csize > 1:
     
+        startb = csize/2             #1
+        startc = csize               #2
+        startd = csize + csize/2     #3
+        startz = maxindex            #4
+        starty = maxindex - csize/2  #3
+        enda = maxindex-csize        #2
+        endb = maxindex-csize/2      #3
+        endc = maxindex              #4
+        
         midsize = csize/2
+        limit = maxindex - startb
         pf = perturbanceFactor(size, csize, perturbance)
         noiseLevel = roughness * pf
         
         #centers
-        matrix[midsize::csize, midsize::csize, midsize::csize] =\
+        matrix[startb::csize, startb::csize, startb::csize] =\
             getValue(noiseLevel,\
-            [matrix[0:maxindex:csize,0:maxindex:csize, 0:maxindex:csize],\
-            matrix[0:maxindex:csize, 0:maxindex:csize, csize::csize],\
-            matrix[0:maxindex:csize, csize::csize, 0:maxindex:csize],\
-            matrix[0:maxindex:csize, csize::csize, csize::csize],\
-            matrix[csize::csize, 0:maxindex:csize, 0:maxindex:csize],
-            matrix[csize::csize, 0:maxindex:csize, csize::csize],
-            matrix[csize::csize, csize::csize, 0:maxindex:csize],
-            matrix[csize::csize, csize::csize, csize::csize]])
+            [matrix[0:endc:csize,0:endc:csize, 0:endc:csize],\
+            matrix[0:endc:csize, 0:endc:csize, startc::csize],\
+            matrix[0:endc:csize, startc::csize, 0:endc:csize],\
+            matrix[0:endc:csize, startc::csize, startc::csize],\
+            matrix[startc::csize, 0:endc:csize, 0:endc:csize],
+            matrix[startc::csize, 0:endc:csize, startc::csize],
+            matrix[startc::csize, startc::csize, 0:endc:csize],
+            matrix[startc::csize, startc::csize, startc::csize]])
             
         #topmost face
-        matrix[0, midsize::csize, midsize::csize] =\
+        matrix[0, startb::csize, startb::csize] =\
             getValue(noiseLevel,\
-            [matrix[0, 0:maxindex:csize, 0:maxindex:csize],\
-            matrix[0, 0:maxindex:csize, csize::csize],\
-            matrix[0, csize::csize, 0:maxindex:csize],\
-            matrix[0, csize::csize, csize::csize],\
-            matrix[midsize, midsize::csize, midsize::csize]])
+            [matrix[0, 0:endc:csize, 0:endc:csize],\
+            matrix[0, 0:endc:csize, startc::csize],\
+            matrix[0, startc::csize, 0:endc:csize],\
+            matrix[0, startc::csize, startc::csize],\
+            matrix[startb, startb::csize, startb::csize]])
             
         #leftmost face
-        matrix[midsize::csize, 0, midsize::csize] =\
+        matrix[startb::csize, 0, startb::csize] =\
             getValue(noiseLevel,\
-            [matrix[0:maxindex:csize, 0, 0:maxindex:csize],\
-            matrix[0:maxindex:csize, 0, csize::csize],\
-            matrix[csize::csize, 0, 0:maxindex:csize],\
-            matrix[csize::csize, 0, csize::csize],\
-            matrix[midsize::csize, midsize, midsize::csize]])
+            [matrix[0:endc:csize, 0, 0:endc:csize],\
+            matrix[0:endc:csize, 0, startc::csize],\
+            matrix[startc::csize, 0, 0:endc:csize],\
+            matrix[startc::csize, 0, startc::csize],\
+            matrix[startb::csize, startb, startb::csize]])
             
         #frontmost face
-        matrix[midsize::csize, midsize::csize, 0] =\
+        matrix[startb::csize, startb::csize, 0] =\
             getValue(noiseLevel,\
-            [matrix[0:maxindex:csize, 0:maxindex:csize, 0],\
-            matrix[0:maxindex:csize, csize::csize, 0],\
-            matrix[csize::csize, 0:maxindex:csize, 0],\
-            matrix[csize::csize, csize::csize, 0],\
-            matrix[midsize::csize, midsize::csize, midsize]])
+            [matrix[0:endc:csize, 0:endc:csize, 0],\
+            matrix[0:endc:csize, startc::csize, 0],\
+            matrix[startc::csize, 0:endc:csize, 0],\
+            matrix[startc::csize, startc::csize, 0],\
+            matrix[startb::csize, startb::csize, startb]])
             
         #bottommost face
-        matrix[maxindex, midsize::csize, midsize::csize] =\
+        matrix[startz, startb::csize, startb::csize] =\
             getValue(noiseLevel,\
-            [matrix[maxindex, 0:maxindex:csize, 0:maxindex:csize],\
-            matrix[maxindex, 0:maxindex:csize, csize::csize],\
-            matrix[maxindex, csize::csize, 0:maxindex:csize],\
-            matrix[maxindex, csize::csize, csize::csize],\
-            matrix[maxindex - midsize, midsize::csize, midsize::csize]])
+            [matrix[startz, 0:endc:csize, 0:endc:csize],\
+            matrix[startz, 0:endc:csize, startc::csize],\
+            matrix[startz, startc::csize, 0:endc:csize],\
+            matrix[startz, startc::csize, startc::csize],\
+            matrix[starty, startb::csize, startb::csize]])
         
         #rightmost face
-        matrix[midsize::csize, maxindex, midsize::csize] =\
+        matrix[startb::csize, startz, startb::csize] =\
             getValue(noiseLevel,\
-            [matrix[0:maxindex:csize, maxindex, 0:maxindex:csize],\
-            matrix[0:maxindex:csize, maxindex, csize::csize],\
-            matrix[csize::csize, maxindex, 0:maxindex:csize],\
-            matrix[csize::csize, maxindex, csize::csize],\
-            matrix[midsize::csize, maxindex-midsize, midsize::csize]])
+            [matrix[0:endc:csize, startz, 0:endc:csize],\
+            matrix[0:endc:csize, startz, startc::csize],\
+            matrix[startc::csize, startz, 0:endc:csize],\
+            matrix[startc::csize, startz, startc::csize],\
+            matrix[startb::csize, starty, startb::csize]])
             
-        #back-most face
-        matrix[midsize::csize, midsize::csize, 0] =\
+        #backmost face
+        matrix[startb::csize, startb::csize, startz] =\
             getValue(noiseLevel,\
-            [matrix[0:maxindex:csize, 0:maxindex:csize, maxindex],\
-            matrix[0:maxindex:csize, csize::csize, maxindex],\
-            matrix[csize::csize, 0:maxindex:csize, maxindex],\
-            matrix[csize::csize, csize::csize, maxindex],\
-            matrix[midsize::csize, midsize::csize, maxindex-midsize]])
+            [matrix[0:endc:csize, 0:endc:csize, startz],\
+            matrix[0:endc:csize, startc::csize, startz],\
+            matrix[startc::csize, 0:endc:csize, startz],\
+            matrix[startc::csize, startc::csize, startz],\
+            matrix[startb::csize, startb::csize, starty]])
+            
+        printAllowCancel(matrix)
         
-        #printAllowCancel(matrix)
+        #top left edge
+        matrix[0, 0, startb::csize] =\
+            getValue(noiseLevel,\
+            [matrix[0, 0, 0:endb:csize],\
+            matrix[0, 0, startc::csize],\
+            matrix[0, startb, startb::csize],\
+            matrix[startb, 0, startb::csize]])
         
-        if (csize < maxindex):
+        # top front edge
+        matrix[0, startb::csize, 0] =\
+            getValue(noiseLevel,\
+            [matrix[0, 0:endb:csize, 0],\
+            matrix[0, startc::csize, 0],\
+            matrix[0, startb::csize, startb],\
+            matrix[startb, startb::csize, 0]])
+                
+        # top right edge
+        matrix[0, startz, startb::csize] =\
+            getValue(noiseLevel,\
+            [matrix[0, startz, 0:endb:csize],\
+            matrix[0, startz, startc::csize],\
+            matrix[0, starty, startb::csize],\
+            matrix[startb, 0, startb::csize]])
+        
+        # top back edge
+        matrix[0, startb::csize, startz] =\
+            getValue(noiseLevel,\
+            [matrix[0, 0:endb:csize, startz],\
+            matrix[0, startc::csize, startz],\
+            matrix[0, startb::csize, starty],\
+            matrix[startb, startb::csize, startz]])
             
-            limit = maxindex - midsize
+        # left front edge
+        matrix[startb::csize, 0, 0] =\
+            getValue(noiseLevel,\
+            [matrix[0:endb:csize, 0, 0],\
+            matrix[startc::csize, 0, 0],\
+            matrix[startb::csize, 0, startb],\
+            matrix[startb::csize, startb, 0]])
             
-            # top faces
-            matrix[csize:limit:csize, midsize::csize, midsize::csize] =\
+        # left back edge
+        matrix[startb::csize, 0, startz] =\
+            getValue(noiseLevel,\
+            [matrix[0:endb:csize, 0, startz],\
+            matrix[startc::csize, 0, startz],\
+            matrix[startb::csize, 0, starty],\
+            matrix[startb::csize, startb, startz]])
+            
+        # right front edge
+        matrix[startb::csize, startz, 0] =\
+            getValue(noiseLevel,\
+            [matrix[0:endb:csize, startz, 0],\
+            matrix[startc::csize, startz, 0],\
+            matrix[startb::csize, startz, startb],\
+            matrix[startb::csize, starty, 0]])
+            
+        # right back edge
+        matrix[startb::csize, startz, startz] =\
+            getValue(noiseLevel,\
+            [matrix[0:endb:csize, startz, startz],\
+            matrix[startc::csize, startz, startz],\
+            matrix[startb::csize, startz, starty],\
+            matrix[startb::csize, starty, startz]])
+            
+        # bottom left edge
+        matrix[startz, 0, startb::csize] =\
+            getValue(noiseLevel,\
+            [matrix[startz, 0, 0:endb:csize],\
+            matrix[startz, 0, startc::csize],\
+            matrix[startz, startb, startb::csize],\
+            matrix[starty, 0, startb::csize]])
+        
+        # bottom front edge
+        matrix[startz, startb::csize, 0] =\
+            getValue(noiseLevel,\
+            [matrix[startz, 0:endb:csize, 0],\
+            matrix[startz, startc::csize, 0],\
+            matrix[startz, startb::csize, startb],\
+            matrix[starty, startb::csize, 0]])
+                
+        # bottom right edge 
+        matrix[startz, startz, startb::csize] =\
+            getValue(noiseLevel,\
+            [matrix[startz, startz, 0:endb:csize],\
+            matrix[startz, startz, startc::csize],\
+            matrix[startz, starty, startb::csize],\
+            matrix[starty, startz, startb::csize]])
+        
+        # bottom back edge 
+        matrix[startz, startb::csize, startz] =\
+            getValue(noiseLevel,\
+            [matrix[startz, 0:endb:csize, startz],\
+            matrix[startz, startc::csize, startz],\
+            matrix[startz, startb::csize, starty],\
+            matrix[starty, startb::csize, startz]])
+            
+        printAllowCancel(matrix)
+        
+        if (csize < endc):
+            
+            # top/bottom faces
+            matrix[startc:endb:csize, startb::csize, startb::csize] =\
                 getValue(noiseLevel,\
-                [matrix[csize:limit:csize, 0:maxindex:csize, 0:maxindex:csize],\
-                matrix[csize:limit:csize, 0:maxindex:csize, csize::csize],\
-                matrix[csize:limit:csize, csize::csize, 0:maxindex:csize],\
-                matrix[csize:limit:csize, csize::csize, csize::csize],\
-                matrix[midsize + csize::csize, midsize::csize, midsize::csize],\
-                matrix[csize - midsize:limit:csize, midsize::csize, midsize::csize]])
+                [matrix[startc:endb:csize, 0:endc:csize, 0:endc:csize],\
+                matrix[startc:endb:csize, 0:endc:csize, startc::csize],\
+                matrix[startc:endb:csize, startc::csize, 0:endc:csize],\
+                matrix[startc:endb:csize, startc::csize, startc::csize],\
+                matrix[startd::csize, startb::csize, startb::csize],\
+                matrix[startb:endb:csize, startb::csize, startb::csize]])
             
-            # left faces
-            matrix[midsize::csize, csize:limit:csize, midsize::csize] =\
+            # left/right faces
+            matrix[startb::csize, startc:endb:csize, startb::csize] =\
                 getValue(noiseLevel,\
-                [matrix[0:maxindex:csize, csize:limit:csize, 0:maxindex:csize],\
-                matrix[0:maxindex:csize, csize:limit:csize, csize::csize],\
-                matrix[csize::csize, csize:limit:csize, 0:maxindex:csize],\
-                matrix[csize::csize, csize:limit:csize, csize::csize],\
-                matrix[midsize::csize, midsize + csize::csize, midsize::csize],\
-                matrix[midsize::csize, csize - midsize:limit:csize, midsize::csize]])
+                [matrix[0:endc:csize, startc:endb:csize, 0:endc:csize],\
+                matrix[0:endc:csize, startc:endb:csize, startc::csize],\
+                matrix[startc::csize, startc:endb:csize, 0:endc:csize],\
+                matrix[startc::csize, startc:endb:csize, startc::csize],\
+                matrix[startb::csize, startd::csize, startb::csize],\
+                matrix[startb::csize, startb:endb:csize, startb::csize]])
             
-            # front faces
-            matrix[midsize::csize, midsize::csize, csize:limit:csize] =\
+            # front/back faces
+            matrix[startb::csize, startb::csize, startc:endb:csize] =\
                 getValue(noiseLevel,\
-                [matrix[0:maxindex:csize, 0:maxindex:csize, csize:limit:csize],\
-                matrix[0:maxindex:csize, csize::csize, csize:limit:csize],\
-                matrix[csize::csize, 0:maxindex:csize, csize:limit:csize],\
-                matrix[csize::csize, csize::csize, csize:limit:csize],\
-                matrix[midsize::csize, midsize::csize, midsize + csize::csize],\
-                matrix[midsize::csize, midsize::csize, csize-midsize:limit:csize]])
-            
-            # edges
-            
+                [matrix[0:endc:csize, 0:endc:csize, startc:endb:csize],\
+                matrix[0:endc:csize, startc::csize, startc:endb:csize],\
+                matrix[startc::csize, 0:endc:csize, startc:endb:csize],\
+                matrix[startc::csize, startc::csize, startc:endb:csize],\
+                matrix[startb::csize, startb::csize, startd::csize],\
+                matrix[startb::csize, startb::csize, startb:endb:csize]])
             
             printAllowCancel(matrix)
             
-            matrix[csize:limit:csize, csize:limit:csize, midsize+csize::csize] =\
+            # surface edges
+            # top edge 1
+            matrix[0, startc:endb:csize, startb::csize] =\
                 getValue(noiseLevel,\
-    111            [matrix[csize:limit:csize, csize:limit:csize, csize:limit:csize],
-    113            matrix[csize:limit:csize, csize:limit:csize, csize+csize::csize],
-    102            matrix[csize:limit:csize, midsize:limit:csize, csize+midsize::csize],
-    122            matrix[csize:limit:csize, csize+midsize::csize, csize+midsize::csize],
-    012            matrix[midsize:limit:csize, csize:limit:csize, csize+midsize::csize],
-    212            matrix[csize + midsize::csize, csize:limit:csize, csize+midsize::csize]])
+                [matrix[0, startb:endb:csize, startb::csize],\
+                matrix[0, startd::csize, startb::csize],\
+                matrix[0, startc:endc:csize, 0:endb:csize],\
+                matrix[0, startc:endc:csize, startc::csize],\
+                matrix[startb, startc:endc:csize, startb::csize]])
+                        
+            # top edge 2
+            matrix[0, startb::csize, startc:endb:csize] =\
+                getValue(noiseLevel,\
+                [matrix[0, 0:endb:csize, startc:endb:csize],\
+                matrix[0, startc::csize, startc:endb:csize],\
+                matrix[0, startb::csize, startb:endb:csize],\
+                matrix[0, startb::csize, startd::csize],\
+                matrix[startb, startb::csize, startc:endb:csize]])
             
-            matrix[csize:limit:csize, csize+midsize::csize, midsize:limit:csize] =\
+            # bottom edges 1
+            matrix[startz, startc:endb:csize, startb::csize] =\
                 getValue(noiseLevel,\
-    111            [matrix[csize:limit:csize, csize:limit:csize, csize:limit:csize],
-    122            matrix[csize:limit:csize, csize+midsize::csize, csize+midsize::csize],
-    120            matrix[csize:limit:csize, csize+midsize::csize, midsize:limit:csize],
-    131            matrix[csize:limit:csize, csize+csize::csize, csize:limit:csize],
-    021            matrix[midsize:limit:csize, csize+midsize::csize, csize:limit:csize],
-    221            matrix[csize+midsize::csize, csize+midsize::csize, csize:limit:csize]])
+                [matrix[startz, startb:endb:csize, startb::csize],
+                matrix[startz, startd::csize, startb::csize],
+                matrix[startz, startc:endc:csize, 0:endb:csize],
+                matrix[startz, startc:endc:csize, startc::csize],
+                matrix[starty, startc:endc:csize, startb::csize]])
+                        
+            # bottom edges 2 
+            matrix[startz, startb::csize, startc:endb:csize] =\
+                getValue(noiseLevel,\
+                [matrix[startz, 0:endb:csize, startc:endb:csize],\
+                matrix[startz, startc::csize, startc:endb:csize],\
+                matrix[startz, startb::csize, startb:endb:csize],\
+                matrix[startz, startb::csize, startd::csize],\
+                matrix[starty, startb::csize, startc:endb:csize]])
             
-            matrix[csize+midsize::csize, csize:limit:csize, midsize:limit:csize] =\
+            # left edges 1
+            matrix[startc:endb:csize, 0, startb::csize] =\
                 getValue(noiseLevel,\
-    111            [matrix[csize:limit:csize, csize:limit:csize, csize:limit:csize],
-    122            matrix[csize:limit:csize, csize+midsize::csize, csize+midsize::csize],
-    120            matrix[csize:limit:csize, csize+midsize::csize, midsize:limit:csize],
-    131            matrix[csize:limit:csize, csize+csize::csize, csize:limit:csize],
-    021            matrix[midsize:limit:csize, csize+midsize::csize, csize:limit:csize],
-    221            matrix[csize+midsize::csize, csize+midsize::csize, csize:limit:csize]])
+                [matrix[startb:endb:csize, 0, startb::csize],\
+                matrix[startd::csize, 0, startb::csize],\
+                matrix[startc:endc:csize, 0, 0:endb:csize],\
+                matrix[startc:endc:csize, 0, startc::csize],\
+                matrix[startc:endc:csize, startb, startb::csize]])
+            
+            # left edges 2
+            matrix[startb::csize, 0, startc:endc:csize] =\
+                getValue(noiseLevel,\
+                [matrix[0:endb:csize, 0, startc:endc:csize],\
+                matrix[startc::csize, 0, startc:endc:csize],\
+                matrix[startb::csize, 0, startb:endb:csize],\
+                matrix[startb::csize, 0, startd::csize],\
+                matrix[startb::csize, startb, startc:endc:csize]])
+            
+            # right edges 1
+            matrix[startc:endc:csize, startz, startb::csize] =\
+                getValue(noiseLevel,\
+                [matrix[startb:endb:csize, startz, startb::csize],\
+                matrix[startd::csize, startz, startb::csize],\
+                matrix[startc:endc:csize, startz, 0:endb:csize],\
+                matrix[startc:endc:csize, startz, startc::csize],\
+                matrix[startc:endc:csize, starty, startb::csize]])
+            
+            # right edges 2
+            matrix[startb::csize, startz, startc:endc:csize] =\
+                getValue(noiseLevel,\
+                [matrix[0:endb:csize, startz, startc:endc:csize],\
+                matrix[startc::csize, startz, startc:endc:csize],\
+                matrix[startb::csize, startz, startb:endb:csize],\
+                matrix[startb::csize, startz, startd::csize],\
+                matrix[startb::csize, starty, startc:endc:csize]])
+            
+            # front edges 1
+            matrix[startb::csize, startc:endb:csize, 0] =\
+                getValue(noiseLevel,\
+                [matrix[startb::csize, startb:endb:csize, 0],\
+                matrix[startb::csize, startd::csize, 0],\
+                matrix[0:endb:csize, startc:endc:csize, 0],\
+                matrix[startc::csize, startc:endc:csize, 0],\
+                matrix[startb::csize, startc:endc:csize, startb]])
+            
+            # front edges 2
+            matrix[startc:endc:csize, startb::csize, 0] =\
+                getValue(noiseLevel,\
+                [matrix[startc:endc:csize, 0:endb:csize, 0],\
+                matrix[startc:endc:csize, startc::csize, 0],\
+                matrix[startb:endb:csize, startb::csize, 0],\
+                matrix[startd::csize, startb::csize, 0],\
+                matrix[startc:endc:csize, startb::csize, startb]])
+            
+            # back edges 1
+            matrix[startb::csize, startc:endc:csize, startz] =\
+                getValue(noiseLevel,\
+                [matrix[startb::csize, startb:endb:csize, startz],\
+                matrix[startb::csize, startd::csize, startz],\
+                matrix[0:endb:csize, startc:endc:csize, startz],\
+                matrix[startc::csize, startc:endc:csize, startz],\
+                matrix[startb::csize, startc:endc:csize, starty]])
+            
+            # back edges 2
+            matrix[startc:endc:csize, startb::csize, startz] =\
+                getValue(noiseLevel,\
+               [matrix[startc:endc:csize, 0:endb:csize, startz],\
+                matrix[startc:endc:csize, startc::csize, startz],\
+                matrix[startb:endb:csize, startb::csize, startz],\
+                matrix[startd::csize, startb::csize, startz],\
+                matrix[startc:endc:csize, startb::csize, starty]])
+                        
+            # internal edge 1
+            matrix[startb:endc:csize, startc:endb:csize, startc:endb:csize] =\
+                getValue(noiseLevel,\
+                [matrix[0:endb:csize, startc:endb:csize, startc:endb:csize],\
+                matrix[startc::csize, startc:endb:csize, startc:endb:csize],\
+                matrix[startb:endc:csize, startb:enda:csize, startc:endb:csize],\
+                matrix[startb:endc:csize, startd:endc:csize, startc:endb:csize],\
+                matrix[startb:endc:csize, startc:endb:csize, startb:enda:csize],\
+                matrix[startb:endc:csize, startc:endb:csize, startd:endc:csize]])
+            
+            # internal edge 2
+            matrix[startc:endb:csize, startb:endc:csize, startc:endb:csize] =\
+                getValue(noiseLevel,\
+               [matrix[startc:endb:csize, 0:endb:csize, startc:endb:csize],\
+                matrix[startc:endb:csize, startc::csize, startc:endb:csize],\
+                matrix[startb:enda:csize, startb:endc:csize, startc:endb:csize],\
+                matrix[startd:endc:csize, startb:endc:csize, startc:endb:csize],\
+                matrix[startc:endb:csize, startb:endc:csize, startb:enda:csize],\
+                matrix[startc:endb:csize, startb:endc:csize, startd:endc:csize]])
+            
+            # internal edge 3
+            matrix[startc:endb:csize, startc:endb:csize, startb:endc:csize] =\
+                getValue(noiseLevel,\
+               [matrix[startc:endb:csize, startc:endb:csize, 0:endb:csize],\
+                matrix[startc:endb:csize, startc:endb:csize, startc::csize],\
+                matrix[startb:enda:csize, startc:endb:csize, startb:endc:csize],\
+                matrix[startd:endc:csize, startc:endb:csize, startb:endc:csize],\
+                matrix[startc:endb:csize, startb:enda:csize, startb:endc:csize],\
+                matrix[startc:endb:csize, startd:endc:csize, startb:endc:csize]])
 
+            printAllowCancel(matrix)
         #decrement 
         csize = csize/2
-    
+    print "average =", numpy.sum(matrix)/matrix.size
+    print "elapsed seconds =", time.time() - start
     return matrix
 
-""" 
-these arrays include the information needed to determine the center, face and edge 
-values for each cube.  See indexRef and setValue for more information.
-"""
-center = [[2,2,2], [1,1,1], [1,1,3], [1,3,3], [3,1,1], [3,1,3], [3,3,1], [3,3,3]]
-
-faces = [[[1,2,2], [1,1,1], [1,3,1], [1,1,3], [1,3,3], [2,2,2], [0,2,2]],
-        [[2,1,2], [1,1,1], [3,1,1], [1,1,3], [3,1,3], [2,2,2], [2,0,2]],
-        [[2,2,1], [1,1,1], [3,1,1], [1,3,1], [3,3,1], [2,2,2], [2,2,0]],
-        [[2,2,3], [1,1,3], [3,1,3], [1,3,3], [3,3,3], [2,2,2]],
-        [[2,3,2], [1,3,1], [3,3,1], [1,3,3], [3,3,3], [2,2,2]],
-        [[3,2,2], [3,1,1], [3,3,1], [3,1,3], [3,3,3], [2,2,2]]]
-           
-edges = [[[1,1,2], [1,1,1], [1,1,3], [1,0,2], [1,2,2], [0,1,2], [2,1,2]],
-         [[1,2,1], [1,2,0], [1,2,2], [1,1,1], [1,3,1], [0,2,1], [2,2,1]],
-         [[2,1,1], [2,1,0], [2,1,2], [2,0,1], [2,2,1], [1,1,1], [3,1,1]],
-         [[1,2,3], [1,2,2], [1,1,3], [1,3,3], [0,2,3], [2,2,3]],
-         [[1,3,2], [1,3,1], [1,3,3], [1,2,2], [0,3,2], [2,3,2]],
-         [[2,1,3], [2,1,2], [2,0,3], [2,2,3], [1,1,3], [3,1,3]],
-         [[2,3,1], [2,3,0], [2,3,2], [2,2,1], [1,3,1], [3,3,1]],
-         [[3,1,2], [3,1,1], [3,1,3], [3,0,2], [3,2,2], [2,1,2]], 
-         [[3,2,1], [3,2,0], [3,2,2], [3,1,1], [3,3,1], [2,2,1]],
-         [[2,3,3], [2,3,2], [2,2,3], [1,3,3], [3,3,3]],
-         [[3,2,3], [3,2,2], [3,1,3], [3,3,3], [2,2,3]],
-         [[3,3,2], [3,3,1], [3,3,3], [3,2,2], [2,3,2]]]
-
-
-def olddiamondSquareFractal3D(size, roughness = .5, perturbance = .5):
-    """"
-    Create a 3D plasma fractal using the diamond square algorithm.
-    
-    This returns a square 3D matrix of values between 0 and 1.
-
-    Keyword arguments:
-    size: a single value representing the length and width and height 
-    of the square matrix. 
-    The size must be = 2^n+1 where n is and integer (9, 17, 33, 65, etc).  
-
-    roughness (from 0 to 1): the overall noise level 
-    perturbance (from 0 to 1): the size-proportional noise level
-
-    numpy.savetxt("matrix.txt", matrix) can be used to save the result as a text file
-    pngsaver has routines for converting the fractal to an series of images. 
-    """
-    count = 0;
-    
-    #calculate the fractal based on the next highest 2^n + 1
-    n = math.log(size-1, 2)
-    if n != float(int(n)):
-        print "The size is not valid, choose a side that is a power of 2 + 1."
-        print "65, 129, 257, 513, 1025, etc."
-        return
-   
-    matrix = numpy.zeros((size, size, size)) - 100
-    total = matrix.size
-    
-    applyCornerValues(matrix, roughness)
-    
-    """
-    The algorithm requires calculating the centers, faces and edges 
-    in a particular order so that neighboring values will be 
-    available to average:
-    
-    1. Calc centers of all size n cubes.
-    2. for each size n cube:
-        a. calc faces
-        b. calc edges
-        c. divide the cube into 8 cubes of size n-1.
-        d. repeat from step 1 until n < 3.
-    
-    Subdivided cubes are populated in the following order so that a
-    cube will not be populated until its top, left, and front neighbors
-    are done.  Values from neighboring cubes are used to calculate 
-    top, left and front faces and edges
-        top. left, front
-        top, left, back
-        top, right, front
-        bottom, left, front
-        top, right, back
-        bottom, left, back
-        bottom, right, front
-        bottom, right, back
-    
-    A queue will be used to manage the cubes waiting to be calculated.
-    """
-    
-    from collections import deque
-    queue = deque()
-    
-    # add the whole matrix.
-    queue.append([0, 0 ,0 , size-1])
-
-    # calc the center for the whole matrix
-    pf = perturbanceFactor(size, size, perturbance)
-    noiseLevel = roughness * pf
-    indexRef = getIndexRef(0, 0, 0, size/2, size)
-    setValue(matrix, center, indexRef, noiseLevel)
-
-    while len(queue) > 0:
-        # pop a square
-        whatisit = queue.popleft()
-        [row, col, frame, range] = whatisit
-
-        midRange = range/2
-        # populate the faces and edges of the cube
-        [midRow, midCol, midFrame] = populate3D(matrix, 
-            row, col, frame, midRange, roughness, perturbance)
-
-        if midRange >= 2:
-            #calc the centers for the next layer
-            populateCenters(matrix, row, col, frame, midRange, roughness, perturbance)
-            
-            #add top left front cube to the queue 
-            queue.append([row, col, frame, midRange])
-            
-            #add top left back cube to the queue
-            queue.append([row, col, midFrame, midRange])
-
-            #add top right front cubes to the queue
-            queue.append([row, midCol, frame, midRange])
-
-            #add bottom left front cubes to the queue
-            queue.append([midRow, col, frame, midRange])
-            
-            #add top right back cubes to the queue 
-            queue.append([row, midCol, midFrame, midRange])
-
-            #add bottom left back cubes to the queue
-            queue.append([midRow, col, midFrame, midRange])
-
-            #add bottom right front cubes to the queue
-            queue.append([midRow, midCol, frame, midRange])
-            
-            #add bottom right back cubes to the queue
-            queue.append([midRow, midCol, midFrame, midRange])
-
-    #print "result mean =", matrix.mean(), "result std = ", matrix.std()
-
-    # return the requested size
-    return matrix[0:size, 0:size]
-
-def populateCenters(matrix, row, col, frame, midRange, roughness, perturbance):
-    """
-    Internal method
-    Given a cube defined by the row, col, frame and size
-    (midRange = (size-1)/2)  this method populates the centers of all
-    the subdivided cubes of size = midRange-1
-    """
-    maxIndex = matrix.shape[0]-1
-    quarterRange = midRange/2
-
-    pf = perturbanceFactor(matrix.shape[0], midRange, perturbance)
-    noiseLevel = roughness * pf
-
-    """
-    For each subdivided cube, getIndexRef is used to get the indicies, and center is used
-    to determine the points that should be averaged and the point to be set.  
-    setValue does the calculations.
-    """
-    indexRef = getIndexRef(row, col, frame, quarterRange, maxIndex)
-    setValue(matrix, center, indexRef, noiseLevel)
-    
-    indexRef = getIndexRef(row, col, frame + midRange, quarterRange, maxIndex)
-    setValue(matrix, center, indexRef, noiseLevel)
-    
-    indexRef = getIndexRef(row, col + midRange, frame, quarterRange, maxIndex)
-    setValue(matrix, center, indexRef, noiseLevel)
-    
-    indexRef = getIndexRef(row + midRange, col, frame, quarterRange, maxIndex)
-    setValue(matrix, center, indexRef, noiseLevel)
-    
-    indexRef = getIndexRef(row + midRange, col + midRange, frame, quarterRange, maxIndex)
-    setValue(matrix, center, indexRef, noiseLevel)
-    
-    indexRef = getIndexRef(row + midRange, col, frame + midRange, quarterRange, maxIndex)
-    setValue(matrix, center, indexRef, noiseLevel)
-    
-    indexRef = getIndexRef(row, col + midRange, frame + midRange, quarterRange, maxIndex)
-    setValue(matrix, center, indexRef, noiseLevel)
-    
-    indexRef = getIndexRef(row + midRange, col + midRange, frame + midRange, quarterRange, maxIndex)
-    setValue(matrix, center, indexRef, noiseLevel)
-    
-
-    #printAllowCancel(matrix)
-    
-    
-def populate3D(matrix, row, col, frame, midRange, roughness, perturbance):
-    """
-    Internal method
-    Given a cube defined by the row, col, frame and size
-    (midRange = (size-1)/2)  this method populates the centers of the
-    faces and edges.
-    """
-    maxIndex = matrix.shape[0]-1
-    
-    #put the actual indices appropriate for this cube into the indexRef array
-    indexRef = getIndexRef(row, col, frame, midRange, maxIndex)
-
-    pf = perturbanceFactor(matrix.shape[0], midRange * 2, perturbance)
-    noiseLevel = roughness * pf
-    
-    populateFaces(matrix, indexRef, noiseLevel)
-
-    populateEdges(matrix, indexRef, noiseLevel)
-    
-    #printAllowCancel(matrix)
-    
-    return [row + midRange, col + midRange, frame + midRange]
-
-def populateFaces(matrix, indexRef, noiseLevel):
-    """
-    Internal method
-    Populate each face in a cube defined by indexRef
-    """
-    for face in faces:
-        setValue(matrix, face, indexRef, noiseLevel)
-        
-def populateEdges(matrix, indexRef, noiseLevel):
-    """
-    Internal method
-    Populate each edge in a cube defined by indexRef
-    """
-    for edge in edges:
-        setValue(matrix, edge, indexRef, noiseLevel)
 
 def getValue(noiseLevel, values):
     """ 
@@ -423,7 +423,7 @@ def getValue(noiseLevel, values):
     
     for value in values:
         averageValue = averageValue + value
-        if numpy.amin(value) <= 0:
+        if numpy.amin(value) < 0:
             print "zero value in ", value
             response = raw_input('ctl_c to stop >')
     averageValue = averageValue / float(len(values))
@@ -434,79 +434,7 @@ def getValue(noiseLevel, values):
     
     return result
     
-def setValue(matrix, line, indexRef, noiseLevel):
-    """
-    Internal method
-    Calculates the value of a cell in the matrix 
-    indexRef represents a cube within the matrix. 
-    line[0] represents the target point within that cube. 
-    line[1]...line[len(line)-1] represent the points to 
-    be averaged together to get the target value.
-    
-    Bottom faces and edges are only populated if on the right edge of the whole matrix.
-    Likewise for the right and back faces and edges.
-    """
-    #print "getValue for ", value, noiseLevel
-    maxIndex = matrix.shape[0] - 1
-    sum = 0
-    summedItems = 0
-    
-    if line[0][0] == 3 and indexRef[3,0] < maxIndex:
-        return
-    if line[0][1] == 3 and indexRef[3,1] < maxIndex:
-        return
-    if line[0][2] == 3 and indexRef[3,2] < maxIndex:
-        return
-        
-    for i in range(1, len(line)):
-        point = line[i]
-        r = indexRef[point[0],0]
-        c = indexRef[point[1],1]
-        f = indexRef[point[2],2]
-        if r >= 0 and c >= 0 and f >= 0 and matrix[r,c,f] >= 0:
-            sum += matrix[r,c,f]
-            summedItems += 1
-    value = 0
-    average = 0
-    if (summedItems > 0):
-        average = sum / float(summedItems)
-        
-    # determine the target index
-    r = indexRef[line[0][0],0]
-    c = indexRef[line[0][1],1]
-    f = indexRef[line[0][2],2]
-    # set the target cell 
-    matrix[r,c,f] = (noiseLevel * random.random()) + ((1-noiseLevel) * average)
-    
-    #print "setting", r, c, f, "to ", matrix[r, c, f]
 
-
-def getIndexRef(row, col, frame, midRange, maxIndex):
-    """
-    Internal method
-    Given a cube defined by the row, col, frame and size
-    (midRange = (size-1)/2)  this method constructs a 3x4 array
-    with the indices of the following values:
-        [[row - midRange, row, row + midRange, row + 2*midRange],
-         [col - midRange, col, col + midRange, col + 2*midRange],
-         [frame - midRange, frame, frame + midRange, frame + 2*midRange]]
-    Indices outside the range of 0 to maxIndex are set to -1.
-    This can be used to find the center of a given cube, the midpoint 
-    of any face and the midpoint of any edge.  
-    It can also be used to find midpoints of neighboring cubes 
-    to the top, left and front.
-    """ 
-    indexRef = numpy.zeros(12).reshape(4,3)
-    indexRef[:,0] = numpy.arange(-1, 3) * midRange + row
-    indexRef[:,1] = numpy.arange(-1, 3) * midRange + col
-    indexRef[:,2] = numpy.arange(-1, 3) * midRange + frame
-    
-    for i in range(4):
-        for j in range(3):
-            if indexRef[i,j] < 0 or indexRef[i,j] > maxIndex:
-                indexRef[i,j] = -1
-    return indexRef
-    
 def perturbanceFactor(lenWhole, lenPart, perturbance):
     """ 
     Internal method
@@ -537,7 +465,6 @@ def applyCornerValues(matrix, roughness):
     matrix[0, maxIndex, maxIndex] = random.random() * roughness
     matrix[maxIndex, 0, maxIndex] = random.random() * roughness
     matrix[maxIndex, maxIndex, maxIndex] = random.random() * roughness
-    # for debugging
     
 def gaussianFilter3D(size, points): 
     """
@@ -581,6 +508,7 @@ def gaussianFilter3D(size, points):
     
 def printAllowCancel(matrix):
     # debugging method
-    print (matrix * 100).astype(int)
+    #print (matrix * 100).astype(int)
         
-    response = raw_input('ctl_c to stop >')
+    #response = raw_input('ctl_c to stop >')
+    return
