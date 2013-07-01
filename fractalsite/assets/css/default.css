@@ -1,0 +1,36 @@
+body {
+    text-align: center
+}
+
+#page {
+    margin: 0px auto;
+    width: 900px;
+    background-color: #000000;
+}
+
+#banner {
+    float: left;
+    width: 100%;
+    background-color: #003368;
+}
+
+#sidebar {
+    float: left;
+    margin-right: 20px;
+    width: 175px;
+    border: 1px dotted #003368;
+    background-color: #ccccff;
+}
+
+#content {
+    float: right;
+    width: 700px;
+    border: 1px dashed #003368;
+    background-color: #ccccff;
+}
+
+#footer {
+    float: left;
+    width: 100%;
+    background-color: #2971ad;
+}
