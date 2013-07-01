@@ -65,3 +65,10 @@ vectorization.numbers
 unvec_plasma3d.py
 
 unvec_plasma.py
+
+# Stuff for fractalsite
+fractalsite/fractaldata.sqlite3.db
+fractalsite/fractalsite/secrets.py
+fractalsite/static/images/*
+fractalsite/static/assets/*
+fractalsite/admin

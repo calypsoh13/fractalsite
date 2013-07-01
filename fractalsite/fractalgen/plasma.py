@@ -1,7 +1,8 @@
 import numpy
 import math
 import random
-import time
+import matrixfix
+
 
 def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
                          cornerValues = None, edgeError = True, midError = True, 
@@ -31,8 +32,6 @@ def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
     numpy.savetxt("matrix.txt", matrix) can be used to save the result as a text file
     pngsaver has routines for converting the fractal to an image. 
     """
-    
-    start = time.time()
 
     #calculate the fractal based on the next highest 2^n + 1
     fractalsize = int(math.pow(2, math.ceil(math.log(size-1, 2)))) + 1 
@@ -118,7 +117,7 @@ def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
         
         #decrement 
         currentsize = currentsize/2
-    print "elapsed seconds =", time.time() - start
+    
     return matrix
     
 def applyCornerValues(matrix, cornerValues, roughness):

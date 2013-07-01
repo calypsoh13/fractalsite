@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+<ul>
+  <li><a href='/fractals/all'>Cancel</a></li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<p><img src='/static/assets/{{ fileloc }}' /></p>
+<form action='/fractals/save/' method='post'>
+  {% csrf_token %}
+  <p>
+    <label for="id_title">Title:</label>
+    {{form.title}}
+  </p>
+  <input type='submit' name='submit' value='Save Fractal'>
+</form>
+
+{% endblock %}

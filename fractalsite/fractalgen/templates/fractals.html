@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+<ul>
+  <li><a href='/fractals/all'>Fractals</a></li>
+  <li><a href='/fractals/create'>Create Fractal</a></li>
+</ul>
+{% endblock %}
+
+{% block content %}
+{% if fractals.count > 0 %}
+
+{% for fractal in fractals %}
+<div>
+  <h2><a href='/fractals/get/{{ fractal.id }}/'>{{ fractal.title }}</a></h2>
+  <p><img src='/static/assets/{{ fractal.fractalimg }}' /></p>
+  <p>Uploaded by {{fractal.author.username}}</p>
+  <p>{{fractal.likes}} people liked this fractal.</p>
+</div>
+{% endfor %}
+
+{% else %}
+<p>None to show.</p>
+
+{% endif %}
+
+{% endblock %}

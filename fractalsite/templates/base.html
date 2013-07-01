@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <title>{% block title %}Fractal Creator{% endblock %}</title>
+
+    <link rel='stylesheet' type='text/css' href='{% static "assets/css/default.css" %}'>
+
+  </head>
+
+  <body>
+    <div id='page'>
+
+      <div id='banner'>
+        <h1>Fractal Site</h1>
+      </div>
+      <div id='sidebar'>
+        {% block sidebar %}
+        <ul>
+          <li><a href='/fractals/all'>Fractals</a></li>
+          <li><a href='/admin/'>Admin</a></li>
+        </ul>
+        {% endblock %}
+      </div>
+      
+      <div id='content'>
+        {% block content %}Content{% endblock %}
+      </div>
+
+      <div id='footer'>
+        <p>This is a site about fractals</p>
+
+    </div>
+  </body>
+</html>
+

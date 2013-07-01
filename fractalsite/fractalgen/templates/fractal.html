@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+<ul>
+  <li><a href='/fractals/all'>Fractals</a></li>
+</ul>
+{% endblock %}
+
+{% block content %}
+
+<h1>{{ fractal.title }}</h1>
+<p><img src='/static/assets/{{ fractal.fractalimg }}' /></p>
+<p>Uploaded by {{ fractal.author.username }}</p>
+<p>{{ fractal.likes }} people liked this fractal</p>
+<p><a href='/fractal/like/{{ fractal.id }}'>Like</a></p>
+
+<h2>Comments</h2>
+{% for cmt in fractal.comment_set.all %}
+<p>{{cmt.author.username}}: {{cmt.body}}</p>
+<p>{{cmt.pub_date|date:"D b d, Y h:i:s"}}</p>
+<br />
+{% endfor %}
+
+<p><a href='/fractals/add_comment/{{fractal.id}}'>Add Comment</a></p>
+
+{% endblock %}
