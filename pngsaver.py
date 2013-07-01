@@ -152,7 +152,7 @@ def saveGradient3D(fileName, matrix, fromColor = [0,0,255], toColor =[255,255,25
         print "saving", file
         saveGradient(file, slice, [0,0,255], [255,255,255])
 
-def saveHeat3D(fileName, matrix, ask = True):
+def saveHeat3D(fileName, matrix, ask = True, normalize = True):
     """ 
     saves a 3d matrix of values between 0 and 1 to a 
     series of png files as a heat map.
@@ -167,7 +167,16 @@ def saveHeat3D(fileName, matrix, ask = True):
         if answer == "N" or answer == "n" or answer=="No" or answer=="no":
             return
     fileNumber = 0
-    normalized = matrixfix.normalize(matrix)
+
+    
+    # get values for normalizing the individual slices
+    maxValue = numpy.amax(matrix)
+    minValue = numpy.amin(matrix)
+    
+    if maxValue == minValue:
+        print "Sorry, the matrix is blank."
+        return
+    
     for f in range(numberImages):
 
         file = "{0}{1}.png".format(fileName, fileNumber)
@@ -176,8 +185,13 @@ def saveHeat3D(fileName, matrix, ask = True):
         elif (fileNumber< 100):
             file = "{0}0{1}.png".format(fileName,fileNumber)
         fileNumber += 1
-
-        slice = normalized[:,:,f]
         print "saving", file
+        
+        slice = matrix[:,:,f]
+        if (normalize):
+            slice = (slice - minValue) / (maxValue - minValue)
+        else:
+            slice = matrixfix.flatten(slice, 0, 1)
+
         heat = toHeat(slice)
         savePng(file, heat)

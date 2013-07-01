@@ -3,6 +3,7 @@ import math
 import random
 import matrixfix
 import time
+import sys
 
 def diamondSquareFractal3D(size, roughness = .5, perturbance = .5):
     """
@@ -27,38 +28,60 @@ def diamondSquareFractal3D(size, roughness = .5, perturbance = .5):
     
     #calculate the fractal based on the next highest 2^n + 1
     n = math.log(size-1, 2)
-    if n != float(int(n)):
-        print "The size is not valid, choose a side that is a power of 2 + 1."
-        print "65, 129, 257, 513, 1025, etc."
+    if size >  513 or n != float(int(n)):
+        print "The size is not valid."
+        print "Valid sizes are 5, 9, 17, 33, 65, 129, 257 and 513."
         return
-   
-    matrix = numpy.array(range(size*size*size)) * -1
-    matrix = matrix.reshape((size,size,size)).astype(float)
     
-    for i in range(size):
-        for j in range(size):
-            for k in range(size):
-                matrix[i,j,k] = float(i*100 + k*10 + j) * -1 
+    print "Initializing..."
+    
+    matrix = numpy.zeros((size, size, size))
+    
     applyCornerValues(matrix, roughness)
     
-    matrixsize = size
-    csize = maxindex = matrixsize-1
+    # csize is the current cube size
+    # It starts at the maximum index value.  The centers, faces and edges of the csize cubes
+    # are filled in, then csize is halved.  The process is repeated until all the cells
+    # are filled in.
+    csize = maxindex = size-1
+    
+    numberCubes = 1
     
     while csize > 1:
-    
+        startcube = time.time()
+        if 1 == numberCubes:
+            print "Populating 1 size", csize, "cube",
+        else:
+            print "Populating", numberCubes, "size", csize, "cubes",
+        numberCubes = numberCubes * 2
+        sys.stdout.flush()
+        
+        # variables indicating where to start slicing the matrix
+        # startb is half the current cube size. 
         startb = csize/2             #1
+        # startc is the current cube size.
         startc = csize               #2
+        # startd is 1.5 times the current cube size 
         startd = csize + csize/2     #3
+        # startz starts at the last index
         startz = maxindex            #4
+        #start y starts at the max index minus half the current cube size
         starty = maxindex - csize/2  #3
+        
+        #variables indicating where to stop slicing the matrix
+        #(The stop index is not included in the slice.)
+        #enda is the max index - the current cube size
         enda = maxindex-csize        #2
+        #endb is the max index minus half the current cube size
         endb = maxindex-csize/2      #3
+        #endc is the max index
         endc = maxindex              #4
         
-        midsize = csize/2
-        limit = maxindex - startb
         pf = perturbanceFactor(size, csize, perturbance)
         noiseLevel = roughness * pf
+        
+        print ".",
+        sys.stdout.flush()
         
         #centers
         matrix[startb::csize, startb::csize, startb::csize] =\
@@ -71,6 +94,9 @@ def diamondSquareFractal3D(size, roughness = .5, perturbance = .5):
             matrix[startc::csize, 0:endc:csize, startc::csize],
             matrix[startc::csize, startc::csize, 0:endc:csize],
             matrix[startc::csize, startc::csize, startc::csize]])
+            
+        print ".",
+        sys.stdout.flush()
             
         #topmost face
         matrix[0, startb::csize, startb::csize] =\
@@ -126,9 +152,10 @@ def diamondSquareFractal3D(size, roughness = .5, perturbance = .5):
             matrix[startc::csize, startc::csize, startz],\
             matrix[startb::csize, startb::csize, starty]])
             
-        printAllowCancel(matrix)
+        print ".",
+        sys.stdout.flush()
         
-        #top left edge
+        # top left edge
         matrix[0, 0, startb::csize] =\
             getValue(noiseLevel,\
             [matrix[0, 0, 0:endb:csize],\
@@ -223,10 +250,10 @@ def diamondSquareFractal3D(size, roughness = .5, perturbance = .5):
             matrix[startz, startc::csize, startz],\
             matrix[startz, startb::csize, starty],\
             matrix[starty, startb::csize, startz]])
-            
-        printAllowCancel(matrix)
         
-        if (csize < endc):
+        if (csize < maxindex):
+            print ".",
+            sys.stdout.flush()
             
             # top/bottom faces
             matrix[startc:endb:csize, startb::csize, startb::csize] =\
@@ -257,8 +284,9 @@ def diamondSquareFractal3D(size, roughness = .5, perturbance = .5):
                 matrix[startc::csize, startc::csize, startc:endb:csize],\
                 matrix[startb::csize, startb::csize, startd::csize],\
                 matrix[startb::csize, startb::csize, startb:endb:csize]])
-            
-            printAllowCancel(matrix)
+                        
+            print ".",
+            sys.stdout.flush()
             
             # surface edges
             # top edge 1
@@ -368,7 +396,9 @@ def diamondSquareFractal3D(size, roughness = .5, perturbance = .5):
                 matrix[startb:endb:csize, startb::csize, startz],\
                 matrix[startd::csize, startb::csize, startz],\
                 matrix[startc:endc:csize, startb::csize, starty]])
-                        
+            
+            print ".",
+            sys.stdout.flush()
             # internal edge 1
             matrix[startb:endc:csize, startc:endb:csize, startc:endb:csize] =\
                 getValue(noiseLevel,\
@@ -398,12 +428,14 @@ def diamondSquareFractal3D(size, roughness = .5, perturbance = .5):
                 matrix[startd:endc:csize, startc:endb:csize, startb:endc:csize],\
                 matrix[startc:endb:csize, startb:enda:csize, startb:endc:csize],\
                 matrix[startc:endb:csize, startd:endc:csize, startb:endc:csize]])
-
-            printAllowCancel(matrix)
-        #decrement 
+        
+        print str(time.time() - startcube), "seconds."
+        sys.stdout.flush()
+        
+        #decrement the current cube size
         csize = csize/2
     print "average =", numpy.sum(matrix)/matrix.size
-    print "elapsed seconds =", time.time() - start
+    print "elapsed seconds =", str(time.time() - start)
     return matrix
 
 
@@ -424,7 +456,9 @@ def getValue(noiseLevel, values):
     for value in values:
         averageValue = averageValue + value
         if numpy.amin(value) < 0:
-            print "zero value in ", value
+            print "getValue received a value < 0."
+            print "This indicates that an unpopulate cell is being used in an average."
+            print value
             response = raw_input('ctl_c to stop >')
     averageValue = averageValue / float(len(values))
     
