@@ -66,3 +66,4 @@ fractalsite/fractalsite/secrets.py
 fractalsite/static/images/*
 fractalsite/static/assets/*
 fractalsite/admin
+fractalsite/assets
