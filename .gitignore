@@ -59,3 +59,7 @@ colorCube.xcf
 plasma3d copy.py
 
 images/PlasmaFractals.pages
+
+# Stuff for fractalsite
+fractalsite/fractaldata.sqlite3.db
+fractalsite/fractalsite/secrets.py
