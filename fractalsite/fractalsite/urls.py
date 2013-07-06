@@ -16,6 +16,8 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     (r'^fractals/', include('fractalgen.urls')),
     (r'^fractal/', include('fractalgen.urls')),
+    url(r'^/$', 'fractalsite.views.welcome'),
+    url(r'^$', 'fractalsite.views.welcome'),
     # Logging in
     url(r'^accounts/login/$', 'fractalsite.views.login'),
     url(r'^accounts/auth/$', 'fractalsite.views.auth_view'),
