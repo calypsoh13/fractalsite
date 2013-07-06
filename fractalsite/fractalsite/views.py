@@ -4,6 +4,12 @@ from django.contrib import auth
 from django.core.context_processors import csrf
 from forms import MyRegistrationForm
 
+def welcome(request):
+    if request.user.is_authenticated():
+        return HttpResponseRedirect('/fractals')
+    else:
+        return HttpResponseRedirect('/accounts/register')
+
 def login(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect('/accounts/loggedin')

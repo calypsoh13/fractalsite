@@ -34,7 +34,7 @@ def like_fractal(request, fractal_id):
         frac = Fractal.objects.get(id=fractal_id)
         frac.likes += 1
         frac.save()
-    return HttpResponseRedirect('/fractals/get/%s' % fractal_id)
+    return HttpResponseRedirect('/fractals/%s' % fractal_id)
 
 def add_comment(request, fractal_id):
     frac = Fractal.objects.get(id=fractal_id)
@@ -47,7 +47,7 @@ def add_comment(request, fractal_id):
             cmt.fractal = frac
             cmt.save()
 
-            return HttpResponseRedirect('/fractals/get/%s' % fractal_id)
+            return HttpResponseRedirect('/fractals/%s' % fractal_id)
     else:
         form = CommentForm()
 
@@ -103,7 +103,7 @@ def save(request):
             os.remove(tmpfile)
             frac.save()
 
-            return HttpResponseRedirect('/fractals/all')
+            return HttpResponseRedirect('/fractals')
 
     else:
         form = FractalForm()
