@@ -2,6 +2,7 @@ import numpy
 import math
 import random
 import time
+import matrixfix
 
 def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
                          cornerValues = None, edgeError = True, midError = True, 
