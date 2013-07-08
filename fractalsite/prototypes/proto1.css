@@ -1,0 +1,150 @@
+body {
+    font: 12pt "Verdana" sans-serif;
+    color: #b43d8e;
+    background-image : url('plasma.png');
+    background-size : 1400px 1400px;
+    background-repeat : no-repeat;
+    background-attachment : fixed;
+    padding : 8px;
+    
+    }
+    
+.header {
+    position: absolute;
+    top : 0px;
+    left : 80px;
+    width : 1000px;
+    height : 90px;
+    background-color: #000000;
+    border-bottom-left-radius : 40px;
+    border-bottom-right-radius : 40px;
+    padding-left : 40px;
+    padding-right : 40px;
+   }
+   
+.menus {
+    position: absolute;
+    top : 0px;
+    left : 160px;
+    width : 300px;
+    height : 30px;
+    color: #b43d8e;
+    border-bottom-left-radius : 40px;
+    background-image: linear-gradient(left , #14194f 0%, #000000 41%);
+    background-image: -o-linear-gradient(left , #14194f 0%, #000000 41%);
+    background-image: -moz-linear-gradient(left , #14194f 0%, #000000 41%);
+    background-image: -webkit-linear-gradient(left , #14194f 0%, #000000) 41%);
+    background-image: -ms-linear-gradient(left , #14194f 0%, #000000 41%);
+    background-image: -webkit-gradient(
+        linear,
+        left top,
+        right top,
+        color-stop(0, #14194f),
+        color-stop(0.41,#000000)
+        );
+    }
+    
+.menus > p  { 
+    margin : 0px 0px 16px 40px;
+    font-size : 12pt;
+    }
+    
+.menuCurrent {
+    color : #eeeeee;
+    }
+
+#menuA {
+    top : 60px;
+    left : 80px;
+    background-image : none;
+    }
+
+.content {
+    position: absolute;
+    top : 130px;
+    left : 80px;
+    width : 1000px;
+    border-radius: 40px;
+    background-color : black;
+    padding : 40px;
+    }
+
+h1 {
+    font: 16pt "Verdana" sans-serif;
+    }
+
+td {
+    padding : 0px 12px;
+    text-align : center;
+    }
+    
+.inputName {
+    text-align : right;
+    width : 100px;
+    }
+    
+input[type='range'] {
+    -webkit-appearance: none !important;
+    background:#666666;
+    height:2px;
+    }
+
+
+.outputs { 
+    font-size : 10px;
+    width : 60px;
+    border-radius : 10px;
+    color : #eeeeee;
+    background : black;
+    text-align : center;
+    border : 4px ridge #333333;
+    }
+
+button {
+    width : 60px;
+    background-color : black;
+    border-radius : 10px;
+    color : #b43d8e;
+    }
+    
+.nullimage {
+    width : 129px;
+    height : 129px;
+    background-color : #333333;
+    }
+    
+fieldset { 
+    border : none;
+    }
+    
+.fsborder {
+    padding : 3px;
+    background-image: linear-gradient(left , #333333 0%, #000000 41%);
+    background-image: -o-linear-gradient(left , #333333 0%, #000000 41%);
+    background-image: -moz-linear-gradient(left , #333333 0%, #000000 41%);
+    background-image: -webkit-linear-gradient(left , #333333 0%, #000000) 41%);
+    background-image: -ms-linear-gradient(left , #333333 0%, #000000 41%);
+    background-image: -webkit-gradient(
+        linear,
+        left top,
+        right top,
+        color-stop(0, #333333),
+        color-stop(0.41,#000000)
+        );
+    }
+    
+.legend {
+    line-height: 20%;
+    }
+
+table {
+    background-color : black;
+    }
+    
+#gaussPreview {
+    border : 2px solid #333333;
+    background-color : black;
+    background-repeat : no-repeat;
+    background-image : url("gauss1025sig1.png");
+    background-size: 129px 129px;
+    }

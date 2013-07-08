@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Plasma Fractal Creator</title>
+        <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>
+        <link rel='stylesheet' type='text/css' href='proto1.css'/>
+        <script type="text/javascript" src="proto1.js"></script>
+    </head>
+    <body>
+        <div class="header"><h1>Plasma Fractal Creator</h1></div>
+        <div class="menus" id = "menuA"><p>Home</p>
+            <div class="menus" id = "menuB"><p class="menuCurrent">Create</p>
+                <div class="menus" id = "menuC"><p>Gallery</p>
+                    <div class="menus" id = "menuD"><p>Profile</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <fieldset>
+                <legend>create fractal</legend>
+                <div class="fsborder">
+                <table>
+                    <tr>
+                        <td class="inputName">size</td>
+                        <td><input class="slider" type="range" name="size" id="size" min="7" max="10" value="8"/></td>
+                        <td><p class="outputs" id="sizeout"></p></td>
+                        <td class="imagecell" rowspan="4"><div class="nullimage"></div></td> 
+                    </tr>
+                    <tr>
+                        <td class="inputName">roughness</td>
+                        <td><input class="slider" type="range" name="roughness" id="roughness" min="1" max="10" value="5"/></td>
+                        <td><p class="outputs" id="roughnessout"></p></td>
+
+                    </tr>
+                    <tr>
+                        <td class="inputName">perturbance</td>
+                        <td><input class="slider" type="range" name="perturbance" id="perturbance" min="1" max="10" value="5"/></td>
+                        <td><p class="outputs" id="perturbanceout"></p></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td><button>create fractal</button></td>
+                    </tr>
+                </table>
+                </div>
+            </fieldset>
+                <p class="legend"><input type="checkbox" value="true"></input> use Gaussian filter</p>
+                <div class="fsborder">
+                <table>
+                    <tr>
+                        <td class="inputName">X</td>
+                        <td><input type="range" name="gaussX" id="gaussX" min="-80" max="80" value="0"/></td>
+                        <td><input class="outputs" id="gaussXout"></input></td>
+                        <td class="imagecell" id="gausscell" rowspan="5"><div id="gaussPreview" class="nullimage"></div></td>
+
+                    </tr>
+                    <tr>
+                        <td class="inputName">Y</td>
+                        <td><input type="range" name="gaussY" id="gaussY" min="-80" max="80" value="0"/></td>
+                        <td><input class="outputs" id="gaussYout"></input></td>
+                    </tr>
+                    <tr>
+                        <td class="inputName">sigma X</td>
+                        <td><input type="range" name="gaussSigmaX" id="gaussSigmaX" min="-6" max="8" value="0"/></td>
+                        <td><p class="outputs" id="gaussSigmaXout"></p></td>
+                    </tr>
+                    <tr>
+                        <td class="inputName">sigma Y</td>
+                        <td><input type="range" name="gaussSigmaY" id="gaussSigmaY" min="-6" max="8" value="0"/></td>
+                        <td><p class="outputs" id="gaussSigmaYout"></p></td>
+                    </tr>
+                </table>
+                </div>
+            </div>
+    </body>
+</html>
