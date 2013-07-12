@@ -1,10 +1,97 @@
 import numpy
 import math
 import random
-import matrixfix
-
+import time
 
 def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
+                         cornerValue = None, centerValue = None):
+    
+    start = time.time()
+
+    #calculate the fractal based on the next highest 2^n + 1
+    fractalsize = int(math.pow(2, math.ceil(math.log(size-1, 2)))) + 1 
+   
+    matrix = numpy.zeros((fractalsize, fractalsize))
+    
+    matrixsize = fractalsize
+    currentsize = maxindex = matrixsize-1
+    
+    if None == cornerValue :
+        cornerValue = (random.random() - 0.5) * roughness + 0.5
+    if None == centerValue :
+    	centerValue = (random.random() - 0.5) * roughness + 0.5
+       
+    matrix[0, 0] = cornerValue
+    matrix[0, maxindex] = cornerValue
+    matrix[maxindex, 0] = cornerValue
+    matrix[maxindex, maxindex] = cornerValue
+    matrix[maxindex/2, maxindex/2] = centerValue;
+    
+    midsize = currentsize/2;
+    
+    while currentsize > 1:
+    
+        midsize = currentsize/2
+        pf = perturbanceFactor(fractalsize, currentsize, perturbance)
+        noiseLevel = roughness * pf
+        
+        #centers
+        if currentsize != maxindex:
+            matrix[midsize::currentsize, midsize::currentsize] =\
+                getValue(noiseLevel,\
+                [matrix[0:maxindex:currentsize,0:maxindex:currentsize],\
+                matrix[0:maxindex:currentsize, currentsize::currentsize],\
+                matrix[currentsize::currentsize,currentsize::currentsize],\
+                matrix[currentsize::currentsize, 0:maxindex:currentsize]])
+            
+        #left edge
+        matrix[midsize::currentsize, 0] =\
+            getValue(noiseLevel,\
+            [matrix[0:maxindex:currentsize, 0],\
+            matrix[currentsize::currentsize, 0],\
+            matrix[midsize::currentsize, midsize],\
+            matrix[midsize::currentsize, maxindex - midsize]])
+            
+        #right edge = left edge
+        matrix[midsize::currentsize,maxindex] =\
+            matrix[midsize::currentsize, 0]
+        
+        #top edge
+        matrix[0, midsize::currentsize] =\
+            getValue(noiseLevel,\
+            [matrix[0, 0:maxindex:currentsize],\
+            matrix[0, currentsize::currentsize],\
+            matrix[midsize, midsize::currentsize],\
+            matrix[maxindex-midsize, midsize::currentsize]])
+        
+        #bottom edge = top edge
+        matrix[maxindex, midsize::currentsize] =\
+            matrix[0, midsize::currentsize]
+        
+        if (currentsize < maxindex):
+            
+            limit = maxindex - midsize
+            
+            matrix[midsize::currentsize, currentsize:limit:currentsize] =\
+                getValue(noiseLevel,
+                [matrix[0:maxindex:currentsize, currentsize:limit:currentsize],\
+                matrix[currentsize::currentsize,currentsize:limit:currentsize],\
+                matrix[midsize::currentsize,midsize:limit:currentsize],\
+                matrix[midsize::currentsize,currentsize+midsize::currentsize]])
+            
+            matrix[currentsize:limit:currentsize, midsize::currentsize] =\
+                getValue(noiseLevel,
+                [matrix[currentsize:limit:currentsize, 0:maxindex:currentsize],\
+                matrix[currentsize:limit:currentsize, currentsize::currentsize],\
+                matrix[midsize:limit:currentsize, midsize::currentsize],\
+                matrix[currentsize+midsize::currentsize, midsize::currentsize]])
+        
+        #decrement 
+        currentsize = currentsize/2
+    print "elapsed seconds =", time.time() - start
+    return matrix
+
+def diamondSquareFractalOld(size, roughness = .5, perturbance = .5,\
                          cornerValues = None, edgeError = True, midError = True, 
                          hasBorder = False):
     """
@@ -32,6 +119,8 @@ def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
     numpy.savetxt("matrix.txt", matrix) can be used to save the result as a text file
     pngsaver has routines for converting the fractal to an image. 
     """
+    
+    start = time.time()
 
     #calculate the fractal based on the next highest 2^n + 1
     fractalsize = int(math.pow(2, math.ceil(math.log(size-1, 2)))) + 1 
@@ -117,7 +206,7 @@ def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
         
         #decrement 
         currentsize = currentsize/2
-    
+    print "elapsed seconds =", time.time() - start
     return matrix
     
 def applyCornerValues(matrix, cornerValues, roughness):
@@ -149,10 +238,10 @@ def applyCornerValues(matrix, cornerValues, roughness):
         matrix[size-1, 0] = cornerValues[0]
         matrix[size-1, size-1] = cornerValues[0]
     else:
-        matrix[0, 0] = random.random() * roughness
-        matrix[0, size-1] = random.random() * roughness
-        matrix[size-1, 0] = random.random() * roughness
-        matrix[size-1, size-1] = random.random() * roughness
+        matrix[0, 0] = (random.random() - 0.5) * roughness + 0.5
+        matrix[0, size-1] = (random.random() - 0.5) * roughness + 0.5
+        matrix[size-1, 0] = (random.random() - 0.5) * roughness + 0.5
+        matrix[size-1, size-1] = (random.random() - 0.5) * roughness + 0.5
     
     
 def perturbanceFactor(lenWhole, lenPart, perturbance):
@@ -220,14 +309,14 @@ def gaussianFilter(size, points):
                       
         matrix = numpy.add(matrix, tempMatrix)
               
-    matrix = matrixfix.flatten(matrix, 0, 1)
+    matrix = numpy.clip(matrix, 0, 1)
     
     return matrix
 
 # for debugging
 def printAllowCancel(matrix):
     
-    #print matrix.astype(int)
+    print (matrix * 100).astype(int)
         
-    #response = raw_input('ctl_c to stop >')
+    response = raw_input('ctl_c to stop >')
     return

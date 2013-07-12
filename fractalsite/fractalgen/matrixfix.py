@@ -13,18 +13,6 @@ def normalize(matrix, min = 0, max = 1):
     newMatrix = (newMatrix * (max - min)) + min;
 
     return newMatrix
-
-def flatten(matrix, minVal, maxVal):
-    """
-    Adjusts any values in a matrix that fall outside a range
-    to the given min or max
-    """
-    newMatrix = numpy.copy(matrix)
-    
-    for x in numpy.nditer(newMatrix, op_flags=['readwrite']):
-        x[...] = max(minVal, min(maxVal, x))
-        
-    return newMatrix 
     
 def setStd(matrix, desiredSd):
     """ 
