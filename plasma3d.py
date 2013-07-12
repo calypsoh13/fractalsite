@@ -1,7 +1,6 @@
 import numpy
 import math
 import random
-import matrixfix
 import time
 import sys
 
@@ -536,7 +535,7 @@ def gaussianFilter3D(size, points):
                       
         matrix = numpy.add(matrix, tempMatrix)
               
-    matrix = matrixfix.flatten(matrix, 0, 1)
+    matrix = numpy.clip(matrix, 0, 1)
     
     return matrix
     
