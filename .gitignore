@@ -73,3 +73,9 @@ fractalsite/static/assets/*
 fractalsite/admin
 
 fractalsite/assets/css/default.css
+
+fractalsite/prototypes/spectrum/zGruntfile.js
+
+extra files/gradient.py
+
+wrap.html

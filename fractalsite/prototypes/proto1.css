@@ -82,13 +82,12 @@ td {
     text-align : right;
     width : 100px;
     }
-    
+
 input[type='range'] {
     -webkit-appearance: none !important;
     background:#666666;
     height:2px;
     }
-
 
 .outputs { 
     font-size : 10px;
@@ -104,7 +103,7 @@ button {
     width : 60px;
     background-color : black;
     border-radius : 10px;
-    color : #b43d8e;
+    color : #eeeeee;
     }
     
 .nullimage {
@@ -132,7 +131,37 @@ fieldset {
         color-stop(0.41,#000000)
         );
     }
-    
+.spacer {
+    width: 52px;
+    height: 40px;
+}
+
+#gradientPreview {
+    display : inline-block;
+    width : 180px;
+    height : 32px;
+    border : 2px solid #333333;
+    }
+
+#heatPreview {
+    width : 180px;
+    height : 32px;
+    border : 2px solid #333333;
+    background-image: linear-gradient(left , black 0.25%, blue 33% green 60% red 100%);
+    background-image: -o-linear-gradient(left , black 0.25%, blue 33% green 60% red 100%);
+    background-image: -moz-linear-gradient(left , black 0.25%, blue 33% green 60% red 100%);
+    background-image: -webkit-linear-gradient(left , black 0.25%, blue 33% green 60% red 100%);
+    background-image: -ms-linear-gradient(left , black 0.25%, blue 33% green 60% red 100%);
+    background-image: -webkit-gradient(
+        linear,
+        left top,
+        right top,
+        color-stop(0, black),
+        color-stop(0.33, blue),
+        color-stop(0.6, green),
+        color-stop(1.0, red)
+        );
+    }
 .legend {
     line-height: 20%;
     }
@@ -147,4 +176,8 @@ table {
     background-repeat : no-repeat;
     background-image : url("gauss1025sig1.png");
     background-size: 129px 129px;
+    }
+    
+.hidden {
+    display: none;
     }

@@ -1,4 +1,39 @@
 $(document).ready(function () {
+    $('#color1').spectrum({
+        color: "#000000",
+        showAlpha:true,
+        showInitial:true,
+        showInput:true,
+        showPalette: true,
+        palette: [
+            ['red', 'green', 'blue'], 
+            ['#ffff00', '#00ffff', '#ff00ff'],
+            ['black', '#777777', 'white']
+        ],
+        change: function(c) {
+            c1 = c.toRgbString();
+            updateGradient();
+            }
+    });
+    $('#color2').spectrum({
+        color: "#ffffff",
+        showAlpha:true,
+        showInitial:true,
+        showInput:true,
+        showPalette: true,
+        palette: [
+            ['red', 'green', 'blue'], 
+            ['#ffff00', '#00ffff', '#ff00ff'],
+            ['black', '#777777', 'white']
+        ],
+        change: function(c) {
+            c2 = c.toRgbString();
+            updateGradient();;
+            }
+    });
+    updateGradient();
+    showColorInputs();
+    
     sizesetting = parseInt($("#size").val());
     size = Math.pow(2, sizesetting) + 1;
     $("#sizeout").text(size);
@@ -27,6 +62,18 @@ $(document).ready(function () {
     $("#perturbance").change(function () {
         $("#perturbanceout").text(parseInt($(this).val()) / 10);
     });
+    
+    $("#useGaussian").change(function(){
+        if ($(this).prop('checked'))
+        {
+            $("#gaussianInputs").fadeIn("fast");
+        }
+        else
+        {
+            $("#gaussianInputs").fadeOut("fast");
+        }
+    });
+    
     $("#gaussX").change(function() {
         setGaussXout();
         previewSizeAndPosition();
@@ -85,7 +132,30 @@ $(document).ready(function () {
         $("#gaussY").val(gySetting);
         previewSizeAndPosition();
     });
+    $("#createFractal").click(function() {
+        size = $("#sizeout").text();
+        roughness = $("#roughnessout").text();
+        perturbance = $("#perturbanceout").text();
+        alert ("Server, please create a matrix of size " + size + " with roughness " +
+        roughness + " and perturbance " + perturbance + ". Thanks!");
+    });
+    $(".colorType").change(function() {
+        showColorInputs();
+    });
 });
+
+function showColorInputs() {
+    if ($("#useHeat").is(":checked"))
+    {
+        $(".gradientInputs").hide();
+        $(".heatInputs").show();
+    }
+    else
+    {
+        $(".gradientInputs").show();
+        $(".heatInputs").hide();
+    }
+}
 
 function setGaussXout() {
     gxSetting = parseInt($("#gaussX").val());
@@ -121,4 +191,18 @@ function previewSizeAndPosition() {
     locY = (tempy - gsy) * 65;
     $("#gaussPreview").css("background-position-x", locX);
     $("#gaussPreview").css("background-position-y", locY);
+}
+
+function updateGradient() {
+    var gradElement = document.getElementById("gradientPreview");
+    var color1 = $("#color1").spectrum("get").toRgbString();
+    var color2 = $("#color2").spectrum("get").toRgbString();
+    gradElement.style.background="-webkit-gradient(linear, left top, right top, from("+color1+"), to("+color2+"))";
+    gradElement.style.background="-webkit-linear-gradient(left, "+color1+", "+color2+")";
+    gradElement.style.background="-moz-linear-gradient(left, "+color1+", "+color2+")";
+    gradElement.style.background="-ms-linear-gradient(left, "+color1+", "+color2+")";
+    gradElement.style.background="-o-linear-gradient(left, "+color1+", "+color2+")";
+    gradElement.style.background="linear-gradient(left, "+color1+", "+color2+")";
+    gradElement.style.filter=
+        "progid:DXImageTransform.Microsoft.Alpha(left, startColorstr='"+color1+"', endColorstr='"+color2+"')";
 }
