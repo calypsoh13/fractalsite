@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="content">
-            <p class="legend">create fractal</p>
+            <p class="legend">1. create fractal</p>
             <div class="fsborder">
                 <table>
                     <tr>
@@ -32,94 +32,160 @@
                         <td class="inputName">roughness</td>
                         <td><input class="slider" type="range" name="roughness" id="roughness" min="1" max="10" value="5"/></td>
                         <td><p class="outputs" id="roughnessout"></p></td>
-                       <td rowspan="2"><button id="createFractal">create fractal</button></td>
                     </tr>
                     <tr>
                         <td class="inputName">perturbance</td>
                         <td><input class="slider" type="range" name="perturbance" id="perturbance" min="1" max="10" value="5"/></td>
                         <td><p class="outputs" id="perturbanceout"></p></td>
                     </tr>
+                    <tr>
+                        <td><button id="createFractal">create fractal</button></td>
+                    </tr>
                 </table>
             </div>
             <p class="legend">
-                gaussian filter 
-                <button id="filterPlus">+</button>
-                <button id="filterMinus">-</button>
-                <button id="filterNext">&lt;</button>
-                <button id="filterPrevious">&gt;</button>
+                2. add Gaussian filter 
             </p>
             <div class="fsborder" id="gaussianInputs">
                 <table>
                     <tr>
-                        <td class="inputName spacer">X1</td>
+                        <td colspan=2>
+                            <div id="buttonCell">
+                            <button id="filterPlus">+</button>
+                            <button id="filterMinus">-</button>
+                            <button id="filterPrevious">&lt;</button>
+                            <button id="filterNext">&gt;</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="gaussInputs">
+                        <td class="inputName spacer" id = "xLabel">X1</td>
                         <td><input type="range" name="gaussX" id="gaussX" min="-80" max="80" value="0"/></td>
                         <td><input class="outputs" id="gaussXout"></input></td>
                        <td class="imagecell" id="gausscell" rowspan="5"><div id="gaussPreview" class="nullimage"></div></td>
                     </tr>
-                    <tr>
-                        <td class="inputName spacer">Y1</td>
+                    <tr class="gaussInputs">
+                        <td class="inputName spacer" id = "yLabel">Y1</td>
                         <td><input type="range" name="gaussY" id="gaussY" min="-80" max="80" value="0"/></td>
                         <td><input class="outputs" id="gaussYout"></input></td>
                     </tr>
-                    <tr>
-                        <td class="inputName">sigma X1</td>
+                    <tr class="gaussInputs">
+                        <td class="inputName" id = "sigmaXLabel">sigma X1</td>
                         <td><input type="range" name="gaussSigmaX" id="gaussSigmaX" min="-6" max="8" value="0"/></td>
                         <td><p class="outputs" id="gaussSigmaXout"></p></td>
                     </tr>
-                    <tr>
-                        <td class="inputName">sigma Y1</td>
+                    <tr class="gaussInputs">
+                        <td class="inputName" id = "sigmaYLabel">sigma Y1</td>
                         <td><input type="range" name="gaussSigmaY" id="gaussSigmaY" min="-6" max="8" value="0"/></td>
                         <td><p class="outputs" id="gaussSigmaYout"></p></td>
                     </tr>
                 </table>
             </div>
-            <p class="legend">add colors</p>
+            <p class="legend">3. add colors</p>
             <div class="fsborder">
                 <table>
+                    <style type='text/css'>
+                         .spectrum { 
+                            background: #333333;
+                            color : #eeeeee; 
+                            margin : 0px 0px 0px -12px; 
+                            } 
+                        .spectrum input {
+                            background : #333333;
+                            color : #eeeeee;
+                            }
+                    </style>
                     <tr>
                         <td class="inputName">
                             heat map
                         </td>
-                        <td>
+                        <td width="20px">
                             <input type="radio" class = "colorType" name="colorType" id="useHeat" checked></input>
                         </td>
-                        <td>
+                        <td width ="240px" height="42px" colspan=2>
                             <div class="heatInputs">
                                 <div id="heatPreview" ></div>
                             </div>
-                       </td>
-                        <td><div class="spacer"></div></td>
+                        </td>
                     </tr>
                     <tr>
                         <td class="inputName">
                             gradient
                         </td>
-                        <td>
+                        <td width="20px">
                             <input type="radio" class="colorType" name="colorType" id="useGradient"></input>
                         </td>
-                        <td>
-                            <div class="gradientInputs">
-                                <input name='color1' id='color1' />
-                            </div>
-                        </td>
-                        <td>
+                        <td width ="240px" height="42px" colspan=2>
                             <div class="gradientInputs">
                                 <div id='gradientPreview'></div>
                             </div>
                         </td>
+                    </tr>
+                    <tr class="gradientInputs">
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td>
-                            <div class="gradientInputs">
-                                <input name='color2' id='color2' />
-                            </div>
+                            <input class='colorselect' name='color1' id='color1'></input>
+                            <input type = "range" class="colorStop" id='colorStopLoc1' min=0 max=255 value=0></input>
                         </td>
-                        <td><button id="createFractal">create image</button></td>
-                        <td><div class="spacer"></div></td>
+                    </tr>
+                    <tr class="gradientInputs">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <input class='colorselect' name='color2' id='color2'></input>
+                            <input type = "range" class="colorStop" id='colorStopLoc2' min=0 max=255 value=255></input>
+                        </td>
+                    </tr>
+                    <tr class="gradientInputs">
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <input type="checkbox" class="useStop" id="useStop3"></input>
+                        </td>
+                        <td>
+                            <input class='colorselect' name='color3' id='color3'></input>
+                            <input type = "range" class="colorStop" id='colorStopLoc3' min=0 max=255 value=127></input>
+                        </td>
+                    </tr>
+                    <tr id = "colorRow4" class="gradientInputs">
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <input type="checkbox" class="useStop" id="useStop4"></input>
+                        </td>
+                        <td>
+                            <input class='colorselect' name='color4' id='color4'></input>
+                            <input type = "range" class="colorStop" id='colorStopLoc4' min=0 max=255 value=127></input>
+                        </td>
+                    </tr>
+                    <tr id = "colorRow5" class="gradientInputs">
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <input type="checkbox" class="useStop" id="useStop5"></input>
+                        </td>
+                        <td>
+                            <input class='colorselect' name='color5' id='color5'></input>
+                            <input type = "range" class="colorStop" id='colorStopLoc5' min=0 max=255 value=127></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><button id="createImage">create image</button></td>
                     </tr>
                 </table>
             </div>
         </div>
-        <div hidden>
-            <input id="gaussPoints"/>
+        <div class="hidden">
+            <input id="gaussCurrentPoint" value="1"></input>
+            <input id="gaussNumberPoints" value="0"></input>
+            <input id="gauss1" value=""></input>
+            <input id="gauss2" value=""></input>
+            <input id="gauss3" value=""></input>
+            <input id="gauss4" value=""></input>
+            <input id="gauss5" value=""></input>
         </div>
     </body>
 </html>

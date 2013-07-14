@@ -100,7 +100,7 @@ input[type='range'] {
     }
 
 button {
-    width : 60px;
+    width : 100px;
     background-color : black;
     border-radius : 10px;
     color : #eeeeee;
@@ -137,14 +137,13 @@ fieldset {
 }
 
 #gradientPreview {
-    display : inline-block;
-    width : 180px;
+    width : 240px;
     height : 32px;
     border : 2px solid #333333;
     }
 
 #heatPreview {
-    width : 180px;
+    width : 240px;
     height : 32px;
     border : 2px solid #333333;
     background-image: linear-gradient(left , black 0.25%, blue 33% green 60% red 100%);
@@ -165,9 +164,18 @@ fieldset {
 .legend {
     line-height: 20%;
     }
-
+    
 table {
     background-color : black;
+    }
+    
+#buttonCell {
+    margin-left : -4px;
+    width : 260px;
+    text-align : left;
+    }
+#buttonCell > button {
+    width : 60px;
     }
     
 #gaussPreview {
@@ -175,9 +183,15 @@ table {
     background-color : black;
     background-repeat : no-repeat;
     background-image : url("gauss1025sig1.png");
-    background-size: 129px 129px;
     }
     
 .hidden {
     display: none;
+    }
+    
+.sp-dd{
+    color : #eeeeee;
+    }
+.sp-dd:hover{
+    color : #ffffff;
     }
