@@ -3,23 +3,35 @@
     <head>
         <title>Plasma Fractal Creator</title>
         <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>
-        <script type='text/javascript' src='spectrum/spectrum.js'></script>
-        <link rel='stylesheet' type='text/css' href='proto1.css'/>
-        <link rel='stylesheet' href='spectrum/spectrum.css' />
-        <script type="text/javascript" src="proto1.js"></script>
+        <script type='text/javascript' src='../spectrum/spectrum.js'></script>
+        <link rel='stylesheet' type='text/css' href='main.css'/>
+        <link rel='stylesheet' type='text/css' href='create.css'/>
+        <link rel='stylesheet' href='../spectrum/spectrum.css' />
+        <script type="text/javascript" src="create.js"></script>
+        <style type='text/css'>
+             .spectrum { 
+                background: #333333;
+                color : #eeeeee; 
+                margin : 0px 0px 0px -38px; 
+                } 
+            .spectrum input {
+                background : #333333;
+                color : #eeeeee;
+                }
+        </style>
     </head>
     <body>
         <div class="header"><h1>Plasma Fractal Creator</h1></div>
-        <div class="menus" id = "menuA"><p>Home</p>
-            <div class="menus" id = "menuB"><p class="menuCurrent">Create</p>
-                <div class="menus" id = "menuC"><p>Gallery</p>
-                    <div class="menus" id = "menuD"><p>Profile</p>
+        <div class="menus" id="menuHome"><p>Home</p>
+            <div class="menus" id="menuCreate"><p class="menuCurrent">Create</p>
+                <div class="menus" id="menuGallery"><p>Gallery</p>
+                    <div class="menus" id="menuProfile"><p>Profile</p>
                     </div>
                 </div>
             </div>
         </div>
         <div class="content">
-            <p class="legend">1. create fractal</p>
+            <p class="legend">Step 1: Create fractal</p>
             <div class="fsborder">
                 <table>
                     <tr>
@@ -43,8 +55,7 @@
                     </tr>
                 </table>
             </div>
-            <p class="legend">
-                2. add Gaussian filter 
+            <p class="legend">Step 2: Add Gaussian filter 
             </p>
             <div class="fsborder" id="gaussianInputs">
                 <table>
@@ -81,20 +92,9 @@
                     </tr>
                 </table>
             </div>
-            <p class="legend">3. add colors</p>
+            <p class="legend">Step 3: Choose colors</p>
             <div class="fsborder">
                 <table>
-                    <style type='text/css'>
-                         .spectrum { 
-                            background: #333333;
-                            color : #eeeeee; 
-                            margin : 0px 0px 0px -12px; 
-                            } 
-                        .spectrum input {
-                            background : #333333;
-                            color : #eeeeee;
-                            }
-                    </style>
                     <tr>
                         <td class="inputName">
                             heat map
@@ -124,50 +124,46 @@
                     <tr class="gradientInputs">
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td>
+                        <td class="colorCell">
                             <input class='colorselect' name='color1' id='color1'></input>
-                            <input type = "range" class="colorStop" id='colorStopLoc1' min=0 max=255 value=0></input>
+                            <input type = "range" class="colorStop" id='colorStopLoc1' min=0 max=255 value=0 width=300>
+                            </input>
                         </td>
                     </tr>
                     <tr class="gradientInputs">
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td>
+                        <td class="colorCell">
                             <input class='colorselect' name='color2' id='color2'></input>
                             <input type = "range" class="colorStop" id='colorStopLoc2' min=0 max=255 value=255></input>
                         </td>
                     </tr>
                     <tr class="gradientInputs">
                         <td></td>
-                        <td></td>
-                        <td>
+                        <td class="useStopCell">
                             <input type="checkbox" class="useStop" id="useStop3"></input>
                         </td>
-                        <td>
+                        <td class="colorCell">
                             <input class='colorselect' name='color3' id='color3'></input>
                             <input type = "range" class="colorStop" id='colorStopLoc3' min=0 max=255 value=127></input>
                         </td>
                     </tr>
                     <tr id = "colorRow4" class="gradientInputs">
                         <td></td>
-                        <td></td>
-                        <td>
+                        <td class="useStopCell">
                             <input type="checkbox" class="useStop" id="useStop4"></input>
                         </td>
-                        <td>
+                        <td class="colorCell">
                             <input class='colorselect' name='color4' id='color4'></input>
                             <input type = "range" class="colorStop" id='colorStopLoc4' min=0 max=255 value=127></input>
                         </td>
                     </tr>
                     <tr id = "colorRow5" class="gradientInputs">
                         <td></td>
-                        <td></td>
-                        <td>
+                        <td class="useStopCell">
                             <input type="checkbox" class="useStop" id="useStop5"></input>
                         </td>
-                        <td>
+                        <td class="colorCell">
                             <input class='colorselect' name='color5' id='color5'></input>
                             <input type = "range" class="colorStop" id='colorStopLoc5' min=0 max=255 value=127></input>
                         </td>

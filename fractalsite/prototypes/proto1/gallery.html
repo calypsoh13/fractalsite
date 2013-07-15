@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Plasma Fractal Creator</title>
+        <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>
+        <link rel='stylesheet' type='text/css' href='main.css'/>
+        <link rel='stylesheet' type='text/css' href='gallery.css'/>
+        <script type="text/javascript" src="gallery.js"></script> 
+    </head>
+    <body>
+        <div class="header headerSubmenu"><h1>Plasma Fractal Gallery</h1></div>
+        <div class="menus" id="menuHome"><p>Home</p>
+            <div class="menus" id="menuCreate"><p>Create</p>
+                <div class="menus" id="menuGallery"><p class="menuCurrent">Gallery</p>
+                    <div class="menus" id="menuProfile"><p>Profile</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="menus" id="menuAll"><p class="menuCurrent">All Images</p>
+            <div class="menus" id="menuMine"><p>My Images</p>
+            </div>
+        </div>
+        <div class="content contentSubmenu">
+            <h1><span id="title">Title</span> &minus; <span id="author">author</span></h1>
+            <div class="images">
+                <img class="thumb" id="thumbp3" src="../plasma.png" />
+                <img class="thumb" id="thumbp2" src="../plasma.png" />
+                <img class="thumb" id="thumbp1" src="../plasma.png" />
+                <img id="fullImage" src="../plasma.png" />
+                <img class="thumb" id="thumbn1" src="../plasma.png" />
+                <img class="thumb" id="thumbn2" src="../plasma.png" />
+                <img class="thumb" id="thumbn3" src="../plasma.png" />
+            </div>
+            <p id="imageSize">x x x</p>
+            <p id="actionsa">
+                <a id="details">details</a>&nbsp;-&nbsp;
+                <a id="like">like</a>&nbsp;-&nbsp;
+                <a id="comment">comment</a>&nbsp;-&nbsp;
+                <a id="share">share</a>
+            </p>
+        </div>
+        <div class="hidden">
+            <input id="currentImage" value="0"/>
+            <input id="images"/>
+        </div>
+    </body>
+</html>

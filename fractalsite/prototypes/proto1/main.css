@@ -1,12 +1,11 @@
 body {
-    font: 12pt "Verdana" sans-serif;
+    font: 14px "Verdana" sans-serif;
     color: #b43d8e;
-    background-image : url('plasma.png');
+    background-image : url('../plasma.png');
     background-size : 1400px 1400px;
     background-repeat : no-repeat;
     background-attachment : fixed;
     padding : 8px;
-    
     }
     
 .header {
@@ -16,11 +15,20 @@ body {
     width : 1000px;
     height : 90px;
     background-color: #000000;
-    border-bottom-left-radius : 40px;
-    border-bottom-right-radius : 40px;
+    border-bottom-left-radius : 30px;
+    border-bottom-right-radius : 30px;
     padding-left : 40px;
     padding-right : 40px;
-   }
+    }
+   
+.headerSubmenu {
+    border-bottom-right-radius : 0px;
+    }
+    
+.headerShort {
+    height : 50px;
+    text-align : center;
+    }
    
 .menus {
     position: absolute;
@@ -29,7 +37,8 @@ body {
     width : 300px;
     height : 30px;
     color: #b43d8e;
-    border-bottom-left-radius : 40px;
+    border-bottom-left-radius : 30px;
+    border-bottom-right-radius : 30px;
     background-image: linear-gradient(left , #14194f 0%, #000000 41%);
     background-image: -o-linear-gradient(left , #14194f 0%, #000000 41%);
     background-image: -moz-linear-gradient(left , #14194f 0%, #000000 41%);
@@ -46,17 +55,26 @@ body {
     
 .menus > p  { 
     margin : 0px 0px 16px 40px;
-    font-size : 12pt;
+    font-size : 14px;
     }
     
 .menuCurrent {
     color : #eeeeee;
     }
 
-#menuA {
+#menuHome {
     top : 60px;
     left : 80px;
     background-image : none;
+    }
+    
+#menuAll {
+    font-size : 10px;
+    top : 90px;
+    left : 400px;
+    width : 760px;
+    background-image : none;
+    background-color : black;
     }
 
 .content {
@@ -64,18 +82,26 @@ body {
     top : 130px;
     left : 80px;
     width : 1000px;
-    border-radius: 40px;
+    border-radius: 30px;
     background-color : black;
+    padding : 20px 40px;
+    }
+
+.contentSubmenu {
+    top : 160px;
+    }
+    
+.contentShort {
+    top : 80px;
     padding : 40px;
     }
 
 h1 {
     font: 16pt "Verdana" sans-serif;
     }
-
-td {
-    padding : 0px 12px;
-    text-align : center;
+    
+table {
+    background-color : black;
     }
     
 .inputName {
@@ -103,13 +129,7 @@ button {
     width : 100px;
     background-color : black;
     border-radius : 10px;
-    color : #eeeeee;
-    }
-    
-.nullimage {
-    width : 129px;
-    height : 129px;
-    background-color : #333333;
+    color : #bbbbbb;
     }
     
 fieldset { 
@@ -131,67 +151,23 @@ fieldset {
         color-stop(0.41,#000000)
         );
     }
-.spacer {
-    width: 52px;
-    height: 40px;
-}
 
-#gradientPreview {
-    width : 240px;
-    height : 32px;
-    border : 2px solid #333333;
-    }
-
-#heatPreview {
-    width : 240px;
-    height : 32px;
-    border : 2px solid #333333;
-    background-image: linear-gradient(left , black 0.25%, blue 33% green 60% red 100%);
-    background-image: -o-linear-gradient(left , black 0.25%, blue 33% green 60% red 100%);
-    background-image: -moz-linear-gradient(left , black 0.25%, blue 33% green 60% red 100%);
-    background-image: -webkit-linear-gradient(left , black 0.25%, blue 33% green 60% red 100%);
-    background-image: -ms-linear-gradient(left , black 0.25%, blue 33% green 60% red 100%);
-    background-image: -webkit-gradient(
-        linear,
-        left top,
-        right top,
-        color-stop(0, black),
-        color-stop(0.33, blue),
-        color-stop(0.6, green),
-        color-stop(1.0, red)
-        );
-    }
 .legend {
-    line-height: 20%;
-    }
-    
-table {
-    background-color : black;
-    }
-    
-#buttonCell {
-    margin-left : -4px;
-    width : 260px;
-    text-align : left;
-    }
-#buttonCell > button {
-    width : 60px;
-    }
-    
-#gaussPreview {
-    border : 2px solid #333333;
-    background-color : black;
-    background-repeat : no-repeat;
-    background-image : url("gauss1025sig1.png");
+    margin : 30px 0px 10px 0px;
+    font-size : 16px;
     }
     
 .hidden {
     display: none;
     }
     
-.sp-dd{
-    color : #eeeeee;
+
+#buttonCell {
+    margin-left : -4px;
+    width : 260px;
+    text-align : left;
     }
-.sp-dd:hover{
-    color : #ffffff;
+
+#buttonCell > button {
+    width : 60px;
     }

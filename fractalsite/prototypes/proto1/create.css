@@ -1,0 +1,64 @@
+td {
+    padding : 0px 12px;
+    text-align : center;
+    }
+    
+.nullimage {
+    width : 129px;
+    height : 129px;
+    background-color : #333333;
+    }
+
+.spacer {
+    width: 152px;
+    height: 40px;
+    }
+
+#gradientPreview {
+    width : 240px;
+    height : 32px;
+    border : 2px solid #333333;
+    }
+
+#heatPreview {
+    width : 240px;
+    height : 32px;
+    border : 2px solid #333333;
+    background-image: linear-gradient(left , black 0.25%, blue 33% green 60% red 100%);
+    background-image: -o-linear-gradient(left , black 0.25%, blue 33% green 60% red 100%);
+    background-image: -moz-linear-gradient(left , black 0.25%, blue 33% green 60% red 100%);
+    background-image: -webkit-linear-gradient(left , black 0.25%, blue 33% green 60% red 100%);
+    background-image: -ms-linear-gradient(left , black 0.25%, blue 33% green 60% red 100%);
+    background-image: -webkit-gradient(
+        linear,
+        left top,
+        right top,
+        color-stop(0, black),
+        color-stop(0.33, blue),
+        color-stop(0.6, green),
+        color-stop(1.0, red)
+        );
+    }
+
+
+.useStopCell {
+    align : right;
+    padding-right: 0px;
+    }
+    
+.useStop {
+    margin-right : -20px;
+    }
+
+.colorCell {
+    align : left;
+    padding-left : 0px;
+    }
+
+.sp-dd{
+    color : #eeeeee;
+    }
+
+.sp-dd:hover{
+    color : #ffffff;
+    }

@@ -1,0 +1,73 @@
+.content {
+    text-align : center;
+    }
+
+img {
+    border : 2px solid #333333;
+    }
+    
+img:hover {
+    border : 2px solid #444444;
+    }
+    
+.images {
+    align : middle;
+    position : relative;
+    height : 420px;
+    width : 1000px;
+    }
+    
+#fullImage {
+    position : absolute;
+    top : 50%;
+    left : 50%;
+    margin-left : -200px;
+    margin-top : -200px;
+    height : 400px;
+    width : 400px;
+    }
+
+.thumb {
+    position : absolute;
+    top : 50%;
+    left : 50%;
+    height : 40px;
+    width : 40px;
+    margin-top : -20px;
+    }
+    
+#thumbp3 {
+    margin-left: -460px;
+    }
+        
+#thumbp2 {
+    margin-left: -400px;
+    margin-top: -30px;
+    width : 60px;
+    height : 60px;
+    }
+
+#thumbp1 {
+    margin-left: -320px;
+    margin-top: -50px;
+    height : 100px;
+    width : 100px;
+    }
+
+#thumbn1 {
+    margin-left : 220px;
+    margin-top : -50px;
+    height : 100px;
+    width : 100px;
+    }
+    
+#thumbn2 {
+    margin-left : 340px;
+    margin-top : -30px;
+    width : 60px;
+    height : 60px;
+    }
+    
+#thumbn3 {
+    margin-left : 420px;
+    }

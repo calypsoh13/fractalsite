@@ -67,7 +67,6 @@ $(document).ready(function () {
         numberPoints = parseInt($("#gaussNumberPoints").val());
         currentPoint = parseInt($("#gaussCurrentPoint").val());
         cp = currentPoint;
-        alert (numberPoints + " " + currentPoint);
         if (cp === 1)
         {
             $("#gauss1").val($("#gauss2").val());
@@ -94,9 +93,12 @@ $(document).ready(function () {
         $("#gaussNumberPoints").val(numberPoints);
         $("#gaussCurrentPoint").val(numberPoints);
         setGaussVisibility();
-        loadGauss();
-        updateGaussLabels();
-        previewSizeAndPosition();
+        if (numberPoints > 0)
+        {
+            loadGauss();
+            updateGaussLabels();
+            previewSizeAndPosition();
+        }
     });
     
     $("#filterNext").click(function() {

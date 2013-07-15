@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Plasma Fractal - imagetitle</title>
+        <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>
+        <link rel='stylesheet' type='text/css' href='main.css'/> 
+        <link rel='stylesheet' type='text/css' href='detail.css'/>
+    </head>
+    <body>
+        <div class="header headerShort"><h1>Plasma Fractal - imagetitle - author</h1></div>
+        <div class="content contentShort">
+            <table><tr>
+                <td>
+                <img id="fullImage" src="../plasma.png" />
+                </td>
+                <td>
+                    <p class="legend">Title</p>
+                    <div class="fsborder">
+                        <div class="black">
+                            <input>
+                            <button>Save</button>
+                        </div>
+                    </div>
+                    <p class="legend">Details</p>
+                    <div class="fsborder">
+                        <table>
+                            <tr>
+                                <td class="inputName">size:</td>
+                                <td>1234</td>
+                            </tr>
+                            <tr>
+                                <td class="inputName">roughness:</td>
+                                <td>0.1</td>
+                            </tr>
+                            <tr>
+                                <td class="inputName">perturbance:</td>
+                                <td>0.1</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="fsborder">
+                        <table>
+                            <tr>
+                                <td class="inputName">filter 1</td>
+                            </tr>
+                            <tr>
+                                <td class="inputName">x,y:</td>
+                                <td>123</td>
+                                <td>234</td>
+                            </tr>
+                            <tr>
+                                <td class="inputName">sigma x,y:</td>
+                                <td>2</td>
+                                <td>0.5</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="fsborder">
+                        <table>
+                            <tr>
+                                <td class="inputName">color type:</td>
+                                <td>gradient</td>
+                            </tr>
+                            <tr>
+                                <td class="inputName">color 1:</td>
+                                <td>#000000</td>
+                                <td>loc: 0.0</td>
+                            </tr>
+                            <tr>
+                                <td class="inputName">color 2:</td>
+                                <td>#ffffff</td>
+                                <td>loc: 1.0</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td colspan=2>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="fsborder">
+                        <div class="black"><button id="createAnother">create another like this</button></div>
+                    </div>
+                    <p class="legend">Comments</p>
+                    <div class="fsborder">
+                        <div class="scroll">
+                            <table class="commentTable">
+                                <tr>
+                                    <td class="inputName">Anna:</td>
+                                    <td>This is my favorite image!</td>
+                                </tr><tr>
+                                    <td class="inputName">Bob:</td>
+                                    <td>I disagree.  This image looks terrible.</td>
+                                </tr>
+                                <tr>
+                                    <td class="inputName">Add<br>comment</td>
+                                    <td>
+                                        <textarea rows=6 cols=40></textarea></br>
+                                        <button>submit</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <p class="legend">Likes</p>
+                    <div class="fsborder">
+                        <div class="black">
+                            <p>Anna, Kat, anonyMouse</p>
+                        </div>
+                    </div>
+                </td>
+            </tr></table>
+        </div>
+    </body>
+</html>
