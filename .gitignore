@@ -79,3 +79,15 @@ fractalsite/prototypes/spectrum/zGruntfile.js
 extra files/gradient.py
 
 wrap.html
+
+*.swp
+
+fractalsite/prototypes/proto1/backbone.html
+
+fractalsite/prototypes/proto1/create_fractal_template.html
+
+fractalsite/prototypes/proto1/create_image_template.html
+
+fractalsite/prototypes/proto1/index.html
+
+fractalsite/prototypes/proto1/menu_template.html
