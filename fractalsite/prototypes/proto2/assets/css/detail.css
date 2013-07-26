@@ -1,0 +1,35 @@
+
+img {
+    height : 480px;
+    width : 480px;
+    }
+
+td {
+    padding : 0px 8px;
+    vertical-align : top;
+    }
+    
+.black {
+    background-color : #000000;
+    padding : 3px;
+    }
+    
+.commentTable td {
+    padding : 6px 8px;
+    }
+
+.scroll {
+    background-color : black;
+    height : 400px;
+    overflow : scroll;
+    }
+    
+#createAnother {
+    margin-left : 20px;
+    width : 160px;
+    }
+    
+.tiny {
+    height : 30px;
+    width : 30px;
+    }

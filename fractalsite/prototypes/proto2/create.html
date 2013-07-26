@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Plasma Fractal Creator</title>
+        <link rel='stylesheet' type='text/css' href='assets/css/main.css'/>
+        <link rel='stylesheet' type='text/css' href='assets/css/create.css'/>
+        <link rel='stylesheet' href='../spectrum/spectrum.css' />
+        <style type='text/css'>
+             .spectrum { 
+                background: #333333;
+                color : #eeeeee; 
+                margin : 0px 0px 0px -38px; 
+                } 
+            .spectrum input {
+                background : #333333;
+                color : #eeeeee;
+                }
+        </style>
+    </head>
+    <body>
+        <div class="header"><h1>Plasma Fractal Creator</h1></div>
+        <div class="content">
+            <div id="fractal"> </div>
+            <div id="create"></div>
+        </div>
+        <script type="text/template" id="fractal-template">
+            <p class="legend">Step 1: Create fractal</p>
+            <div class="fsborder">
+                <table>
+                    <tr>
+                        <td class="inputName">size</td>
+                        <td><input class="slider" type="range" name="sizeSetting" id="sizeSetting" 
+                                   min="7" max="10" value=<%- sizeSetting %>></input></td>
+                        <td><p class="outputs" id="size"><%- size %></p></td>
+                        <td class="imagecell" rowspan="3"><div id="fractalImage" class="nullimage"></div></td> 
+                    </tr>
+                    <tr>
+                        <td class="inputName">roughness</td>
+                        <td><input class="slider" type="range" name="roughnessSetting" id="roughnessSetting" 
+                                   min="1" max="10" value=<%- roughnessSetting %>></input></td>
+                        <td><p class="outputs" id="roughness"><%- roughness %></p></td>
+                    </tr>
+                    <tr>
+                        <td class="inputName">perturbance</td>
+                        <td><input class="slider" type="range" 
+                                   name="perturbanceSetting" id="perturbanceSetting" 
+                                   min="1" max="10" value=<%- perturbanceSetting %>></input></td>
+                        <td><p class="outputs" id="perturbance"><%- perturbance %></p></td>
+                    </tr>
+                    <tr>
+                        <td><button id="createFractal">create fractal</button></td>
+                    </tr>
+                </table>
+            </div>
+        </script>
+        <script type="text/template" id="create-template">
+            <p class="legend">Step 2: Add Gaussian filter 
+            </p>
+            <div class="fsborder" id="gaussianInputs">
+                <table>
+                    <tr>
+                        <td colspan=2>
+                            <div id="buttonCell">
+                            <button id="filterPlus">+</button>
+                            <button id="filterMinus">-</button>
+                            <button id="filterPrevious">&lt;</button>
+                            <button id="filterNext">&gt;</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <p class="legend">Step 3: Choose colors</p>
+            <div class="fsborder">
+                <table>
+                    <tr>
+                        <td class="inputName">
+                            heat map
+                        </td>
+                        <td width="20px">
+                            <input type="radio" class = "colorType" name="colorType" 
+                                   id="useHeat" <%= useHeat ?  'checked' : '' %>></input>
+                        </td>
+                        <td width ="240px" height="42px" colspan=2>
+                            <div id=<%= useHeat ?  'heatPreview' : '' %>></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="inputName">
+                            gradient
+                        </td>
+                        <td width="20px">
+                            <input type="radio" class="colorType" name="colorType" 
+                                   id="useGradient" <%= useHeat ?  '' : 'checked' %>></input>
+                        </td>
+                        <td width ="240px" height="42px" colspan=2>
+                            <div id=<%= useHeat ?  '' : 'gradientPreview' %>></div>
+                        </td>
+                    </tr>
+                    <%  if (!useHeat) 
+                        {
+                            var i = 0;
+                            colorStops.forEach(function(color) {
+                                console.log("rendering color " + i);
+                                print("<tr><td>");
+                                if(color.optional)
+                                {
+                                    console.log("optional = true")
+                                    print("<td class='useStopCell'><input type='checkbox' class='useStop'");
+                                    print("id='useStop" + i + "'");
+                                    if (color.useColor) print("checked");
+                                    print("></input>");
+                                }
+                                else
+                                {
+                                    console.log("optional = false");
+                                    print ("<td>");
+                                }
+                                print("</td>");
+                                print("<td class='colorCell'><input class='colorselect'");
+                                print("name='color" + i +"' id='color" + i + "'></input>");
+                                print("<input type = 'range' class='colorStop'");
+                                print("id='colorStopLoc" + i + "' width=300 min=0 max=255 value=" + color.stop * 256 + ">");
+                                print("</td></tr>");
+                                i++;
+                            });
+                        } %>
+                    <tr>
+                        <td><button id="createImage">create image</button></td>
+                    </tr>
+                </table>
+            </div>
+        </script>
+        <script src="assets/base.js"></script>
+        <script src="assets/jquery.min.js"></script>
+        <script src="assets/lodash.min.js"></script>
+        <script src="assets/backbone.js"></script>
+        <script src="assets/backbone.localStorage.js"></script>
+        <script src="../spectrum/spectrum.js"></script>
+        <script src="js/models/colorstop.js"></script>
+        <script src="js/models/fractalmod.js"></script>
+        <script src="js/models/createmod.js"></script>
+        <script src="js/views/fractalview.js"></script>
+        <script src="js/views/createview.js"></script>
+        <script src="js/routers/router.js"></script>
+        <script src="js/app.js"></script>
+    </body>
+</html>
