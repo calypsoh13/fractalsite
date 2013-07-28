@@ -45,7 +45,7 @@ $(function( $ ) {
         editSize: function() {
             var value = parseInt(this.$(sizeSetting).val());
 
-            if ( value ) {
+            if (!isNan(value)) {
                 var newsize = Math.pow(2, value) + 1;
                 app.fractalMod.save({ sizeSetting: value });
                 app.fractalMod.save({ size : newsize });
@@ -55,9 +55,9 @@ $(function( $ ) {
 
         // update the roughness
         editRoughness: function() {
-            var value = parseFloat(this.$(roughnessSetting).val());
+            var value = parseInt(this.$(roughnessSetting).val());
 
-            if ( value ) {
+            if (!isNan(value)) {
                 var newRoughness = value / 10;
                 app.fractalMod.save({ roughnessSetting: value });
                 app.fractalMod.save({ roughness: newRoughness});
@@ -67,9 +67,9 @@ $(function( $ ) {
         
         // update the perturbance
         editPerturbance: function() {
-            var value = parseFloat(this.$(perturbanceSetting).val());
+            var value = parseInt(this.$(perturbanceSetting).val());
 
-            if ( value ) {
+            if (!isNan(value)) {
                 var newperturbance = value / 10;
                 app.fractalMod.save({ perturbanceSetting: value });
                 app.fractalMod.save({ perturbance: newperturbance});

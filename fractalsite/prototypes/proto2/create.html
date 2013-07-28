@@ -57,22 +57,60 @@
             <p class="legend">Step 2: Add Gaussian filter 
             </p>
             <div class="fsborder" id="gaussianInputs">
-                <table>
+                <table id="filters">
                     <tr>
                         <td colspan=2>
                             <div id="buttonCell">
                             <button id="filterPlus">+</button>
-                            <button id="filterMinus">-</button>
-                            <button id="filterPrevious">&lt;</button>
-                            <button id="filterNext">&gt;</button>
+                            <button id='filterMinus' class='hidden'>-</button>
+                            <button id='filterPrevious' class='hidden'>&lt;</button>
+                            <button id='filterNext' class='hidden'>&gt;</button>
                             </div>
                         </td>
+                    </tr>
+                    <tr class='gaussInputs hidden'>
+                        <td class='inputName spacer' id ='xLabel'>X1</td>
+                        <td>
+                            <input type='range' name='gaussXSetting' id='gaussXSetting'
+                                   min='-80' max='80' value='0'/>
+                        </td>
+                        <td>
+                            <input class='outputs' id='gaussX' value="128"></input>
+                        </td>
+                        <td class='imagecell' id='gausscell' rowspan='5'>
+                            <div id='gaussPreview' class='nullimage'></div>
+                        </td>
+                    </tr>
+                    <tr class='gaussInputs hidden'>
+                        <td class='inputName spacer' id ='yLabel'>Y1</td>
+                        <td>
+                            <input type='range' name='gaussYSetting' id='gaussYSetting'
+                                   min='-80' max='80' value='0'/>
+                        </td>
+                        <td>
+                            <input class='outputs' id='gaussY' value="128"></input>
+                        </td>
+                    </tr>
+                    <tr class='gaussInputs hidden'>
+                        <td class='inputName' id = 'sigmaXLabel'>sigma X1</td>
+                        <td>
+                            <input type='range' name='gaussSigmaXSetting' id='gaussSigmaXSetting'
+                                   min='-6' max='8' value='0"'/></td>
+                        <td><p class='outputs' id='gaussSigmaX'>0</p></td>
+                    </tr>
+                    <tr class='gaussInputs hidden'>
+                        <td class='inputName' id = 'sigmaYLabel'>sigma Y1</td>
+                        <td>
+                            <input type='range' name='gaussSigmaYSetting' id='gaussSigmaYSetting'
+                                   min='-6' max='8' value='0'/>
+                        </td>
+                        <td><p class='outputs' id='gaussSigmaY'>0</p></td>
                     </tr>
                 </table>
             </div>
             <p class="legend">Step 3: Choose colors</p>
             <div class="fsborder">
-                <table>
+                <table id="colorTable">
                     <tr>
                         <td class="inputName">
                             heat map
@@ -82,7 +120,7 @@
                                    id="useHeat" <%= useHeat ?  'checked' : '' %>></input>
                         </td>
                         <td width ="240px" height="42px" colspan=2>
-                            <div id=<%= useHeat ?  'heatPreview' : '' %>></div>
+                            <div id='heatPreview'></div>
                         </td>
                     </tr>
                     <tr>
@@ -94,42 +132,43 @@
                                    id="useGradient" <%= useHeat ?  '' : 'checked' %>></input>
                         </td>
                         <td width ="240px" height="42px" colspan=2>
-                            <div id=<%= useHeat ?  '' : 'gradientPreview' %>></div>
+                            <div id='gradientPreview'></div>
                         </td>
                     </tr>
-                    <%  if (!useHeat) 
-                        {
-                            var i = 0;
-                            colorStops.forEach(function(color) {
-                                console.log("rendering color " + i);
-                                print("<tr><td>");
-                                if(color.optional)
-                                {
-                                    console.log("optional = true")
-                                    print("<td class='useStopCell'><input type='checkbox' class='useStop'");
-                                    print("id='useStop" + i + "'");
-                                    if (color.useColor) print("checked");
-                                    print("></input>");
-                                }
-                                else
-                                {
-                                    console.log("optional = false");
-                                    print ("<td>");
-                                }
-                                print("</td>");
-                                print("<td class='colorCell'><input class='colorselect'");
-                                print("name='color" + i +"' id='color" + i + "'></input>");
-                                print("<input type = 'range' class='colorStop'");
-                                print("id='colorStopLoc" + i + "' width=300 min=0 max=255 value=" + color.stop * 256 + ">");
-                                print("</td></tr>");
-                                i++;
-                            });
-                        } %>
-                    <tr>
+                    <tr class="gradientInputs">
+                        <td></td>
+                        <td colspan=2>
+                            <table id="colorStopTable">
+                                <tr></tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr id="createImageRow">
                         <td><button id="createImage">create image</button></td>
                     </tr>
                 </table>
             </div>
+        </script>
+        <script type="text/template" id="colorstop-template">
+            <td class="useColorCell">
+                <% if (optional)
+                {
+                    if (useStop)
+                    {
+                        print("<input type='checkbox' class='useStop' checked></input>");
+                    }
+                    else
+                    {
+                        print("<input type='checkbox' class='useStop'></input>");
+                    }
+                }
+                %>
+            </td>
+            <td></td>
+            <td>
+                <input class='colorSelect' id='color<%=order %>'></input>
+                <input type ="range" class="colorStop" min=0 max=255 value=<%=stop %>></input>
+            </td>
         </script>
         <script src="assets/base.js"></script>
         <script src="assets/jquery.min.js"></script>
@@ -137,9 +176,11 @@
         <script src="assets/backbone.js"></script>
         <script src="assets/backbone.localStorage.js"></script>
         <script src="../spectrum/spectrum.js"></script>
-        <script src="js/models/colorstop.js"></script>
+        <script src="js/models/colorstopmod.js"></script>
+        <script src="js/collections/colorstops.js"></script>
         <script src="js/models/fractalmod.js"></script>
         <script src="js/models/createmod.js"></script>
+        <script src="js/views/colorstopview.js"></script>
         <script src="js/views/fractalview.js"></script>
         <script src="js/views/createview.js"></script>
         <script src="js/routers/router.js"></script>

@@ -44,21 +44,11 @@ td {
     border : 2px solid #333333;
     background-color : black;
     background-repeat : no-repeat;
-    background-image : url("../../gauss1025sig1.png");
+    background-image : url("../../../gauss1025sig1.png");
     }
 
 .useStopCell {
-    align : right;
-    padding-right: 0px;
-    }
-    
-.useStop {
-    margin-right : -20px;
-    }
-
-.colorCell {
-    align : left;
-    padding-left : 0px;
+    width : 40px;
     }
 
 .sp-dd{

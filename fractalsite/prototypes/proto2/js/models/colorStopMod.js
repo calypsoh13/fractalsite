@@ -13,9 +13,9 @@ var app = app || {};
         // Default attributes for the color stop
         defaults: {
             color: '#777777',
-            stop: 0.5,
+            stop: 127,
             optional: true,
-            useColor: false
+            useStop: false
         }
     });
     
