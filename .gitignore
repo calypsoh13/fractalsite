@@ -69,10 +69,7 @@ unvec_plasma.py
 fractaldata.sqlite3.db
 fractalsite/secrets.py
 static/images/*
-static/assets/*
 admin
-
-assets/css/default.css
 
 prototypes/spectrum/zGruntfile.js
 
