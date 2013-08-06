@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
     <head>
         <title>Plasma Fractal Creator</title>
-        <link rel='stylesheet' type='text/css' href='assets/css/main.css'/>
-        <link rel='stylesheet' type='text/css' href='assets/css/create.css'/>
-        <link rel='stylesheet' href='../spectrum/spectrum.css' />
+        <link rel='stylesheet' type='text/css' href='{% static "assets/css/main.css" %}'/>
+        <link rel='stylesheet' type='text/css' href='{% static "assets/css/create.css" %}'/>
+        <link rel='stylesheet' href='{% static "assets/js/spectrum/spectrum.css" %}' />
         <style type='text/css'>
              .spectrum { 
                 background: #333333;
@@ -15,7 +16,7 @@
                 background : #333333;
                 color : #eeeeee;
                 }
-        </style>
+              </style>
     </head>
     <body>
         <div class="header"><h1>Plasma Fractal Creator</h1></div>
@@ -169,21 +170,21 @@
                 <input class='colorSelect' id='color<%=order %>'></input>
                 <input type ="range" class="colorStop" min=0 max=255 value=<%=stop %>></input>
             </td>
-        </script>
-        <script src="assets/base.js"></script>
-        <script src="assets/jquery.min.js"></script>
-        <script src="assets/lodash.min.js"></script>
-        <script src="assets/backbone.js"></script>
-        <script src="assets/backbone.localStorage.js"></script>
-        <script src="../spectrum/spectrum.js"></script>
-        <script src="js/models/colorstopmod.js"></script>
-        <script src="js/collections/colorstops.js"></script>
-        <script src="js/models/fractalmod.js"></script>
-        <script src="js/models/createmod.js"></script>
-        <script src="js/views/colorstopview.js"></script>
-        <script src="js/views/fractalview.js"></script>
-        <script src="js/views/createview.js"></script>
-        <script src="js/routers/router.js"></script>
-        <script src="js/app.js"></script>
+          </script>
+        <script src='{% static "assets/js/base.js" %}'></script>
+        <script src='{% static "assets/js/lib/jquery.min.js" %}'></script>
+        <script src='{% static "assets/js/lib/lodash.min.js" %}'></script>
+        <script src='{% static "assets/js/lib/backbone.js" %}'></script>
+        <script src='{% static "assets/js/lib/backbone.localStorage.js" %}'></script>
+        <script src='{% static "assets/js/spectrum/spectrum.js" %}'></script>
+        <script src='{% static "assets/js/models/colorStopMod.js" %}'></script>
+        <script src='{% static "assets/js/collections/colorStops.js" %}'></script>
+        <script src='{% static "assets/js/models/fractalmod.js" %}'></script>
+        <script src='{% static "assets/js/models/createmod.js" %}'></script>
+        <script src='{% static "assets/js/views/colorstopview.js" %}'></script>
+        <script src='{% static "assets/js/views/fractalview.js" %}'></script>
+        <script src='{% static "assets/js/views/createview.js" %}'></script>
+        <script src='{% static "assets/js/router.js" %}'></script>
+        <script src='{% static "assets/js/app.js" %}'></script>
     </body>
 </html>
