@@ -3,10 +3,10 @@
 <html>
     <head>
         <title>Plasma Fractal Creator</title>
-        <link rel='stylesheet' type='text/css' href='{% static "assets/assets/css/main.css" %}'/>
-        <link rel='stylesheet' type='text/css' href='{% static "assets/assets/css/create.css" %}'/>
-        <link rel='stylesheet' href='{% static "assets/assets/spectrum/spectrum.css" %}' />
-        {% verbatim %}
+        <link rel='stylesheet' type='text/css' href='{% static "assets/css/main.css" %}'/>
+        <link rel='stylesheet' type='text/css' href='{% static "assets/css/create.css" %}'/>
+        <link rel='stylesheet' href='{% static "assets/js/spectrum/spectrum.css" %}' />
+        <script data-main='{% static "assets/js/app" %}' src='{% static "assets/js/lib/require.min.js" %}'></script>
         <style type='text/css'>
              .spectrum { 
                 background: #333333;
@@ -18,10 +18,8 @@
                 color : #eeeeee;
                 }
               </style>
-        {% endverbatim %}
     </head>
     <body>
-      {% verbatim %}
         <div class="header"><h1>Plasma Fractal Creator</h1></div>
         <div class="content">
             <div id="fractal"> </div>
@@ -173,8 +171,7 @@
                 <input class='colorSelect' id='color<%=order %>'></input>
                 <input type ="range" class="colorStop" min=0 max=255 value=<%=stop %>></input>
             </td>
-        </script>
-        {% endverbatim %}
+          </script>
         <script src='{% static "assets/assets/js/base.js" %}'></script>
         <script src='{% static "assets/assets/js/lib/jquery.min.js" %}'></script>
         <script src='{% static "assets/assets/js/lib/lodash.min.js" %}'></script>
