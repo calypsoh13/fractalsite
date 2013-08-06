@@ -8,7 +8,7 @@ var app = app || {};
 
     app.CreateMod = Backbone.Model.extend({
         
-        url : "create.html", 
+        url : "../create/",
         
         // Default attributes for the fractal
         defaults: {

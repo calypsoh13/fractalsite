@@ -7,8 +7,8 @@ var app = app || {};
     // ----------
 
     app.ColorStopMod = Backbone.Model.extend({
-        
-        url : "create.html", 
+       
+        urlRoot : "../create/",
         
         // Default attributes for the color stop
         defaults: {

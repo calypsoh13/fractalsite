@@ -9,8 +9,8 @@ var app = app || {};
     // the fractal model has a size, roughness, perturbance, server reference and image link attributes.
     app.FractalMod = Backbone.Model.extend({
         
-        url : "create.html", 
-        
+        urlRoot: "../create",
+
         // Default attributes for the fractal
         defaults: {
             size: 257,
