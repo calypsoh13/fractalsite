@@ -1,7 +1,7 @@
 body {
     font: 14px "Verdana" sans-serif;
     color: #b43d8e;
-    background-image : url('../../../plasma.png');
+    background-image : url('../img/plasma.png');
     background-size : 1400px 1400px;
     background-repeat : no-repeat;
     background-attachment : fixed;

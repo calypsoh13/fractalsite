@@ -317,7 +317,7 @@ $(function( $ ) {
         
         showGaussPreview: function() 
         {
-            size = app.fractalMod.get('size');
+            var size = app.fractalMod.get('size');
             var filterIndex = app.createMod.get("currentFilter");
             var filter = app.createMod.get('gaussFilters')[filterIndex];
             var gsx = filter.sigmaX;

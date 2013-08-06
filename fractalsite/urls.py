@@ -1,8 +1,10 @@
 from django.conf.urls import patterns, include, url
+from fractalgen.api import FractalResource
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
+fractal_resource = FractalResource()
 
 urlpatterns = patterns('',
     # Examples:
@@ -27,5 +29,7 @@ urlpatterns = patterns('',
     # Registering
     url(r'^accounts/register/$', 'fractalsite.views.register_user'),
     url(r'^accounts/register_success/$', 'fractalsite.views.register_success'),
+    # API
+    url(r'^api/', include(fractal_resource.urls)),
 
 )
