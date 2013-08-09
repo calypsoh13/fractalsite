@@ -337,8 +337,8 @@ define([
             var tempy = 2 * (gy-1)/(size -1);
             var locX = (tempx - gsx) * 65;
             var locY = (tempy - gsy) * 65;
-            $("#gaussPreview").css("background-position-x", locX);
-            $("#gaussPreview").css("background-position-y", locY);
+            var locXY = locX.toString() + 'px ' + locY.toString() + 'px';
+            $("#gaussPreview").css("background-position", locXY);
         },
         
         useHeat: function() {
