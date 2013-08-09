@@ -35,9 +35,8 @@ require([
     'app',
     'views/createview',
     'router'
-], function(Backbone, App, CreateView, Workspace){
+], function(Backbone, App, Workspace){
     new Workspace();
     Backbone.history.start();
     App.initialize();
-    new CreateView();
 });

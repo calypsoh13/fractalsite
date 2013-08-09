@@ -1,9 +1,13 @@
-var app = app || {};
-var ENTER_KEY = 13;
-
-$(function() {
-
-    // Kick things off by creating the **App**.
-    new app.createView();
-
+'use strict';
+define([
+        'jquery',
+        'underscore',
+        'backbone'
+], function($, _, Backbone) {
+    
+    new CreateView();
+    
+    return {
+        app: _.extend({}, Backbone.Events)
+    };
 });

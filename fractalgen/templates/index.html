@@ -171,20 +171,6 @@
                 <input type ="range" class="colorStop" min=0 max=255 value=<%=stop %>></input>
             </td>
           </script>
-        <script src='{% static "assets/js/base.js" %}'></script>
-        <script src='{% static "assets/js/lib/jquery.min.js" %}'></script>
-        <script src='{% static "assets/js/lib/lodash.min.js" %}'></script>
-        <script src='{% static "assets/js/lib/backbone.js" %}'></script>
-        <script src='{% static "assets/js/lib/backbone.localStorage.js" %}'></script>
-        <script src='{% static "assets/js/spectrum/spectrum.js" %}'></script>
-        <script src='{% static "assets/js/models/colorStopMod.js" %}'></script>
-        <script src='{% static "assets/js/collections/colorStops.js" %}'></script>
-        <script src='{% static "assets/js/models/fractalmod.js" %}'></script>
-        <script src='{% static "assets/js/models/createmod.js" %}'></script>
-        <script src='{% static "assets/js/views/colorstopview.js" %}'></script>
-        <script src='{% static "assets/js/views/fractalview.js" %}'></script>
-        <script src='{% static "assets/js/views/createview.js" %}'></script>
-        <script src='{% static "assets/js/router.js" %}'></script>
-        <script src='{% static "assets/js/app.js" %}'></script>
+          <script data-main='{% static "assets/js/main" %}' src='{% static "assets/js/lib/require.min" %}'>
     </body>
 </html>
