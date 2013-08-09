@@ -1,27 +1,17 @@
-var app = app || {};
-
-(function() {
-    'use strict';
-
-    // Todo Router
-    // ----------
-
-    var Workspace = Backbone.Router.extend({
-        routes:{
-            '*filter': 'setFilter'
+define([ 
+        'jquery', 
+        'backbone' 
+], function($, Backbone) { 
+    
+    var AppRouter = Backbone.Router.extend({ 
+        routes: {  
+            // Default 
+            '*actions': 'defaultAction' 
         },
-
-        setFilter: function( param ) {
-            // Set the current filter to be used
-            app.TodoFilter = param.trim() || '';
-
-            // Trigger a collection filter event, causing hiding/unhiding
-            // of Todo view items
-            //app.Todos.trigger('filter');
+        defaultAction: function(param) {
+            console.log('Default: ' + param);
         }
     });
 
-    app.TodoRouter = new Workspace();
-    Backbone.history.start();
-
-}());
+    return AppRouter;
+});

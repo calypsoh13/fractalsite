@@ -4,10 +4,9 @@ define([
         'underscore',
         'backbone'
 ], function($, _, Backbone) {
-    
-    new CreateView();
-    
-    return {
-        app: _.extend({}, Backbone.Events)
+    var app = {
+        eventBus: _.extend( {}, Backbone.Events)
     };
+
+    return app;
 });

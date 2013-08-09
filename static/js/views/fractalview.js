@@ -3,12 +3,12 @@ define([
         'underscore',
         'backbone',
         'app',
-], function($, _, Backbone, app) {
+        'models/fractalmod'
+], function($, _, Backbone, app, FractalMod) {
     'use strict';
 
     // The Fractal
     // ---------------
-    var app = App.app;
 
     app.FractalView = Backbone.View.extend({
 
@@ -29,6 +29,7 @@ define([
         // collection, when items are added or changed. Kick things off by
         // loading any preexisting todos that might be saved in *localStorage*.
         initialize: function() {
+            app.FractalMod = new FractalMod();
             this.$size = this.$('#size');
             this.$sizeSetting = this.$('#sizeSetting');
             this.$roughness = this.$('#roughness');
@@ -41,7 +42,7 @@ define([
 
         // Re-render the fractal.
         render: function() {
-            this.$el.html( this.fractalTemplate( app.fractalMod.toJSON() ) );
+            this.$el.html( this.fractalTemplate( app.FractalMod.toJSON() ) );
             return this;
         },
 

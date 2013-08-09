@@ -2,12 +2,11 @@ define([
         'underscore',
         'backbone',
         'app'
-], function(_, Backbone, App) {
+], function(_, Backbone, app) {
     'use strict';
 
     // color stop Model
     // ----------
-    var app = App.app;
 
     app.ColorStopMod = Backbone.Model.extend({
        

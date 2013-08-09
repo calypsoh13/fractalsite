@@ -2,12 +2,11 @@ define([
         'underscore',
         'backbone',
         'app'
-], function(_, Backbone, App) {
+], function(_, Backbone, app) {
     'use strict';
 
     // Fractal Model
     // ----------
-    var app = App.app;
     // the fractal model has a size, roughness, perturbance, server reference and image link attributes.
     app.FractalMod = Backbone.Model.extend({
         
@@ -25,5 +24,5 @@ define([
             fractalImage: ""
         }
     });
-    return new app.FractalMod();
+    return app.FractalMod;
 });

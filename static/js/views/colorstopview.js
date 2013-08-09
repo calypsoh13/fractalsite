@@ -4,12 +4,11 @@ define([
         'backbone',
         'spectrum',
         'app'
-], function($, _, Backbone, spectrum, App) {
+], function($, _, Backbone, spectrum, app) {
     'use strict';
 
     // Todo Item View
     // --------------
-    var app = App.app;
 
     app.ColorStopView = Backbone.View.extend({
 
@@ -83,7 +82,7 @@ define([
             this.model.save("stop", stop);
         }
     });
-    return ColorStopView;
+    return app.ColorStopView;
 });
 
 

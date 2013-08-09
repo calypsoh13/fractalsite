@@ -12,7 +12,7 @@ require.config({
             ],
             exports: 'Backbone'
         },
-        backboneLocalstorage: {
+        backboneLocalStorage: {
             deps: ['backbone'],
             exports: 'Store'
         },
@@ -35,8 +35,8 @@ require([
     'app',
     'views/createview',
     'router'
-], function(Backbone, App, Workspace){
-    new Workspace();
+], function(Backbone, App, CreateView, AppRouter){
+    new AppRouter();
     Backbone.history.start();
-    App.initialize();
+    new CreateView();
 });

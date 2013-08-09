@@ -2,13 +2,16 @@ define([
         'jquery',
         'underscore',
         'backbone',
-        'app'
-], function($, _, Backbone, App) {
+        'app',
+        'views/fractalview',
+        'views/colorstopview',
+        'models/createmod',
+        'collections/colorstops'
+], function($, _, Backbone, app, FractalView, ColorStopView, CreateMod, ColorStops) {
     'use strict';
 
     // The Create image view
     // ---------------
-    var app = App.app;
 
     app.CreateView = Backbone.View.extend({
 
@@ -38,7 +41,9 @@ define([
         },
 
         initialize: function() {
-            new app.FractalView();
+            new FractalView();
+            app.ColorStops = ColorStops;
+            app.CreateMod = CreateMod;
             this.listenTo(app.FractalMod, 'change', this.updateGaussForSize);
             this.listenTo(app.ColorStops, 'add', this.addAllColorStops);
             this.listenTo(app.ColorStops, 'remove', this.addAllColorStops);
@@ -360,7 +365,7 @@ define([
         },
         
         addColorStop: function( color ) {
-            var view = new app.ColorStopView({ model: color });
+            var view = new ColorStopView({ model: color });
             $('#colorStopTable').append( view.render().el );
             this.colorViews.push(view);
         },
