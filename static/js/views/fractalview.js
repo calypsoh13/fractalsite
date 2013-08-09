@@ -3,8 +3,9 @@ define([
         'underscore',
         'backbone',
         'app',
-        'models/fractalmod'
-], function($, _, Backbone, app, FractalMod) {
+        'models/fractalmod',
+        'html5slider'
+], function($, _, Backbone, app, FractalMod, html5slider) {
     'use strict';
 
     // The Fractal View

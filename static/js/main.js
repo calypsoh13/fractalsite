@@ -28,7 +28,8 @@ require.config({
         underscore: 'lib/lodash.min', //lo-dash is an extension of underscore.
         backbone: 'lib/backbone',
         backboneLocalStorage: 'lib/backbone.localStorage',
-        spectrum: 'spectrum/spectrum'
+        spectrum: 'spectrum/spectrum',
+        html5slider: 'lib/html5slider'
         // When we get into RESTful API, we might consider using backbone-tastypie.js 
     }
 });

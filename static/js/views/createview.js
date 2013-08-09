@@ -6,8 +6,9 @@ define([
         'views/fractalview',
         'views/colorstopview',
         'models/createmod',
-        'collections/colorstops'
-], function($, _, Backbone, app, FractalView, ColorStopView, CreateMod, ColorStops) {
+        'collections/colorstops',
+        'html5slider'
+], function($, _, Backbone, app, FractalView, ColorStopView, CreateMod, ColorStops, html5slider) {
     'use strict';
 
     // The Create image view
