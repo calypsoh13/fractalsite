@@ -1,10 +1,13 @@
-var app = app || {};
-
-(function() {
+define([
+        'underscore',
+        'backbone',
+        'app'
+], function(_, Backbone, App) {
     'use strict';
 
     // color stop Model
     // ----------
+    var app = App.app;
 
     app.ColorStopMod = Backbone.Model.extend({
        
@@ -18,5 +21,5 @@ var app = app || {};
             useStop: false
         }
     });
-    
-}());
+    return app.ColorStopMod;
+});

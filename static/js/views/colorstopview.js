@@ -1,10 +1,15 @@
-var app = app || {};
-
-$(function() {
+define([
+        'jquery',
+        'underscore',
+        'backbone',
+        'spectrum',
+        'app'
+], function($, _, Backbone, spectrum, App) {
     'use strict';
 
     // Todo Item View
     // --------------
+    var app = App.app;
 
     app.ColorStopView = Backbone.View.extend({
 
@@ -42,7 +47,7 @@ $(function() {
                 ],
                 change: function(c) {
                     var id = parseInt($(this).attr("id").replace('color',''));
-                    app.colorStops.saveColor(id, c.toRgbString());
+                    app.ColorStops.saveColor(id, c.toRgbString());
                 }
             });
             return this;
@@ -61,12 +66,12 @@ $(function() {
                 var color = new app.ColorStopMod();
                 color.set("optional", true);
                 color.set("useColor", false);
-                color.set("order", app.colorStops.nextOrder());
-                app.colorStops.add(color);
+                color.set("order", app.ColorStops.nextOrder());
+                app.ColorStops.add(color);
             }
             else
             {   
-                if (app.colorStops.length > 3)
+                if (app.ColorStops.length > 3)
                 {
                     this.model.destroy();
                 }
@@ -78,6 +83,7 @@ $(function() {
             this.model.save("stop", stop);
         }
     });
+    return ColorStopView;
 });
 
 

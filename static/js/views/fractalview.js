@@ -1,12 +1,16 @@
-var app = app || {};
-
-$(function( $ ) {
+define([
+        'jquery',
+        'underscore',
+        'backbone',
+        'app',
+], function($, _, Backbone, app) {
     'use strict';
 
     // The Fractal
     // ---------------
+    var app = App.app;
 
-    app.fractalView = Backbone.View.extend({
+    app.FractalView = Backbone.View.extend({
 
         // Instead of generating a new element, bind to the existing skeleton of
         // the App already present in the HTML.
@@ -47,8 +51,8 @@ $(function( $ ) {
 
             if (!isNaN(value)) {
                 var newsize = Math.pow(2, value) + 1;
-                app.fractalMod.save({ sizeSetting: value });
-                app.fractalMod.save({ size : newsize });
+                app.FractalMod.save({ sizeSetting: value });
+                app.FractalMod.save({ size : newsize });
                 this.$(size).text(newsize);
             } 
         },
@@ -59,8 +63,8 @@ $(function( $ ) {
 
             if (!isNaN(value)) {
                 var newRoughness = value / 10;
-                app.fractalMod.save({ roughnessSetting: value });
-                app.fractalMod.save({ roughness: newRoughness});
+                app.FractalMod.save({ roughnessSetting: value });
+                app.FractalMod.save({ roughness: newRoughness});
                 this.$(roughness).text(newRoughness);
             } 
         },
@@ -71,10 +75,11 @@ $(function( $ ) {
 
             if (!isNaN(value)) {
                 var newperturbance = value / 10;
-                app.fractalMod.save({ perturbanceSetting: value });
-                app.fractalMod.save({ perturbance: newperturbance});
+                app.FractalMod.save({ perturbanceSetting: value });
+                app.FractalMod.save({ perturbance: newperturbance});
                 this.$(perturbance).text(newperturbance);
             } 
         }
     });
+    return app.FractalView;
 });
