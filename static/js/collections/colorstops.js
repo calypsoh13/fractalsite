@@ -1,22 +1,18 @@
 define([
         'underscore',
         'backbone',
-        'backboneLocalStorage',
         'app',
         'models/colorstopmod'
-], function(_, Backbone, Store, app, ColorStopMod) {
+], function(_, Backbone, app, ColorStopMod) {
     'use strict';
 
     // ColorStops Collection
     // ---------------
 
-    app.ColorStopsColl = Backbone.Collection.extend({
+    var ColorStopsColl = Backbone.Collection.extend({
 
         // Reference to this collection's model.
         model: app.colorStop,
-
-        // Save all of the items under the given namespace.
-        //localStorage: new Store('colorstops-backbone'),
 
         // We keep the color stops in sequential order, despite being saved by unordered
         // GUID in the database. This generates the next order number for new items.
@@ -43,7 +39,7 @@ define([
     });
 
     // Create our global collection of **ColorStop models**.
-    app.ColorStops = new app.ColorStopsColl();
+    app.ColorStops = new ColorStopsColl();
     
     // add the default stops - black to white with an unused stop in the middle
     var color = new ColorStopMod();

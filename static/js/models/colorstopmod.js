@@ -10,7 +10,7 @@ define([
 
     app.ColorStopMod = Backbone.Model.extend({
        
-        urlRoot : "../create/",
+        urlRoot: "../create/",
         
         // Default attributes for the color stop
         defaults: {

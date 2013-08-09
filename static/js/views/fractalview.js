@@ -7,27 +7,21 @@ define([
 ], function($, _, Backbone, app, FractalMod) {
     'use strict';
 
-    // The Fractal
+    // The Fractal View
     // ---------------
 
     app.FractalView = Backbone.View.extend({
 
-        // Instead of generating a new element, bind to the existing skeleton of
-        // the App already present in the HTML.
         el: '#fractal',
         
         fractalTemplate: _.template( $('#fractal-template').html() ),
         
-        // Delegated events for creating new items, and clearing completed ones.
         events: {
             'change #sizeSetting': 'editSize',
             'change #roughnessSetting': 'editRoughness',
             'change #perturbanceSetting': 'editPerturbance'
         },
 
-        // At initialization we bind to the relevant events on the `Todos`
-        // collection, when items are added or changed. Kick things off by
-        // loading any preexisting todos that might be saved in *localStorage*.
         initialize: function() {
             app.FractalMod = new FractalMod();
             this.$size = this.$('#size');

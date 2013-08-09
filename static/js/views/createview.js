@@ -15,16 +15,12 @@ define([
 
     app.CreateView = Backbone.View.extend({
 
-        // Instead of generating a new element, bind to the existing skeleton of
-        // the App already present in the HTML.
         el: '#create',
 
         colorViews: [],
         
-        // Our template for the line of statistics at the bottom of the app.
         createTemplate: _.template( $('#create-template').html() ),
 
-        // Delegated events for creating new items, and clearing completed ones.
         events: {
             'click #filterPlus': 'addFilter',
             'click #filterMinus': 'removeFilter',

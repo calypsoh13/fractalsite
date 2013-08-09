@@ -1,8 +1,7 @@
 define([
-        'underscore',
         'backbone',
         'app'
-], function(_, Backbone, app) {
+], function(Backbone, app) {
     'use strict';
 
     // Create Image Model
@@ -10,8 +9,8 @@ define([
 
     app.CreateMod = Backbone.Model.extend({
         
-        url : "../create/",
-        
+        urlRoot: '../create',
+
         // Default attributes for the fractal
         defaults: {
             useHeat : true,
