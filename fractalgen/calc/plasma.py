@@ -3,9 +3,29 @@ import math
 import random
 import time
 
-def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
-                         cornerValue = None, centerValue = None):
-    
+def diamondSquareTileableFractal(\
+                  size, roughness = .5, perturbance = .5,\
+                  cornerValue = None, centerValue = None):
+    """
+    Create a plasma fractal using the diamond square algorithm.
+
+    This returns a square matrix of values between 0 and 1.
+    The fractals edges are similar and the result can be tiled.
+
+    Keyword arguments:
+    size: the length and width of the square matrix. 
+    For best results, the size should be = 2^n+1 where n is and integer.
+    (9, 17, 33, 65, etc).  
+    If a size is entered that doesn't meet this criteria, a fractal will 
+    be calculated for the next largest size and the function will return
+    a slice of the result.
+    roughness (from 0 to 1): the overall noise level 
+    perturbance (from 0 to 1): the size-proportional noise level
+    cornerValue: a value (0 to 1) to be used for the four corners of the square.
+    centerValue: a value (0 to 1) to be used for the center of the square.
+    numpy.savetxt("matrix.txt", matrix) can be used to save the result as a text file
+    pngsaver has routines for converting the fractal to an image. 
+    """
     start = time.time()
 
     #calculate the fractal based on the next highest 2^n + 1
@@ -45,6 +65,9 @@ def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
                 matrix[currentsize::currentsize, 0:maxindex:currentsize]])
             
         #left edge
+        #the fourth value in the list is from the right side
+        #(right edge minus midsize)
+        #including this value makes the fractal tileable
         matrix[midsize::currentsize, 0] =\
             getValue(noiseLevel,\
             [matrix[0:maxindex:currentsize, 0],\
@@ -52,11 +75,14 @@ def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
             matrix[midsize::currentsize, midsize],\
             matrix[midsize::currentsize, maxindex - midsize]])
             
-        #right edge = left edge
+        #right edge = left edge for a tileable fractal
         matrix[midsize::currentsize,maxindex] =\
             matrix[midsize::currentsize, 0]
         
         #top edge
+        #the fourth value in the list is from the bottom
+        #(bottom edge minus midsize)
+        #including this value makes the fractal tileable
         matrix[0, midsize::currentsize] =\
             getValue(noiseLevel,\
             [matrix[0, 0:maxindex:currentsize],\
@@ -64,7 +90,7 @@ def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
             matrix[midsize, midsize::currentsize],\
             matrix[maxindex-midsize, midsize::currentsize]])
         
-        #bottom edge = top edge
+        #bottom edge = top edge for a tileable fractal
         matrix[maxindex, midsize::currentsize] =\
             matrix[0, midsize::currentsize]
         
@@ -91,7 +117,7 @@ def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
     print "elapsed seconds =", time.time() - start
     return matrix
 
-def diamondSquareFractalOld(size, roughness = .5, perturbance = .5,\
+def diamondSquareFractal(size, roughness = .5, perturbance = .5,\
                          cornerValues = None, edgeError = True, midError = True, 
                          hasBorder = False):
     """
