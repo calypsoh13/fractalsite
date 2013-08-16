@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 class RawFractal(models.Model):
     author = models.ForeignKey(User)
     rawfractimg = models.CharField(max_length=40)
+    rawfractfile = models.CharField(max_length=40)
     size = models.IntegerField(default=0)
     roughness = models.DecimalField(max_digits=2, decimal_places=1)
     perturbance = models.DecimalField(max_digits=2, decimal_places=1)
@@ -14,7 +15,6 @@ class Fractal(models.Model):
     pub_date = models.DateTimeField('date created', auto_now=True)
     fractalimg = models.CharField(max_length=40)
     title = models.CharField(max_length=40)
-    likes = models.IntegerField(default=0)
     rawfractal = models.ForeignKey(RawFractal)
     useheat = models.BooleanField()
 
@@ -40,3 +40,6 @@ class Comment(models.Model):
     pub_date = models.DateTimeField('date published', auto_now=True)
     fractal = models.ForeignKey(Fractal)
 
+class Like(models.Model):
+    liker = models.ForeignKey(User)
+    fractal = models.ForeignKey(Fractal)
