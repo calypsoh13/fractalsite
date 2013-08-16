@@ -16,7 +16,8 @@ define([
             useHeat : true,
             currentFilter : 0,
             colorStops : 3,
-            gaussFilters : []
+            gaussFilters : [],
+            
         }, 
        
     });

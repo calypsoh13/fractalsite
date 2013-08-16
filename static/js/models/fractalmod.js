@@ -20,8 +20,9 @@ define([
             roughnessSetting: 5,
             perturbance: .5,
             perturbanceSetting: 5,
-            serverRef: "",
-            fractalImage: ""
+            rawFractImg: "",
+            rawFractFile: "",
+            author: "";
         }
     });
     return app.FractalMod;

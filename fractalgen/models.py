@@ -3,20 +3,23 @@ from django.contrib.auth.models import User
 
 class RawFractal(models.Model):
     author = models.ForeignKey(User)
-    rawfractimg = models.CharField(max_length=40)
-    rawfractfile = models.CharField(max_length=40)
-    size = models.IntegerField(default=0)
+    rawFractImg = models.CharField(max_length=255)
+    rawFractFile = models.CharField(max_length=255)
+    size = models.IntegerField(default=257)
+    sizeSetting = models.IntegerField(default=8)
     roughness = models.DecimalField(max_digits=2, decimal_places=1)
+    roughnessSetting = models.IntegerField(default=5)
     perturbance = models.DecimalField(max_digits=2, decimal_places=1)
+    perturbanceSetting = models.IntegerField(default=5)
 
 
 class Fractal(models.Model):
     author = models.ForeignKey(User)
-    pub_date = models.DateTimeField('date created', auto_now=True)
-    fractalimg = models.CharField(max_length=40)
+    pubDate = models.DateTimeField('date created', auto_now=True)
+    fractalImg = models.CharField(max_length=40)
     title = models.CharField(max_length=40)
-    rawfractal = models.ForeignKey(RawFractal)
-    useheat = models.BooleanField()
+    rawFractal = models.ForeignKey(RawFractal)
+    useHeat = models.BooleanField()
 
     def __unicode__(self):
         return self.title
@@ -33,11 +36,13 @@ class ColorStop(models.Model):
     fractal = models.ForeignKey(Fractal)
     color = models.CharField(max_length=8)
     stop = models.IntegerField(default=0)
+    useStop = models.BooleanField()
+    optional = models.BooleanField()
     
 class Comment(models.Model):
     author = models.ForeignKey(User)
     body = models.TextField()
-    pub_date = models.DateTimeField('date published', auto_now=True)
+    pubDate = models.DateTimeField('date published', auto_now=True)
     fractal = models.ForeignKey(Fractal)
 
 class Like(models.Model):
