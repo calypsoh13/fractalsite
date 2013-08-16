@@ -15,8 +15,11 @@ define([
         defaults: {
             useHeat : true,
             currentFilter : 0,
-            colorStops : 3,
-            gaussFilters : [],
+            author : "",
+            pubDate : "",
+            fractalImg : "",
+            title : "",
+            rawFractal : ""
             
         }, 
        

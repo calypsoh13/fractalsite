@@ -27,10 +27,10 @@ class Fractal(models.Model):
 
 class Filter(models.Model):
     fractal = models.ForeignKey(Fractal)
-    X1 = models.IntegerField(default=0)
-    Y1 = models.IntegerField(default=0)
-    sigX1 = models.DecimalField(max_digits=3, decimal_places=2)
-    sigY1 = models.DecimalField(max_digits=3, decimal_places=2)
+    X = models.IntegerField(default=0)
+    Y = models.IntegerField(default=0)
+    sigX = models.DecimalField(max_digits=3, decimal_places=2)
+    sigY = models.DecimalField(max_digits=3, decimal_places=2)
 
 class ColorStop(models.Model):
     fractal = models.ForeignKey(Fractal)
