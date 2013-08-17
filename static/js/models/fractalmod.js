@@ -22,7 +22,7 @@ define([
             perturbanceSetting: 5,
             rawFractImg: "",
             rawFractFile: "",
-            author: "";
+            author: ""
         }
     });
     return app.FractalMod;

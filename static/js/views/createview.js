@@ -7,6 +7,7 @@ define([
         'views/colorstopview',
         'models/createmod',
         'collections/colorstops',
+        'collections/filters',
         'html5slider'
 ], function($, _, Backbone, app, FractalView, ColorStopView, CreateMod, ColorStops, html5slider) {
     'use strict';
@@ -59,7 +60,6 @@ define([
 
         // Render the create template.
         render: function() {
-            app.CreateMod.save("numberColorStops", app.ColorStops.length);
             this.$el.html( this.createTemplate( app.CreateMod.toJSON() ) );
             this.addAllColorStops();
             return this;
@@ -67,11 +67,10 @@ define([
 
         // add a filter
         addFilter: function() {
-            var filters = app.CreateMod.get("gaussFilters");
             // limit the user to 5 filters
-            if (filters.length > 4) return;
+            if (app.Filters.length > 4) return;
             var midsize = (app.FractalMod.get('size') -1) / 2 + 1;
-            filters.push(
+            app.Filters.push(
             {
                 gaussXSetting : 0, 
                 gaussYSetting : 0,
@@ -82,53 +81,37 @@ define([
                 sigmaX : 1,
                 sigmaY : 1 
             });
-            app.CreateMod.save(
-            {
-                gaussFilters : filters,
-                currentFilter : filters.length - 1
-            });
+            app.CurrentFilter = app.Filters.length - 1;
             this.setGaussElements();
             this.showGaussPreview();
         },
 
         // remove a filter
         removeFilter: function() {
-            var filterIndex = app.CreateMod.get("currentFilter");
-            var filters = app.CreateMod.get("gaussFilters");
-            filters.splice(filterIndex,1);
-            filterIndex = Math.max(0, Math.min(filters.length-1, filterIndex));
-            app.CreateMod.save(
-            {
-                gaussFilters : filters,
-                currentFilter : filterIndex
-            });
+            app.Filters.splice(app.Filters,1);
+            app.CurrentFilter = Math.max(0, Math.min(app.Filters.length-1, app.CurrentFilter));
             this.setGaussElements();
             this.showGaussPreview();
         },
         
         // go to previous filter
         previousFilter: function() {
-            var filterIndex = app.CreateMod.get("currentFilter");
-            filterIndex--;
-            if (filterIndex < 0)
+            app.CurrentFilter--;
+            if (app.CurrentFilter < 0)
             {
-                filterIndex = app.CreateMod.get("gaussFilters").length - 1;
+                CurrentFilter = app.Filters.length - 1;
             }
-            app.CreateMod.save({currentFilter : filterIndex});
             this.setGaussElements();
             this.showGaussPreview();
         },
         
         // go to next filter
         nextFilter: function() {
-            var filterIndex = app.CreateMod.get("currentFilter");
-            var filters = app.CreateMod.get("gaussFilters");
-            filterIndex++;
-            if (filterIndex > filters.length - 1)
+            app.CurrentFilter++;
+            if (app.CurrentFilter > app.Filters.length - 1)
             {
-                filterIndex = 0;
+                app.CurrentFilter = 0;
             }
-            app.CreateMod.save({currentFilter : filterIndex});
             this.setGaussElements();
             this.showGaussPreview();
         },
@@ -141,11 +124,8 @@ define([
                 var increment = (size-1)/128;
                 var offset = increment * 64;
                 var gx = increment * value + offset;
-                var filterIndex = app.CreateMod.get("currentFilter");
-                var filters = app.CreateMod.get('gaussFilters');
-                filters[filterIndex].gaussXSetting = value;
-                filters[filterIndex].gaussX = gx;
-                app.CreateMod.save('gaussFilters', filters);
+                app.Filters.at(app.CurrentFilter).gaussXSetting = value;
+                app.Filters.at(app.CurrentFilter).gaussX = gx;
                 this.$('#gaussX').val(gx);
             } 
             this.showGaussPreview();
@@ -159,11 +139,8 @@ define([
                 var increment = (size-1)/128;
                 var offset = increment * 64;
                 var gy = increment * value + offset;
-                var filterIndex = app.CreateMod.get("currentFilter");
-                var filters = app.CreateMod.get('gaussFilters');
-                filters[filterIndex].gaussYSetting = value;
-                filters[filterIndex].gaussY = gy;
-                app.CreateMod.save('gaussFilters', filters);
+                app.Filters.at(app.CurrentFilter).gaussYSetting = value;
+                app.Filters.at(app.CurrentFilter).gaussY = gy;
                 this.$('#gaussY').val(gy);
             } 
             this.showGaussPreview();
@@ -174,11 +151,8 @@ define([
             
             if (!isNaN(value)) {
                 var sigmaX = Math.floor(Math.pow(2, value/2) * 100) / 100;
-                var filterIndex = app.CreateMod.get("currentFilter");
-                var filters = app.CreateMod.get('gaussFilters');
-                filters[filterIndex].sigmaXSetting = value;
-                filters[filterIndex].sigmaX = sigmaX;
-                app.CreateMod.save('gaussFilters', filters);
+                app.Filters.at(app.CurrentFilter).sigmaXSetting = value;
+                app.Filters.at(app.CurrentFilter).sigmaX = sigmaX;
                 this.$('#gaussSigmaX').text(sigmaX);
             }
             this.showGaussPreview();
@@ -189,11 +163,8 @@ define([
             var value = parseInt(this.$('#gaussSigmaYSetting').val());
             if (!isNaN(value)) {
                 var sigmaY = Math.floor(Math.pow(2, value/2) * 100) / 100;
-                var filterIndex = app.CreateMod.get("currentFilter");
-                var filters = app.CreateMod.get('gaussFilters');
-                filters[filterIndex].sigmaYSetting = value;
-                filters[filterIndex].sigmaY = sigmaY;
-                app.CreateMod.save('gaussFilters', filters);
+                app.Filters.at(app.CurrentFilter).sigmaYSetting = value;
+                app.Filters.at(app.CurrentFilter).sigmaY = sigmaY;
                 this.$('#gaussSigmaY').text(sigmaY);
             }
             this.showGaussPreview();
@@ -201,31 +172,26 @@ define([
         
         updateGaussForSize: function() {
             var size = app.FractalMod.get('size');
-            var filterIndex = app.CreateMod.get("currentFilter");
-            var filters = app.CreateMod.get('gaussFilters');
             
-            for(var i = 0; i < filters.length; i++)
+            for(var i = 0; i < app.Filters.length; i++)
             {
-                var filter = filters[i];
+                var filter = app.Filters[i];
                 var increment = (size-1)/128;
                 var offset = increment * 64;
                 filter.gaussX = increment * filter.gaussXSetting + offset;
                 filter.gaussY = increment * filter.gaussYSetting + offset;
             }
-            app.CreateMod.save('gaussFilters', filters);
             
-            if (filters.length > 0)
+            if (app.Filters.length > 0)
             {
-                this.$('#gaussX').val(filters[filterIndex].gaussX);
-                this.$('#gaussY').val(filters[filterIndex].gaussY);
+                this.$('#gaussX').val(app.Filters.at(app.CurrentFilter).gaussX);
+                this.$('#gaussY').val(app.Filters.at(app.CurrentFilter).gaussY);
             
                 this.showGaussPreview();
             }
         },
         
         editX: function() {
-            var filterIndex = app.CreateMod.get("currentFilter");
-            var filters = app.CreateMod.get('gaussFilters');
             var value = parseInt(this.$('#gaussX').val());
             
             if (!isNaN(value)) {
@@ -242,23 +208,20 @@ define([
                     gxSetting = Math.max(-80, Math.min(80, gxSetting));
                     value = increment * gxSetting + offset;
                 }
-                filters[filterIndex].gaussXSetting = gxSetting;
-                filters[filterIndex].gaussX = value;
-                app.CreateMod.save('gaussFilters', filters);
+                app.Filters.at(app.CurrentFilter).gaussXSetting = gxSetting;
+                app.Filters.at(app.CurrentFilter).gaussX = value;
                 this.$('#gaussX').val(value);
                 this.$('#gaussXSetting').val(gxSetting);
             } 
             else
             {
-                value = filters[filterIndex].gaussX;
+                value = app.Filters.at(app.CurrentFilter).gaussX;
                 this.$('#gaussX').val(value);
             }
             this.showGaussPreview();
         },
         
         editY: function() {
-            var filterIndex = app.CreateMod.get("currentFilter");
-            var filters = app.CreateMod.get('gaussFilters');
             var value = parseInt(this.$('#gaussY').val());
             
             if (!isNaN(value) ) {
@@ -275,15 +238,14 @@ define([
                     gySetting = Math.max(-80, Math.min(80, gySetting));
                     value = increment * gySetting + offset;
                 }
-                filters[filterIndex].gaussYSetting = gySetting;
-                filters[filterIndex].gaussY = value;
-                app.CreateMod.save('gaussFilters', filters);
+                app.Filters.at(app.CurrentFilter).gaussYSetting = gySetting;
+                app.Filters.at(app.CurrentFilter).gaussY = value;
                 this.$('#gaussY').val(value);
                 this.$('#gaussYSetting').val(gySetting);
             } 
             else
             {
-                value = filters[filterIndex].gaussY;
+                value = app.Filters.at(app.CurrentFilter).gaussY;
                 this.$('#gaussY').val(value);
             }
             this.showGaussPreview();
@@ -291,8 +253,7 @@ define([
         
         setGaussElements : function()
         {
-            var filters = app.CreateMod.get('gaussFilters');
-            var numberFilters = filters.length;
+            var numberFilters = app.Filters.length;
             $(".gaussInputs").toggleClass('hidden', numberFilters === 0);
             $("#filterMinus").toggleClass('hidden', numberFilters < 1);
             $("#filterPrevious").toggleClass('hidden', numberFilters < 2);
@@ -300,8 +261,7 @@ define([
 
             if (numberFilters > 0)
             {
-                var index = app.CreateMod.get("currentFilter");
-                var filter = filters[index];
+                var filter = app.Filters.at(app.CurrentFilter);
                 var filterLabel = index+1;
         
                 $("#xLabel").text("X" + filterLabel);
@@ -324,8 +284,7 @@ define([
         showGaussPreview: function() 
         {
             var size = app.FractalMod.get('size');
-            var filterIndex = app.CreateMod.get("currentFilter");
-            var filter = app.CreateMod.get('gaussFilters')[filterIndex];
+            var filter = app.Filters.at(app.CurrentFilter);
             var gsx = filter.sigmaX;
             var gsy = filter.sigmaY;
             var xSize = Math.floor(129 * gsx);

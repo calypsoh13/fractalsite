@@ -14,7 +14,6 @@ define([
         // Default attributes for the fractal
         defaults: {
             useHeat : true,
-            currentFilter : 0,
             author : "",
             pubDate : "",
             fractalImg : "",
@@ -25,5 +24,6 @@ define([
        
     });
     
+    app.CurrentFilter = 0;
     return new app.CreateMod();
 });
