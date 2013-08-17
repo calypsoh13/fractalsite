@@ -47,8 +47,8 @@ define([
 
             if (!isNaN(value)) {
                 var newsize = Math.pow(2, value) + 1;
-                app.FractalMod.save({ sizeSetting: value });
-                app.FractalMod.save({ size : newsize });
+                app.FractalMod.set("sizeSetting", value);
+                app.FractalMod.set("size", newsize);
                 this.$(size).text(newsize);
             } 
         },
@@ -59,8 +59,8 @@ define([
 
             if (!isNaN(value)) {
                 var newRoughness = value / 10;
-                app.FractalMod.save({ roughnessSetting: value });
-                app.FractalMod.save({ roughness: newRoughness});
+                app.FractalMod.set("roughnessSetting", value);
+                app.FractalMod.set("roughness", newRoughness);
                 this.$(roughness).text(newRoughness);
             } 
         },
@@ -71,8 +71,8 @@ define([
 
             if (!isNaN(value)) {
                 var newperturbance = value / 10;
-                app.FractalMod.save({ perturbanceSetting: value });
-                app.FractalMod.save({ perturbance: newperturbance});
+                app.FractalMod.set("perturbanceSetting", value);
+                app.FractalMod.set("perturbance", newperturbance);
                 this.$(perturbance).text(newperturbance);
             } 
         }

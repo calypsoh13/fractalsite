@@ -24,20 +24,23 @@ class Fractal(models.Model):
     def __unicode__(self):
         return self.title
 
-
 class Filter(models.Model):
     fractal = models.ForeignKey(Fractal)
     X = models.IntegerField(default=0)
     Y = models.IntegerField(default=0)
-    sigX = models.DecimalField(max_digits=3, decimal_places=2)
-    sigY = models.DecimalField(max_digits=3, decimal_places=2)
+    xSetting = models.IntegerField(default = 0)
+    ySetting = models.IntegerField(default = 0)
+    sigmaX = models.DecimalField(max_digits=3, decimal_places=2)
+    sigmaY = models.DecimalField(max_digits=3, decimal_places=2)
+    sigmaXSetting = models.IntegerField(default = 0)
+    sigmaYSetting = models.IntegerField(default = 0)
 
 class ColorStop(models.Model):
     fractal = models.ForeignKey(Fractal)
     color = models.CharField(max_length=8)
     stop = models.IntegerField(default=0)
-    useStop = models.BooleanField()
     optional = models.BooleanField()
+    useStop = models.BooleanField()
     
 class Comment(models.Model):
     author = models.ForeignKey(User)

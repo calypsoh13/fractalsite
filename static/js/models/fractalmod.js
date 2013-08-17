@@ -14,15 +14,15 @@ define([
 
         // Default attributes for the fractal
         defaults: {
+            author: "",
+            rawFractImg: "",
+            rawFractFile: "",
             size: 257,
             sizeSetting: 8,
             roughness: .5,
             roughnessSetting: 5,
             perturbance: .5,
-            perturbanceSetting: 5,
-            rawFractImg: "",
-            rawFractFile: "",
-            author: ""
+            perturbanceSetting: 5
         }
     });
     return app.FractalMod;

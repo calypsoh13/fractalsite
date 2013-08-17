@@ -13,12 +13,12 @@ define([
 
         // Default attributes for the fractal
         defaults: {
-            useHeat : true,
             author : "",
             pubDate : "",
             fractalImg : "",
             title : "",
-            rawFractal : ""
+            rawFractal : "", 
+            useHeat : true,
             
         }, 
        

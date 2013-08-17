@@ -14,10 +14,15 @@ define([
         
         // Default attributes for the filter
         defaults: {
-            X: 0,
-            Y: 0,
-            sigX: 1.0,
-            sigY: 1.0
+            fractal : "",
+            X : 0,
+            Y : 0,
+            xSetting : 0,
+            ySetting : 0,
+            sigmaX : 1,
+            sigmaY : 1,
+            sigmaXSetting : 0,
+            sigmaYSetting : 0
         }
     });
     return app.FilterMod;

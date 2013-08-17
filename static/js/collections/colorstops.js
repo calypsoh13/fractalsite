@@ -28,11 +28,11 @@ define([
             return colorStop.get('order');
         },
         
-        saveColor: function(id, color) {
+        setColor: function(id, color) {
             this.forEach(function (model) {
                 if (model.get("order") === id)
                 {
-                    model.save('color', color);
+                    model.set('color', color);
                 }
             });
         }

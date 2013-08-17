@@ -9,7 +9,7 @@ define([
         'collections/colorstops',
         'collections/filters',
         'html5slider'
-], function($, _, Backbone, app, FractalView, ColorStopView, CreateMod, ColorStops, html5slider) {
+], function($, _, Backbone, app, FractalView, ColorStopView, CreateMod, ColorStops, Filters, html5slider) {
     'use strict';
 
     // The Create image view
@@ -41,6 +41,7 @@ define([
         initialize: function() {
             new FractalView();
             app.ColorStops = ColorStops;
+            app.Filters = Filters;
             app.CreateMod = CreateMod;
             this.listenTo(app.FractalMod, 'change', this.updateGaussForSize);
             this.listenTo(app.ColorStops, 'add', this.addAllColorStops);
@@ -70,17 +71,10 @@ define([
             // limit the user to 5 filters
             if (app.Filters.length > 4) return;
             var midsize = (app.FractalMod.get('size') -1) / 2 + 1;
-            app.Filters.push(
-            {
-                gaussXSetting : 0, 
-                gaussYSetting : 0,
-                gaussX : midsize,
-                gaussY : midsize,
-                sigmaXSetting : 0,
-                sigmaYSetting : 0,
-                sigmaX : 1,
-                sigmaY : 1 
-            });
+            var filter = new app.FilterMod()
+            filter.set("X", midsize);
+            filter.set("Y", midsize);
+            app.Filters.add(filter);
             app.CurrentFilter = app.Filters.length - 1;
             this.setGaussElements();
             this.showGaussPreview();
@@ -88,7 +82,7 @@ define([
 
         // remove a filter
         removeFilter: function() {
-            app.Filters.splice(app.Filters,1);
+            app.Filters.remove(app.Filters.at(app.CurrentFilter));
             app.CurrentFilter = Math.max(0, Math.min(app.Filters.length-1, app.CurrentFilter));
             this.setGaussElements();
             this.showGaussPreview();
@@ -99,7 +93,7 @@ define([
             app.CurrentFilter--;
             if (app.CurrentFilter < 0)
             {
-                CurrentFilter = app.Filters.length - 1;
+                app.CurrentFilter = app.Filters.length - 1;
             }
             this.setGaussElements();
             this.showGaussPreview();
@@ -124,8 +118,8 @@ define([
                 var increment = (size-1)/128;
                 var offset = increment * 64;
                 var gx = increment * value + offset;
-                app.Filters.at(app.CurrentFilter).gaussXSetting = value;
-                app.Filters.at(app.CurrentFilter).gaussX = gx;
+                app.Filters.at(app.CurrentFilter).set("xSetting", value);
+                app.Filters.at(app.CurrentFilter).set("X", gx);
                 this.$('#gaussX').val(gx);
             } 
             this.showGaussPreview();
@@ -139,8 +133,8 @@ define([
                 var increment = (size-1)/128;
                 var offset = increment * 64;
                 var gy = increment * value + offset;
-                app.Filters.at(app.CurrentFilter).gaussYSetting = value;
-                app.Filters.at(app.CurrentFilter).gaussY = gy;
+                app.Filters.at(app.CurrentFilter).set("ySetting", value);
+                app.Filters.at(app.CurrentFilter).set("Y", gy);
                 this.$('#gaussY').val(gy);
             } 
             this.showGaussPreview();
@@ -151,8 +145,8 @@ define([
             
             if (!isNaN(value)) {
                 var sigmaX = Math.floor(Math.pow(2, value/2) * 100) / 100;
-                app.Filters.at(app.CurrentFilter).sigmaXSetting = value;
-                app.Filters.at(app.CurrentFilter).sigmaX = sigmaX;
+                app.Filters.at(app.CurrentFilter).set("sigmaXSetting", value);
+                app.Filters.at(app.CurrentFilter).set("sigmaX", sigmaX);
                 this.$('#gaussSigmaX').text(sigmaX);
             }
             this.showGaussPreview();
@@ -163,8 +157,8 @@ define([
             var value = parseInt(this.$('#gaussSigmaYSetting').val());
             if (!isNaN(value)) {
                 var sigmaY = Math.floor(Math.pow(2, value/2) * 100) / 100;
-                app.Filters.at(app.CurrentFilter).sigmaYSetting = value;
-                app.Filters.at(app.CurrentFilter).sigmaY = sigmaY;
+                app.Filters.at(app.CurrentFilter).set("sigmaYSetting", value);
+                app.Filters.at(app.CurrentFilter).set("sigmaY", sigmaY);
                 this.$('#gaussSigmaY').text(sigmaY);
             }
             this.showGaussPreview();
@@ -175,17 +169,17 @@ define([
             
             for(var i = 0; i < app.Filters.length; i++)
             {
-                var filter = app.Filters[i];
+                var filter = app.Filters.at(i);
                 var increment = (size-1)/128;
                 var offset = increment * 64;
-                filter.gaussX = increment * filter.gaussXSetting + offset;
-                filter.gaussY = increment * filter.gaussYSetting + offset;
+                filter.set("X", increment * filter.gaussXSetting + offset);
+                filter.set("Y", increment * filter.gaussYSetting + offset);
             }
             
             if (app.Filters.length > 0)
             {
-                this.$('#gaussX').val(app.Filters.at(app.CurrentFilter).gaussX);
-                this.$('#gaussY').val(app.Filters.at(app.CurrentFilter).gaussY);
+                this.$('#gaussX').val(app.Filters.at(app.CurrentFilter).get("X"));
+                this.$('#gaussY').val(app.Filters.at(app.CurrentFilter).get("Y"));
             
                 this.showGaussPreview();
             }
@@ -208,14 +202,14 @@ define([
                     gxSetting = Math.max(-80, Math.min(80, gxSetting));
                     value = increment * gxSetting + offset;
                 }
-                app.Filters.at(app.CurrentFilter).gaussXSetting = gxSetting;
-                app.Filters.at(app.CurrentFilter).gaussX = value;
+                app.Filters.at(app.CurrentFilter).set("xSetting", gxSetting);
+                app.Filters.at(app.CurrentFilter).set("X", value);
                 this.$('#gaussX').val(value);
                 this.$('#gaussXSetting').val(gxSetting);
             } 
             else
             {
-                value = app.Filters.at(app.CurrentFilter).gaussX;
+                value = app.Filters.at(app.CurrentFilter).get("X");
                 this.$('#gaussX').val(value);
             }
             this.showGaussPreview();
@@ -238,14 +232,14 @@ define([
                     gySetting = Math.max(-80, Math.min(80, gySetting));
                     value = increment * gySetting + offset;
                 }
-                app.Filters.at(app.CurrentFilter).gaussYSetting = gySetting;
-                app.Filters.at(app.CurrentFilter).gaussY = value;
+                app.Filters.at(app.CurrentFilter).set("ySetting", gySetting);
+                app.Filters.at(app.CurrentFilter).set("Y", value);
                 this.$('#gaussY').val(value);
                 this.$('#gaussYSetting').val(gySetting);
             } 
             else
             {
-                value = app.Filters.at(app.CurrentFilter).gaussY;
+                value = app.Filters.at(app.CurrentFilter).get("Y");
                 this.$('#gaussY').val(value);
             }
             this.showGaussPreview();
@@ -254,6 +248,7 @@ define([
         setGaussElements : function()
         {
             var numberFilters = app.Filters.length;
+            
             $(".gaussInputs").toggleClass('hidden', numberFilters === 0);
             $("#filterMinus").toggleClass('hidden', numberFilters < 1);
             $("#filterPrevious").toggleClass('hidden', numberFilters < 2);
@@ -262,22 +257,22 @@ define([
             if (numberFilters > 0)
             {
                 var filter = app.Filters.at(app.CurrentFilter);
-                var filterLabel = index+1;
-        
+                var filterLabel = app.CurrentFilter+1;
+                
                 $("#xLabel").text("X" + filterLabel);
                 $("#yLabel").text("Y" + filterLabel);
                 $("#sigmaXLabel").text("sigma X" + filterLabel);
                 $("#sigmaYLabel").text("sigma Y" + filterLabel);
-        
-                $("#gaussXSetting").val(filter.gaussXSetting);
-                $("#gaussYSetting").val(filter.gaussYSetting);
-                $("#gaussSigmaXSetting").val(filter.sigmaXSetting);
-                $("#gaussSigmaYSetting").val(filter.sigmaYSetting);
-
-                $("#gaussX").val(filter.gaussX);
-                $("#gaussY").val(filter.gaussY);
-                $("#gaussSigmaX").text(filter.sigmaX);
-                $("#gaussSigmaY").text(filter.sigmaY);
+                
+                $("#gaussXSetting").val(filter.get("xSetting"));
+                $("#gaussYSetting").val(filter.get("ySetting"));
+                $("#gaussSigmaXSetting").val(filter.get("sigmaXSetting"));
+                $("#gaussSigmaYSetting").val(filter.get("sigmaYSetting"));
+                
+                $("#gaussX").val(filter.get("X"));
+                $("#gaussY").val(filter.get("Y"));
+                $("#gaussSigmaX").text(filter.get("sigmaX"));
+                $("#gaussSigmaY").text(filter.get("sigmaY"));
             }
         },
         
@@ -285,13 +280,13 @@ define([
         {
             var size = app.FractalMod.get('size');
             var filter = app.Filters.at(app.CurrentFilter);
-            var gsx = filter.sigmaX;
-            var gsy = filter.sigmaY;
+            var gsx = filter.get("sigmaX");
+            var gsy = filter.get("sigmaY");
             var xSize = Math.floor(129 * gsx);
             var ySize = Math.floor(129 * gsy);
             $("#gaussPreview").css("background-size", xSize + "px " + ySize + "px"); 
-            var gx = filter.gaussX;
-            var gy = filter.gaussY;
+            var gx = filter.get("X");
+            var gy = filter.get("Y");
             var tempx = 2 * (gx-1)/(size -1);
             var tempy = 2 * (gy-1)/(size -1);
             var locX = (tempx - gsx) * 65;
@@ -301,20 +296,14 @@ define([
         },
         
         useHeat: function() {
-            app.CreateMod.save(
-            { 
-                useHeat: true
-            });
+            app.CreateMod.set("useHeat", true);
             $("#heatPreview").toggleClass("hidden", false);
             $("#gradientPreview").toggleClass("hidden", true);
             $(".gradientInputs").toggleClass("hidden", true);
         },
         
         useGradient: function() {
-            app.CreateMod.save(
-            { 
-                useHeat: false
-            });
+            app.CreateMod.set("useHeat", false);
             $("#heatPreview").toggleClass("hidden", true);
             $("#gradientPreview").toggleClass("hidden", false);
             $(".gradientInputs").toggleClass("hidden", false);

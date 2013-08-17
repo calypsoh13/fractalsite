@@ -41,7 +41,7 @@ define([
                 ],
                 change: function(c) {
                     var id = parseInt($(this).attr("id").replace('color',''));
-                    app.ColorStops.saveColor(id, c.toRgbString());
+                    app.ColorStops.setColor(id, c.toRgbString());
                 }
             });
             return this;
@@ -54,7 +54,7 @@ define([
         
         editCheckbox: function() {
             var useStop = this.$(".useStop").is(":checked");
-            this.model.save("useStop", useStop);
+            this.model.set("useStop", useStop);
             if (useStop)
             {
                 var color = new app.ColorStopMod();
@@ -74,7 +74,7 @@ define([
         
         editColorStop: function(c) {
             var stop = this.$(".colorStop").val();
-            this.model.save("stop", stop);
+            this.model.set("stop", stop);
         }
     });
     return app.ColorStopView;
