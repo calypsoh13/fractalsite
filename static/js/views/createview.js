@@ -172,8 +172,8 @@ define([
                 var filter = app.Filters.at(i);
                 var increment = (size-1)/128;
                 var offset = increment * 64;
-                filter.set("X", increment * filter.gaussXSetting + offset);
-                filter.set("Y", increment * filter.gaussYSetting + offset);
+                filter.set("X", increment * filter.get("gaussXSetting") + offset);
+                filter.set("Y", increment * filter.get("gaussYSetting") + offset);
             }
             
             if (app.Filters.length > 0)
@@ -361,6 +361,7 @@ define([
             gradElement.style.background="-ms-" + lingrad + stopA +")";
             gradElement.style.background="-webkit-gradient(linear, left top, right top," + stopB + ")";
         }
+        
     });
     return app.CreateView;
 });

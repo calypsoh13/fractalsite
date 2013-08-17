@@ -20,7 +20,8 @@ define([
         events: {
             'change #sizeSetting': 'editSize',
             'change #roughnessSetting': 'editRoughness',
-            'change #perturbanceSetting': 'editPerturbance'
+            'change #perturbanceSetting': 'editPerturbance',
+            'click #createFractal' : 'createFractal'
         },
 
         initialize: function() {
@@ -50,6 +51,7 @@ define([
                 app.FractalMod.set("sizeSetting", value);
                 app.FractalMod.set("size", newsize);
                 this.$(size).text(newsize);
+                this.clearFractal();
             } 
         },
 
@@ -62,6 +64,7 @@ define([
                 app.FractalMod.set("roughnessSetting", value);
                 app.FractalMod.set("roughness", newRoughness);
                 this.$(roughness).text(newRoughness);
+                this.clearFractal();
             } 
         },
         
@@ -74,7 +77,37 @@ define([
                 app.FractalMod.set("perturbanceSetting", value);
                 app.FractalMod.set("perturbance", newperturbance);
                 this.$(perturbance).text(newperturbance);
+                this.clearFractal();
             } 
+        },
+        
+        // displays the fractal image if it is stored in the fractal model
+        displayFractalImage: function() {
+            var image = app.FractalMod.get("rawFractalImg");
+            if (!image || /^\s*$/.test(image))
+            {
+                console.log("Setting image to blank");
+                image = "";
+            }
+            
+            this.$("#fractalImage").css("background-image", 'url(' + image + ')');
+            this.$("#fractalImage").css("background-size", "100%");
+        },
+        
+        // create the fractal
+        // FOR TESTING: This just shows an example image
+        createFractal: function() {
+            console.log("Using example image to work visibility issues");
+            app.FractalMod.set("rawFractalImg", "/static/assets/img/preview.png");
+            
+            this.displayFractalImage();
+        },
+        
+        // clear fractal preview image
+        clearFractal: function() {
+            app.FractalMod.set("rawFractalImg", "");
+            app.FractalMod.set("rawFractFile", "");
+            this.displayFractalImage();
         }
     });
     return app.FractalView;

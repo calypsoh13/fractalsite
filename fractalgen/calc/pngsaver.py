@@ -212,6 +212,17 @@ def saveHeat3D(fileName, matrix, ask = True, normalize = True):
 
         heat = toHeat(slice)
         savePng(file, heat)
+        
+def createPreview(fileName, matrix, previewSize):
+    """
+    creates a black and white preview image of the fractal 
+    given a preview size
+    """
+    size = matrix.shape[0]
+    increment =  round((size - 1) / (previewSize - 1), 0)
+    previewMatrix = matrix[0::increment, 0::increment]
+    
+    saveGradient(fileName, previewMatrix, [0,0,0], [255, 255, 255])
 
 class CosGradient:
 
