@@ -6,6 +6,7 @@ aPlasma.png
 images/
 plasma copy.py
 plasma copy2.py
+docs
 
 #Compiled
 *.py[cod]
@@ -67,8 +68,10 @@ unvec_plasma.py
 # Stuff for fractalsite
 fractaldata.sqlite3.db
 fractalsite/secrets.py
-static/images/*
+static/img/matrixfiles/*
+static/img/previewfiles/*
 admin
+
 
 prototypes/spectrum/zGruntfile.js
 
