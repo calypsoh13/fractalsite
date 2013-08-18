@@ -1,6 +1,6 @@
 define([
         'underscore',
-        'backbone',
+        'backbone_tastypie',
         'app',
         'models/filtermod'
 ], function(_, Backbone, app, FilterMod) {

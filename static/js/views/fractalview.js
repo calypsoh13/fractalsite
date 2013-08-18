@@ -1,7 +1,7 @@
 define([
         'jquery',
         'underscore',
-        'backbone',
+        'backbone_tastypie',
         'app',
         'models/fractalmod',
         'html5slider'
@@ -97,6 +97,8 @@ define([
         // create the fractal
         // FOR TESTING: This just shows an example image
         createFractal: function() {
+            app.FractalMod.save();
+            console.log("FractalMod saved: " + app.FractalMod.get("size") + " : " + app.FractalMod.get("roughness") + " : " + app.FractalMod.get("perturbance"));
             console.log("Using example image to work visibility issues");
             app.FractalMod.set("rawFractalImg", "/static/assets/img/preview.png");
             

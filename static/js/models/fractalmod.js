@@ -1,6 +1,6 @@
 define([
         'underscore',
-        'backbone',
+        'backbone_tastypie',
         'app'
 ], function(_, Backbone, app) {
     'use strict';
@@ -10,7 +10,7 @@ define([
     // the fractal model has a size, roughness, perturbance, server reference and image link attributes.
     app.FractalMod = Backbone.Model.extend({
         
-        urlRoot: "../create",
+        url: RAWFRAC_API,
 
         // Default attributes for the fractal
         defaults: {

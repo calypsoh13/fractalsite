@@ -4,6 +4,14 @@ require.config({
     // Shim lets us use require.js with non-AMD modules-
     // Some modules must be loaded before others.
     shim: {
+        backbone_tastypie: {
+            deps: [
+                'backbone',
+                'underscore',
+                'jquery'
+            ],
+            exports: 'Backbone'
+        },
         underscore: {
             exports: '_'
         },
@@ -29,7 +37,8 @@ require.config({
         backbone: 'lib/backbone',
         backboneLocalStorage: 'lib/backbone.localStorage',
         spectrum: 'spectrum/spectrum',
-        html5slider: 'lib/html5slider'
+        html5slider: 'lib/html5slider',
+        backbone_tastypie: 'lib/backbone-tastypie'
         // When we get into RESTful API, we might consider using backbone-tastypie.js 
     }
 });

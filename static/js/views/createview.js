@@ -1,7 +1,7 @@
 define([
         'jquery',
         'underscore',
-        'backbone',
+        'backbone_tastypie',
         'app',
         'views/fractalview',
         'views/colorstopview',

@@ -1,6 +1,6 @@
 define([
         'underscore',
-        'backbone',
+        'backbone_tastypie',
         'app'
 ], function(_, Backbone, app) {
     'use strict';

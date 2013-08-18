@@ -1,6 +1,6 @@
 define([
         'underscore',
-        'backbone',
+        'backbone_tastypie',
         'app',
         'models/colorstopmod'
 ], function(_, Backbone, app, ColorStopMod) {

@@ -1,5 +1,5 @@
 define([
-        'backbone',
+        'backbone_tastypie',
         'app'
 ], function(Backbone, app) {
     'use strict';
