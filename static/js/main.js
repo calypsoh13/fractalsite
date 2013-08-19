@@ -38,8 +38,7 @@ require.config({
         backboneLocalStorage: 'lib/backbone.localStorage',
         spectrum: 'spectrum/spectrum',
         html5slider: 'lib/html5slider',
-        backbone_tastypie: 'lib/backbone-tastypie'
-        // When we get into RESTful API, we might consider using backbone-tastypie.js 
+        backbone_tastypie: 'lib/backbone-tastypie',
     }
 });
 

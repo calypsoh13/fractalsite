@@ -6,6 +6,10 @@ import os
 import numpy
 import time
 from django.conf import settings
+import logging
+
+# For debugging
+logger = logging.getLogger('fractalsite.fractalgen.stuff')
 
 
 def tmpMatrixTxt(matrix, self):
@@ -14,7 +18,7 @@ def tmpMatrixTxt(matrix, self):
 
     Generates a filename to save to and returns that filename.
     """
-    matrixfilename = "static/img/matrixfiles/tmp-" + str(self.user) + "-" + time.strftime("%Y%m%d-%H%M%S") + ".txt"
+    matrixfilename = "static/img/matrixfiles/tmp-" + str(self.author) + "-" + time.strftime("%Y%m%d-%H%M%S") + ".txt"
     numpy.savetxt(matrixfilename, matrix)
     return matrixfilename
 
@@ -24,14 +28,14 @@ def tmpPreviewImage(matrix, self):
 
     Generates a filename to save to and returns that filename.
     """
-    imagefilename = "static/img/previewfiles/tmp-" + str(self.user) + "-" + time.strftime("%Y%m%d-%H%M%S") + ".png"
+    imagefilename = "static/img/previewfiles/tmp-" + str(self.author) + "-" + time.strftime("%Y%m%d-%H%M%S") + ".png"
     pngsaver.createPreview(imagefilename, matrix, 129)
     return imagefilename
 
 class RawFractal(models.Model):
-    user = models.ForeignKey(User)
-    rawFractImg = models.FileField(blank=True, upload_to='img/previewfiles')
-    rawFractFile = models.FileField(blank=True, upload_to='img/matrixfiles')
+    author = models.ForeignKey(User)
+    rawFractImg = models.FileField(blank=True, null=True, upload_to='img/previewfiles')
+    rawFractFile = models.FileField(blank=True, null=True, upload_to='img/matrixfiles')
     size = models.IntegerField(default=257)
     sizeSetting = models.IntegerField(default=8)
     roughness = models.FloatField()
@@ -46,21 +50,24 @@ class RawFractal(models.Model):
         Generates matrix with the instance's size, roughness and perturbance.
         Populates rawFractFile and RawFractImg fields with filepaths.
         """
+        logger.info(self.author) # See who the author is
+        
         matrix = plasma.diamondSquareTileableFractal(self.size, self.roughness, self.perturbance)
 
         tmpmatrixpath = tmpMatrixTxt(matrix, self)
         with open(tmpmatrixpath) as f:
-            self.rawFractFile.save((str(self.user) + "-" + time.strftime("%Y%m%d-%H%M%S") + ".txt"), File(f), save=False)
+            self.rawFractFile.save((str(self.author) + "-" + time.strftime("%Y%m%d-%H%M%S") + ".txt"), File(f), save=False)
         os.remove(tmpmatrixpath)
 
         tmpimagepath = tmpPreviewImage(matrix, self)
         with open(tmpimagepath) as f:
-            self.rawFractImg.save((str(self.user) + "-" + time.strftime("%Y%m%d-%H%M%S") + ".png"), File(f), save=False)
+            self.rawFractImg.save((str(self.author) + "-" + time.strftime("%Y%m%d-%H%M%S") + ".png"), File(f), save=False)
         os.remove(tmpimagepath)
+        
         super(RawFractal, self).save(*args, **kwargs)
 
 class Fractal(models.Model):
-    user = models.ForeignKey(User)
+    author = models.ForeignKey(User)
     pubDate = models.DateTimeField('date created', auto_now=True)
     fractalImg = models.CharField(max_length=40)
     title = models.CharField(max_length=40)
@@ -89,12 +96,12 @@ class ColorStop(models.Model):
     useStop = models.BooleanField()
     
 class Comment(models.Model):
-    user = models.ForeignKey(User)
+    author = models.ForeignKey(User)
     body = models.TextField()
     pubDate = models.DateTimeField('date published', auto_now=True)
     fractal = models.ForeignKey(Fractal)
 
 class Like(models.Model):
-    user = models.ForeignKey(User)
+    author = models.ForeignKey(User)
     fractal = models.ForeignKey(Fractal)
 
