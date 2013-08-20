@@ -1,5 +1,5 @@
 define([  
-        'backbone' 
+        'backbone_tastypie' 
 ], function(Backbone) { 
    // We don't really use the router, yet. 
     var AppRouter = Backbone.Router.extend({ 

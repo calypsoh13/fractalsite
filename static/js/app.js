@@ -1,7 +1,7 @@
 'use strict';
 define([
         'underscore',
-        'backbone'
+        'backbone_tastypie'
 ], function(_, Backbone) {
     // Provide namespace 'app' for instances of our models, views and collections.
     var app = {

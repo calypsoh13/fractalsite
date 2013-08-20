@@ -1,10 +1,15 @@
 from django.conf.urls import patterns, include, url
-from fractalgen.api import FractalResource
+from tastypie.api import Api
+from fractalgen.api import RawFractalResource, UserResource
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
-fractal_resource = FractalResource()
+
+
+v1_api = Api(api_name='v1')
+v1_api.register(UserResource())
+v1_api.register(RawFractalResource())
 
 urlpatterns = patterns('',
     # Examples:
@@ -30,6 +35,6 @@ urlpatterns = patterns('',
     url(r'^accounts/register/$', 'fractalsite.views.register_user'),
     url(r'^accounts/register_success/$', 'fractalsite.views.register_success'),
     # API
-    url(r'^api/', include(fractal_resource.urls)),
+    url(r'^api/', include(v1_api.urls)),
 
 )
