@@ -1,14 +1,20 @@
 define([  
-        'backbone_tastypie' 
-], function(Backbone) { 
-   // We don't really use the router, yet. 
+        'backbone_tastypie',
+        'views/createview'
+], function(Backbone, CreateView) { 
+
     var AppRouter = Backbone.Router.extend({ 
         routes: {  
             // Default 
-            '*actions': 'defaultAction' 
+            '': 'defaultRoute',
+            'create': 'create' 
         },
-        defaultAction: function(param) {
-            console.log('Default: ' + param); // Just an example action
+        defaultRoute: function(){
+            console.log("beep boop");
+        },
+        create: function() {
+            console.log('Create View');
+            new CreateView();
         }
     });
 

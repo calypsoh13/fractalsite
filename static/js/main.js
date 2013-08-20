@@ -38,7 +38,7 @@ require.config({
         backboneLocalStorage: 'lib/backbone.localStorage',
         spectrum: 'spectrum/spectrum',
         html5slider: 'lib/html5slider',
-        backbone_tastypie: 'lib/backbone-tastypie',
+        backbone_tastypie: 'lib/backbone-tastypie'
     }
 });
 
@@ -51,6 +51,4 @@ require([
     new AppRouter();
     // Start Backbone History
     Backbone.history.start();
-    // Kick things off with CreateView. We may want to do this in the router, later.
-    new CreateView();
 });

@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('',
-        url(r'^create/$', 'fractalgen.views.create'),
+        url(r'^$', 'fractalgen.views.fractalapp'),
 
         )
 
