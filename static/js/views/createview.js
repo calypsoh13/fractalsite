@@ -314,7 +314,7 @@ define([
             $('#colorStopTable').append( view.render().el );
             this.colorViews.push(view);
         },
-
+        
         addAllColorStops: function() {
             for(var i = this.colorViews.length - 1; i >=0; i--)
             {
@@ -325,7 +325,6 @@ define([
             app.ColorStops.each(this.addColorStop, this);
             this.updateGradient();
         },
-
         
         updateGradient: function()
         {
@@ -348,10 +347,9 @@ define([
                     stopB = stopB + "color-stop(" + stop + ", " + model.get("color") + ")";
                 }
             });
-    
+            
             var bgi = "background-image: ";
             var lingrad = "linear-gradient(left, ";
-
             var gradElement = document.getElementById("gradientPreview");
             
             gradElement.style.background=lingrad + stopA  + ")";
@@ -361,7 +359,6 @@ define([
             gradElement.style.background="-ms-" + lingrad + stopA +")";
             gradElement.style.background="-webkit-gradient(linear, left top, right top," + stopB + ")";
         }
-        
     });
     return app.CreateView;
 });
