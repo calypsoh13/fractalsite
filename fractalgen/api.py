@@ -1,5 +1,5 @@
 from tastypie.resources import ModelResource
-from fractalgen.models import RawFractal
+from fractalgen.models import Matrix
 from tastypie.authorization import Authorization
 from tastypie.authentication import Authentication
 from django.contrib.auth.models import User
@@ -27,12 +27,12 @@ class UserResource(ModelResource):
         authorization = Authorization()
         always_return_data = True
 
-class RawFractalResource(ModelResource):
+class MatrixResource(ModelResource):
     author = fields.ForeignKey(UserResource, 'author')
 
     class Meta:
-        queryset = RawFractal.objects.all()
-        resource_name = 'rawfractal'
+        queryset = Matrix.objects.all()
+        resource_name = 'matrix'
         serializer = PrettyJSONSerializer()
         authentication = Authentication()
         authorization = Authorization()

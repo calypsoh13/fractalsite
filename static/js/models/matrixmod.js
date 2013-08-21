@@ -10,7 +10,7 @@ define([
     // the matrix model has a size, roughness, perturbance, server reference and image link attributes.
     app.MatrixMod = Backbone.Model.extend({
         
-        url: RAWFRAC_API,
+        url: MATRIX_API,
         
         initialize: function() {
             this.serverAttrs=['size', 'roughness', 'perturbance'];
@@ -19,8 +19,8 @@ define([
         // Default attributes for the fractal
         defaults: {
             author: "",
-            rawFractFile: "",
-            rawFractImg: "",
+            matrixFile: "",
+            matrixImg: "",
             size: 257,
             sizeSetting: 8,
             roughness: .5,

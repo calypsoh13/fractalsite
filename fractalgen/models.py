@@ -32,10 +32,10 @@ def tmpPreviewImage(matrix, self):
     pngsaver.createPreview(imagefilename, matrix, 129)
     return imagefilename
 
-class RawFractal(models.Model):
+class Matrix(models.Model):
     author = models.ForeignKey(User)
-    rawFractImg = models.FileField(blank=True, null=True, upload_to='img/previewfiles')
-    rawFractFile = models.FileField(blank=True, null=True, upload_to='img/matrixfiles')
+    matrixImg = models.FileField(blank=True, null=True, upload_to='img/previewfiles')
+    matrixFile = models.FileField(blank=True, null=True, upload_to='img/matrixfiles')
     size = models.IntegerField(default=257)
     sizeSetting = models.IntegerField(default=8)
     roughness = models.FloatField()
@@ -56,22 +56,22 @@ class RawFractal(models.Model):
 
         tmpmatrixpath = tmpMatrixTxt(matrix, self)
         with open(tmpmatrixpath) as f:
-            self.rawFractFile.save((str(self.author) + "-" + time.strftime("%Y%m%d-%H%M%S") + ".txt"), File(f), save=False)
+            self.matrixFile.save((str(self.author) + "-" + time.strftime("%Y%m%d-%H%M%S") + ".txt"), File(f), save=False)
         os.remove(tmpmatrixpath)
 
         tmpimagepath = tmpPreviewImage(matrix, self)
         with open(tmpimagepath) as f:
-            self.rawFractImg.save((str(self.author) + "-" + time.strftime("%Y%m%d-%H%M%S") + ".png"), File(f), save=False)
+            self.matrixImg.save((str(self.author) + "-" + time.strftime("%Y%m%d-%H%M%S") + ".png"), File(f), save=False)
         os.remove(tmpimagepath)
         
-        super(RawFractal, self).save(*args, **kwargs)
+        super(Matrix, self).save(*args, **kwargs)
 
 class Fractal(models.Model):
     author = models.ForeignKey(User)
     pubDate = models.DateTimeField('date created', auto_now=True)
     fractalImg = models.CharField(max_length=40)
     title = models.CharField(max_length=40)
-    rawFractal = models.ForeignKey(RawFractal)
+    matrix = models.ForeignKey(Matrix)
     useHeat = models.BooleanField()
 
     def __unicode__(self):

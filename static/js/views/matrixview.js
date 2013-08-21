@@ -84,7 +84,7 @@ define([
         
         // displays the fractal image if it is stored in the fractal model
         displayFractalImage: function() {
-            var image = app.MatrixMod.get("rawFractImg");
+            var image = app.MatrixMod.get("matrixImg");
             if (!image || /^\s*$/.test(image))
             {
                 console.log("Setting image to blank");
@@ -106,7 +106,7 @@ define([
             },
             {
                 success: function(model, response) {
-                    model.set("rawFractImg", response.rawFractImg);
+                    model.set("matrixImg", response.matrixImg);
                     that.displayFractalImage();
                 },
                 error: function(model, response) {
@@ -117,7 +117,7 @@ define([
         
         // clear fractal preview image
         clearFractal: function() {
-            app.MatrixMod.set("rawFractImg", "");
+            app.MatrixMod.set("matrixImg", "");
             this.$("#fractalImage").css("background-image", "none");
         }
     });

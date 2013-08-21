@@ -360,7 +360,7 @@ define([
         },
 
         setButtonEnabled: function() {
-            var image = app.MatrixMod.get("rawFractImg");
+            var image = app.MatrixMod.get("matrixImg");
             if (!image || /^\s*$/.test(image))
             {
                 $('createImage').attr("disabled", "disabled");
@@ -372,7 +372,7 @@ define([
         }, 
         
         createImage: function() {
-            var image = app.MatrixMod.get("rawFractImg");
+            var image = app.MatrixMod.get("matrixImg");
             if (!image || /^\s*$/.test(image))
             {
                 return;

@@ -17,7 +17,7 @@ define([
             pubDate : "",
             fractalImg : "",
             title : "",
-            rawFractal : "", 
+            matrix : "", 
             useHeat : true, 
         }, 
         save: function (attrs, options) { 
