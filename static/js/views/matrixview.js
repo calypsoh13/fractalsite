@@ -3,19 +3,19 @@ define([
         'underscore',
         'backbone_tastypie',
         'app',
-        'models/fractalmod',
+        'models/matrixmod',
         'html5slider'
-], function($, _, Backbone, app, FractalMod, html5slider) {
+], function($, _, Backbone, app, MatrixMod, html5slider) {
     'use strict';
 
-    // The Fractal View
+    // The Matrix View
     // ---------------
 
-    app.FractalView = Backbone.View.extend({
+    app.MatrixView = Backbone.View.extend({
 
-        el: '#fractal',
+        el: '#contentA',
         
-        fractalTemplate: _.template( $('#fractal-template').html() ),
+        matrixTemplate: _.template( $('#matrix-template').html() ),
         
         events: {
             'change #sizeSetting': 'editSize',
@@ -25,7 +25,7 @@ define([
         },
 
         initialize: function() {
-            app.FractalMod = new FractalMod();
+            app.MatrixMod = new MatrixMod();
             this.$size = this.$('#size');
             this.$sizeSetting = this.$('#sizeSetting');
             this.$roughness = this.$('#roughness');
@@ -38,7 +38,7 @@ define([
 
         // Re-render the fractal.
         render: function() {
-            this.$el.html( this.fractalTemplate( app.FractalMod.toJSON() ) );
+            this.$el.html( this.matrixTemplate( app.MatrixMod.toJSON() ) );
             return this;
         },
 
@@ -48,8 +48,8 @@ define([
 
             if (!isNaN(value)) {
                 var newsize = Math.pow(2, value) + 1;
-                app.FractalMod.set("sizeSetting", value);
-                app.FractalMod.set("size", newsize);
+                app.MatrixMod.set("sizeSetting", value);
+                app.MatrixMod.set("size", newsize);
                 this.$(size).text(newsize);
                 this.clearFractal();
             } 
@@ -61,8 +61,8 @@ define([
 
             if (!isNaN(value)) {
                 var newRoughness = value / 10;
-                app.FractalMod.set("roughnessSetting", value);
-                app.FractalMod.set("roughness", newRoughness);
+                app.MatrixMod.set("roughnessSetting", value);
+                app.MatrixMod.set("roughness", newRoughness);
                 this.$(roughness).text(newRoughness);
                 this.clearFractal();
             } 
@@ -83,7 +83,7 @@ define([
         
         // displays the fractal image if it is stored in the fractal model
         displayFractalImage: function() {
-            var image = app.FractalMod.get("rawFractalImg");
+            var image = app.MatrixMod.get("rawFractalImg");
             if (!image || /^\s*$/.test(image))
             {
                 console.log("Setting image to blank");
@@ -97,20 +97,20 @@ define([
         // create the fractal
         // FOR TESTING: This just shows an example image
         createFractal: function() {
-            app.FractalMod.save();
-            console.log("FractalMod saved: " + app.FractalMod.get("size") + " : " + app.FractalMod.get("roughness") + " : " + app.FractalMod.get("perturbance"));
+            app.MatrixMod.save();
+            console.log("MatrixMod saved: " + app.MatrixMod.get("size") + " : " + app.FractalMod.get("roughness") + " : " + app.MatrixMod.get("perturbance"));
             console.log("Using example image to work visibility issues");
-            app.FractalMod.set("rawFractalImg", "/static/assets/img/preview.png");
+            app.MatrixMod.set("rawFractalImg", "/static/assets/img/preview.png");
             
             this.displayFractalImage();
         },
         
         // clear fractal preview image
         clearFractal: function() {
-            app.FractalMod.set("rawFractalImg", "");
-            app.FractalMod.set("rawFractFile", "");
+            app.MatrixMod.set("rawFractalImg", "");
+            app.MatrixMod.set("rawFractFile", "");
             this.displayFractalImage();
         }
     });
-    return app.FractalView;
+    return app.MatrixView;
 });

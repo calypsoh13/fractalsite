@@ -3,13 +3,13 @@ define([
         'underscore',
         'backbone_tastypie',
         'app',
-        'views/fractalview',
+        'views/matrixview',
         'views/colorstopview',
-        'models/createmod',
+        'models/fractalmod',
         'collections/colorstops',
         'collections/filters',
         'html5slider'
-], function($, _, Backbone, app, FractalView, ColorStopView, CreateMod, ColorStops, Filters, html5slider) {
+], function($, _, Backbone, app, MatrixView, ColorStopView, FractalMod, ColorStops, Filters, html5slider) {
     'use strict';
 
     // The Create image view
@@ -17,7 +17,7 @@ define([
 
     app.CreateView = Backbone.View.extend({
 
-        el: '#create',
+        el: '#contentB',
 
         colorViews: [],
         
@@ -39,17 +39,17 @@ define([
         },
 
         initialize: function() {
-            new FractalView();
+            new MatrixView();
             app.ColorStops = ColorStops;
             app.Filters = Filters;
-            app.CreateMod = CreateMod;
-            this.listenTo(app.FractalMod, 'change', this.updateGaussForSize);
+            app.FractalMod = FractalMod;
+            this.listenTo(app.MatrixMod, 'change', this.updateGaussForSize);
             this.listenTo(app.ColorStops, 'add', this.addAllColorStops);
             this.listenTo(app.ColorStops, 'remove', this.addAllColorStops);
             this.listenTo(app.ColorStops, 'change', this.updateGradient);
             this.render();
             // add views for the gradient stops
-            if (app.CreateMod.get("useHeat"))
+            if (app.FractalMod.get("useHeat"))
             {
                 this.useHeat();
             }
@@ -61,7 +61,7 @@ define([
 
         // Render the create template.
         render: function() {
-            this.$el.html( this.createTemplate( app.CreateMod.toJSON() ) );
+            this.$el.html( this.createTemplate( app.FractalMod.toJSON() ) );
             this.addAllColorStops();
             return this;
         },
@@ -70,7 +70,7 @@ define([
         addFilter: function() {
             // limit the user to 5 filters
             if (app.Filters.length > 4) return;
-            var midsize = (app.FractalMod.get('size') -1) / 2 + 1;
+            var midsize = (app.MatrixMod.get('size') -1) / 2 + 1;
             var filter = new app.FilterMod()
             filter.set("X", midsize);
             filter.set("Y", midsize);
@@ -114,7 +114,7 @@ define([
             var value = parseInt(this.$('#gaussXSetting').val());
             
             if (!isNaN(value)) {
-                var size = app.FractalMod.get('size');
+                var size = app.MatrixMod.get('size');
                 var increment = (size-1)/128;
                 var offset = increment * 64;
                 var gx = increment * value + offset;
@@ -129,7 +129,7 @@ define([
             var value = parseInt(this.$('#gaussYSetting').val());
             
             if (!isNaN(value)) {
-                var size = app.FractalMod.get('size');
+                var size = app.MatrixMod.get('size');
                 var increment = (size-1)/128;
                 var offset = increment * 64;
                 var gy = increment * value + offset;
@@ -165,15 +165,15 @@ define([
         },
         
         updateGaussForSize: function() {
-            var size = app.FractalMod.get('size');
+            var size = app.MatrixMod.get('size');
             
             for(var i = 0; i < app.Filters.length; i++)
             {
                 var filter = app.Filters.at(i);
                 var increment = (size-1)/128;
                 var offset = increment * 64;
-                filter.set("X", increment * filter.get("gaussXSetting") + offset);
-                filter.set("Y", increment * filter.get("gaussYSetting") + offset);
+                filter.set("X", increment * filter.get("xSetting") + offset);
+                filter.set("Y", increment * filter.get("ySetting") + offset);
             }
             
             if (app.Filters.length > 0)
@@ -189,7 +189,7 @@ define([
             var value = parseInt(this.$('#gaussX').val());
             
             if (!isNaN(value)) {
-                var size = app.FractalMod.get('size');
+                var size = app.MatrixMod.get('size');
                 var increment = (size-1)/128;
                 var offset = increment * 64;
                 var gxSetting = (value - offset) / increment;
@@ -219,7 +219,7 @@ define([
             var value = parseInt(this.$('#gaussY').val());
             
             if (!isNaN(value) ) {
-                var size = app.FractalMod.get('size');
+                var size = app.MatrixMod.get('size');
                 var increment = (size-1)/128;
                 var offset = increment * 64;
                 var gySetting = (value - offset) / increment;
@@ -278,7 +278,7 @@ define([
         
         showGaussPreview: function() 
         {
-            var size = app.FractalMod.get('size');
+            var size = app.MatrixMod.get('size');
             var filter = app.Filters.at(app.CurrentFilter);
             var gsx = filter.get("sigmaX");
             var gsy = filter.get("sigmaY");
@@ -296,14 +296,14 @@ define([
         },
         
         useHeat: function() {
-            app.CreateMod.set("useHeat", true);
+            app.FractalMod.set("useHeat", true);
             $("#heatPreview").toggleClass("hidden", false);
             $("#gradientPreview").toggleClass("hidden", true);
             $(".gradientInputs").toggleClass("hidden", true);
         },
         
         useGradient: function() {
-            app.CreateMod.set("useHeat", false);
+            app.FractalMod.set("useHeat", false);
             $("#heatPreview").toggleClass("hidden", true);
             $("#gradientPreview").toggleClass("hidden", false);
             $(".gradientInputs").toggleClass("hidden", false);

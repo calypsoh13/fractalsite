@@ -22,13 +22,13 @@
       {% csrf_token %}
         <div class="header"><h1>Plasma Fractal Creator</h1></div>
         <div class="content">
-            <div id="fractal"> </div>
-            <div id="create"></div>
+            <div id="contentA"> </div>
+            <div id="contentB"></div>
         </div>
         <script>
           RAWFRAC_API = "{% url "api_dispatch_list" api_name="v1" resource_name="rawfractal" %}";
         </script>
-        <script type="text/template" id="fractal-template">
+        <script type="text/template" id="matrix-template">
             <p class="legend">Step 1: Create fractal</p>
             <div class="fsborder">
                 <table>
