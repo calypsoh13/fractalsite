@@ -21,7 +21,8 @@ define([
             'change #sizeSetting': 'editSize',
             'change #roughnessSetting': 'editRoughness',
             'change #perturbanceSetting': 'editPerturbance',
-            'click #createFractal' : 'createFractal'
+            'click #createFractal': 'createFractal',
+            'click #showFractal': 'displayFractalImage'
         },
 
         initialize: function() {
@@ -83,33 +84,41 @@ define([
         
         // displays the fractal image if it is stored in the fractal model
         displayFractalImage: function() {
-            var image = app.MatrixMod.get("rawFractalImg");
+            var image = app.MatrixMod.get("rawFractImg");
             if (!image || /^\s*$/.test(image))
             {
                 console.log("Setting image to blank");
                 image = "";
-            }
-            
-            this.$("#fractalImage").css("background-image", 'url(' + image + ')');
+            } 
+            var url = 'url(/static/assets/' + image + ')';
+            this.$("#fractalImage").css("background-image", url);
             this.$("#fractalImage").css("background-size", "100%");
         },
         
         // create the fractal
-        // FOR TESTING: This just shows an example image
         createFractal: function() {
-            app.MatrixMod.save();
-            console.log("MatrixMod saved: " + app.MatrixMod.get("size") + " : " + app.FractalMod.get("roughness") + " : " + app.MatrixMod.get("perturbance"));
-            console.log("Using example image to work visibility issues");
-            app.MatrixMod.set("rawFractalImg", "/static/assets/img/preview.png");
-            
-            this.displayFractalImage();
+            var that = this;
+            var model = app.MatrixMod;
+            app.MatrixMod.save({
+                size: app.MatrixMod.get("size"),
+                roughness: app.MatrixMod.get("roughness"),
+                perturbance: app.MatrixMod.get("perturbance")
+            },
+            {
+                success: function(model, response) {
+                    model.set("rawFractImg", response.rawFractImg);
+                    that.displayFractalImage();
+                },
+                error: function(model, response) {
+                    that.clearFractal();
+                }
+            });
         },
         
         // clear fractal preview image
         clearFractal: function() {
-            app.MatrixMod.set("rawFractalImg", "");
-            app.MatrixMod.set("rawFractFile", "");
-            this.displayFractalImage();
+            app.MatrixMod.set("rawFractImg", "");
+            this.$("#fractalImage").css("background-image", "none");
         }
     });
     return app.MatrixView;

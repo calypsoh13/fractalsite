@@ -30,6 +30,7 @@ define([
             'click #filterNext': 'nextFilter',
             'click #useHeat': 'useHeat',
             'click #useGradient': 'useGradient',
+            'click #createImage': 'createImage',
             'change #gaussXSetting' : 'editXSetting',
             'change #gaussYSetting' : 'editYSetting',
             'change #gaussSigmaXSetting' : 'editSigmaXSetting',
@@ -47,6 +48,7 @@ define([
             this.listenTo(app.ColorStops, 'add', this.addAllColorStops);
             this.listenTo(app.ColorStops, 'remove', this.addAllColorStops);
             this.listenTo(app.ColorStops, 'change', this.updateGradient);
+            this.listenTo(app.MatrixMod, 'change', this.setButtonEnabled);
             this.render();
             // add views for the gradient stops
             if (app.FractalMod.get("useHeat"))
@@ -245,8 +247,7 @@ define([
             this.showGaussPreview();
         },
         
-        setGaussElements : function()
-        {
+        setGaussElements : function() {
             var numberFilters = app.Filters.length;
             
             $(".gaussInputs").toggleClass('hidden', numberFilters === 0);
@@ -276,8 +277,7 @@ define([
             }
         },
         
-        showGaussPreview: function() 
-        {
+        showGaussPreview: function() {
             var size = app.MatrixMod.get('size');
             var filter = app.Filters.at(app.CurrentFilter);
             var gsx = filter.get("sigmaX");
@@ -326,8 +326,7 @@ define([
             this.updateGradient();
         },
         
-        updateGradient: function()
-        {
+        updateGradient: function() {
             var stopA = "";
             var stopB = "";
             var first = true;
@@ -358,9 +357,28 @@ define([
             gradElement.style.background="-webkit-" + lingrad + stopA +")";
             gradElement.style.background="-ms-" + lingrad + stopA +")";
             gradElement.style.background="-webkit-gradient(linear, left top, right top," + stopB + ")";
+        },
+
+        setButtonEnabled: function() {
+            var image = app.MatrixMod.get("rawFractImg");
+            if (!image || /^\s*$/.test(image))
+            {
+                $('createImage').attr("disabled", "disabled");
+            }
+            else
+            {
+                $('createImage').removeAttr("disabled");
+            }
+        }, 
+        
+        createImage: function() {
+            var image = app.MatrixMod.get("rawFractImg");
+            if (!image || /^\s*$/.test(image))
+            {
+                return;
+            }
+            app.MatrixMod.save();
         }
     });
     return app.CreateView;
 });
-
-
