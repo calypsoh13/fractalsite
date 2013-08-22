@@ -7,6 +7,9 @@ from tastypie import fields
 from django.core.serializers import json
 from django.utils import simplejson
 from tastypie.serializers import Serializer
+import logging
+
+logger = logging.getLogger('fractalsite.fractalgen.stuff')
 
 
 class PrettyJSONSerializer(Serializer): 
@@ -39,6 +42,10 @@ class MatrixResource(ModelResource):
         always_return_data = True
 
     def hydrate_author(self, bundle):
-        bundle.data['author'] = User.objects.get(pk = bundle.request.user.pk)
+        logger.info(bundle.request.user.is_anonymous())
+        if bundle.request.user.is_anonymous():
+            bundle.data['author'] = User.objects.get(username = 'guest')
+        else:
+            bundle.data['author'] = User.objects.get(pk = bundle.request.user.pk)
         return bundle
 
