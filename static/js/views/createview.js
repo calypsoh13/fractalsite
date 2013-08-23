@@ -64,6 +64,7 @@ define([
         // Render the create template.
         render: function() {
             this.$el.html( this.createTemplate( app.FractalMod.toJSON() ) );
+            this.showFilter();
             this.addAllColorStops();
             return this;
         },
@@ -110,6 +111,15 @@ define([
             }
             this.setGaussElements();
             this.showGaussPreview();
+        },
+        
+        // show current filter
+        showFilter: function() {
+            if (app.CurrentFilter > app.Filters.length - 1)
+            {
+                this.setGaussElements();
+                this.showGaussPreview();
+            }
         },
         
         editXSetting: function() {
@@ -247,7 +257,8 @@ define([
             this.showGaussPreview();
         },
         
-        setGaussElements : function() {
+        setGaussElements : function()
+        {
             var numberFilters = app.Filters.length;
             
             $(".gaussInputs").toggleClass('hidden', numberFilters === 0);
@@ -277,7 +288,8 @@ define([
             }
         },
         
-        showGaussPreview: function() {
+        showGaussPreview: function() 
+        {
             var size = app.MatrixMod.get('size');
             var filter = app.Filters.at(app.CurrentFilter);
             var gsx = filter.get("sigmaX");
@@ -326,7 +338,8 @@ define([
             this.updateGradient();
         },
         
-        updateGradient: function() {
+        updateGradient: function()
+        {
             var stopA = "";
             var stopB = "";
             var first = true;
@@ -357,10 +370,11 @@ define([
             gradElement.style.background="-webkit-" + lingrad + stopA +")";
             gradElement.style.background="-ms-" + lingrad + stopA +")";
             gradElement.style.background="-webkit-gradient(linear, left top, right top," + stopB + ")";
-        },
-
-        setButtonEnabled: function() {
-            var image = app.MatrixMod.get("matrixImg");
+        }, 
+        
+        setButtonEnabled: function()
+        {
+            var image = app.MatrixMod.get("rawFractImg");
             if (!image || /^\s*$/.test(image))
             {
                 $('createImage').attr("disabled", "disabled");
@@ -371,14 +385,27 @@ define([
             }
         }, 
         
-        createImage: function() {
-            var image = app.MatrixMod.get("matrixImg");
+        createImage: function()
+        {
+            var image = app.MatrixMod.get("rawFractImg");
             if (!image || /^\s*$/.test(image))
             {
                 return;
             }
-            app.MatrixMod.save();
+            app.FractalMod.save();
+            var id = app.FractalMod.id;
+            app.Colorstops.each(function(colorstop) {
+                colorStop.set("fractalId", id); 
+                colorStop.save();
+            });
+            app.Filters.each(function(filter) {
+                filter.set("fractalId", id);
+                filter.save();
+            });
+            app.FractalMod.save();
         }
     });
     return app.CreateView;
 });
+
+
