@@ -39,7 +39,7 @@ define([
         // Re-render the fractal.
         render: function() {
             var compiledTemplate = _.template( projectsListTemplate, app.FractalMod.toJSON() );
-            this.$el.html(compiledTemplate, app.MatrixMod.toJSON() ) );
+            this.$el.html(compiledTemplate, app.MatrixMod.toJSON() );
             return this;
         },
 
