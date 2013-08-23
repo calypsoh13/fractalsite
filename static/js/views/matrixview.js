@@ -4,8 +4,9 @@ define([
         'backbone_tastypie',
         'app',
         'models/matrixmod',
-        'html5slider'
-], function($, _, Backbone, app, MatrixMod, html5slider) {
+        'html5slider',
+        'text!templates/matrixtemplate.html'
+], function($, _, Backbone, app, MatrixMod, html5slider, matrixTemplate) {
     'use strict';
 
     // The Matrix View
@@ -14,8 +15,6 @@ define([
     app.MatrixView = Backbone.View.extend({
 
         el: '#contentA',
-        
-        matrixTemplate: _.template( $('#matrix-template').html() ),
         
         events: {
             'change #sizeSetting': 'editSize',
@@ -39,7 +38,8 @@ define([
 
         // Re-render the fractal.
         render: function() {
-            this.$el.html( this.matrixTemplate( app.MatrixMod.toJSON() ) );
+            var compiledTemplate = _.template( projectsListTemplate, app.FractalMod.toJSON() );
+            this.$el.html(compiledTemplate, app.MatrixMod.toJSON() ) );
             return this;
         },
 

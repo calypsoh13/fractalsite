@@ -3,8 +3,9 @@ define([
         'underscore',
         'backbone_tastypie',
         'spectrum',
-        'app'
-], function($, _, Backbone, spectrum, app) {
+        'app',
+        'text!templates/colorstoptemplate.html'
+], function($, _, Backbone, spectrum, app, colorStopTemplate) {
     'use strict';
 
     // ColorStop View
@@ -13,8 +14,6 @@ define([
     app.ColorStopView = Backbone.View.extend({
 
         tagName:  'tr',
-
-        template: _.template( $('#colorstop-template').html() ),
 
         events: {
             'change .useStop': 'editCheckbox',
@@ -26,7 +25,8 @@ define([
         },
 
         render: function() {
-            this.$el.html( this.template( this.model.toJSON() ) );
+            var compiledTemplate = _.template( projectsListTemplate, app.FractalMod.toJSON() );
+            this.$el.html(compiledTemplate, this.model.toJSON() ) );
             this.$(".colorSelect").spectrum({
                 color: this.model.get("color"),
                 className: 'spectrum',

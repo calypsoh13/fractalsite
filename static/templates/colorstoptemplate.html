@@ -1,0 +1,19 @@
+<td class="useColorCell">
+    <% if (optional)
+    {
+        if (useStop)
+        {
+            print("<input type='checkbox' class='useStop' checked></input>");
+        }
+        else
+        {
+            print("<input type='checkbox' class='useStop'></input>");
+        }
+    }
+    %>
+</td>
+<td></td>
+<td>
+    <input class='colorSelect' id='color<%=order %>'></input>
+    <input type ="range" class="colorStop" min=0 max=255 value=<%=stop %>></input>
+</td>

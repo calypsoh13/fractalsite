@@ -8,8 +8,9 @@ define([
         'models/fractalmod',
         'collections/colorstops',
         'collections/filters',
-        'html5slider'
-], function($, _, Backbone, app, MatrixView, ColorStopView, FractalMod, ColorStops, Filters, html5slider) {
+        'html5slider',
+        'text!templates/createtemplate.html'
+], function($, _, Backbone, app, MatrixView, ColorStopView, FractalMod, ColorStops, Filters, html5slider, createTemplate) {
     'use strict';
 
     // The Create image view
@@ -63,7 +64,8 @@ define([
 
         // Render the create template.
         render: function() {
-            this.$el.html( this.createTemplate( app.FractalMod.toJSON() ) );
+            var compiledTemplate = _.template( projectsListTemplate, app.FractalMod.toJSON() );
+            this.$el.html(compiledTemplate);
             this.showFilter();
             this.addAllColorStops();
             return this;

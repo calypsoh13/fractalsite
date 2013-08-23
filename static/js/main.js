@@ -38,7 +38,8 @@ require.config({
         backboneLocalStorage: 'lib/backbone.localStorage',
         spectrum: 'spectrum/spectrum',
         html5slider: 'lib/html5slider',
-        backbone_tastypie: 'lib/backbone-tastypie'
+        backbone_tastypie: 'lib/backbone-tastypie', 
+        tempates: '../templates'
     }
 });
 

@@ -1,0 +1,28 @@
+<p class="legend">Step 1: Create fractal</p>
+<div class="fsborder">
+    <table>
+        <tr>
+            <td class="inputName">size</td>
+            <td><input class="slider" type="range" name="sizeSetting" id="sizeSetting" 
+                       min="7" max="10" value=<%- sizeSetting %>></input></td>
+            <td><p class="outputs" id="size"><%- size %></p></td>
+            <td class="imagecell" rowspan="3"><div id="fractalImage" class="nullimage"></div></td> 
+        </tr>
+        <tr>
+            <td class="inputName">roughness</td>
+            <td><input class="slider" type="range" name="roughnessSetting" id="roughnessSetting" 
+                       min="1" max="10" value=<%- roughnessSetting %>></input></td>
+            <td><p class="outputs" id="roughness"><%- roughness %></p></td>
+        </tr>
+        <tr>
+            <td class="inputName">perturbance</td>
+            <td><input class="slider" type="range" 
+                       name="perturbanceSetting" id="perturbanceSetting" 
+                       min="1" max="10" value=<%- perturbanceSetting %>></input></td>
+            <td><p class="outputs" id="perturbance"><%- perturbance %></p></td>
+        </tr>
+        <tr>
+            <td><button id="createFractal">create fractal</button></td>
+        </tr>
+    </table>
+</div>

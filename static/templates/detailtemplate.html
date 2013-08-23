@@ -1,0 +1,39 @@
+<table><tr>
+    <td>
+    <img id="fullImage" src="/static/assets/<%= fractalImg %> />
+    </td>
+    <td>
+        <% if("" === title) {
+                print ("<p class='legend'>Add a title to save the image to the gallery</p>");
+                print ("<div class ='fsborder'><div class='black'>");
+                print ("<input id='titleInput'>");
+                print ("<button>Save</button><button>Back</button>");
+                print ("</div></div");
+            } 
+            else
+            {
+                print ("<div class ='fsborder'><div class='black'>");
+                print ("<p>"+ title + "</p>");
+                print ("<p>Created by " + author + ", " + pubDate + "</p><");
+                
+                print ("<p class='legend'>Details</p>");
+                print ("<div class='fsborder'>");
+                print ("<table><tr><td class='inputName'>size:</td>");
+                    <td>1234</td>
+                </tr>
+                <tr>
+                    <td class="inputName">roughness:</td>
+                    <td>0.1</td>
+                </tr>
+                <tr>
+                    <td class="inputName">perturbance:</td>
+                    <td>0.1</td>
+                </tr>
+            </table>
+        </div>
+        <div class="fsborder">
+
+            }
+            %>
+    </td>
+</tr></table>

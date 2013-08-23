@@ -1,0 +1,94 @@
+<p class="legend">Step 2: Add Gaussian filter 
+</p>
+<div class="fsborder" id="gaussianInputs">
+    <table id="filters">
+        <tr>
+            <td colspan=2>
+                <div id="buttonCell">
+                <button id="filterPlus">+</button>
+                <button id='filterMinus' class='hidden'>-</button>
+                <button id='filterPrevious' class='hidden'>&lt;</button>
+                <button id='filterNext' class='hidden'>&gt;</button>
+                </div>
+            </td>
+        </tr>
+        <tr class='gaussInputs hidden'>
+            <td class='inputName spacer' id ='xLabel'>X1</td>
+            <td>
+                <input type='range' name='gaussXSetting' id='gaussXSetting'
+                       min='-80' max='80' value='0'/>
+            </td>
+            <td>
+                <input class='outputs' id='gaussX' value="128"></input>
+            </td>
+            <td class='imagecell' id='gausscell' rowspan='5'>
+                <div id='gaussPreview' class='nullimage'></div>
+            </td>
+        </tr>
+        <tr class='gaussInputs hidden'>
+            <td class='inputName spacer' id ='yLabel'>Y1</td>
+            <td>
+                <input type='range' name='gaussYSetting' id='gaussYSetting'
+                       min='-80' max='80' value='0'/>
+            </td>
+            <td>
+                <input class='outputs' id='gaussY' value="128"></input>
+            </td>
+        </tr>
+        <tr class='gaussInputs hidden'>
+            <td class='inputName' id = 'sigmaXLabel'>sigma X1</td>
+            <td>
+                <input type='range' name='gaussSigmaXSetting' id='gaussSigmaXSetting'
+                       min='-6' max='8' value='0"'/></td>
+            <td><p class='outputs' id='gaussSigmaX'>0</p></td>
+        </tr>
+        <tr class='gaussInputs hidden'>
+            <td class='inputName' id = 'sigmaYLabel'>sigma Y1</td>
+            <td>
+                <input type='range' name='gaussSigmaYSetting' id='gaussSigmaYSetting'
+                       min='-6' max='8' value='0'/>
+            </td>
+            <td><p class='outputs' id='gaussSigmaY'>0</p></td>
+        </tr>
+    </table>
+</div>
+<p class="legend">Step 3: Choose colors</p>
+<div class="fsborder">
+    <table id="colorTable">
+        <tr>
+            <td class="inputName">
+                heat map
+            </td>
+            <td width="20px">
+                <input type="radio" class = "colorType" name="colorType" 
+                       id="useHeat" <%= useHeat ?  'checked' : '' %>></input>
+            </td>
+            <td width ="240px" height="42px" colspan=2>
+                <div id='heatPreview'></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="inputName">
+                gradient
+            </td>
+            <td width="20px">
+                <input type="radio" class="colorType" name="colorType" 
+                       id="useGradient" <%= useHeat ?  '' : 'checked' %>></input>
+            </td>
+            <td width ="240px" height="42px" colspan=2>
+                <div id='gradientPreview'></div>
+            </td>
+        </tr>
+        <tr class="gradientInputs">
+            <td></td>
+            <td colspan=2>
+                <table id="colorStopTable">
+                    <tr></tr>
+                </table>
+            </td>
+        </tr>
+        <tr id="createImageRow">
+            <td><button id="createImage">create image</button></td>
+        </tr>
+    </table>
+</div>
