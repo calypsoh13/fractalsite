@@ -39,7 +39,7 @@ require.config({
         spectrum: 'spectrum/spectrum',
         html5slider: 'lib/html5slider',
         backbone_tastypie: 'lib/backbone-tastypie', 
-        tempates: '../templates'
+        templates: '../templates'
     }
 });
 

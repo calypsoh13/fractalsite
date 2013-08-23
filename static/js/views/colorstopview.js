@@ -25,8 +25,8 @@ define([
         },
 
         render: function() {
-            var compiledTemplate = _.template( projectsListTemplate, app.FractalMod.toJSON() );
-            this.$el.html(compiledTemplate, this.model.toJSON());
+            var compiledTemplate = _.template( colorStopTemplate, app.FractalMod.toJSON() );
+            this.$el.html(compiledTemplate);
             this.$(".colorSelect").spectrum({
                 color: this.model.get("color"),
                 className: 'spectrum',

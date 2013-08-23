@@ -64,7 +64,7 @@ define([
 
         // Render the create template.
         render: function() {
-            var compiledTemplate = _.template( projectsListTemplate, app.FractalMod.toJSON() );
+            var compiledTemplate = _.template( createTemplate, app.FractalMod.toJSON() );
             this.$el.html(compiledTemplate);
             this.showFilter();
             this.addAllColorStops();
@@ -292,6 +292,7 @@ define([
         
         showGaussPreview: function() 
         {
+            if (app.Filters.length < 1) return;
             var size = app.MatrixMod.get('size');
             var filter = app.Filters.at(app.CurrentFilter);
             var gsx = filter.get("sigmaX");
