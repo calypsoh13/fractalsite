@@ -1,5 +1,5 @@
 from tastypie.resources import ModelResource
-from fractalgen.models import Matrix
+from fractalgen.models import Matrix, Fractal, Filter, ColorStop
 from tastypie.authorization import Authorization
 from tastypie.authentication import Authentication
 from django.contrib.auth.models import User
@@ -49,3 +49,38 @@ class MatrixResource(ModelResource):
             bundle.data['author'] = User.objects.get(pk = bundle.request.user.pk)
         return bundle
 
+class FractalResource(ModelResource):
+    matrix = fields.ForeignKey(MatrixResource, 'matrix')
+    class Meta:
+        queryset = Fractal.objects.all()
+        resource_name = 'fractal'
+        serializer = PrettyJSONSerializer()
+        authentication = Authentication()
+        authorization = Authorization()
+        always_return_data = True
+
+    def hydrate_matrix(self, bundle):
+        logger.info(bundle.data['matix'])
+        x = bundle.data['matrix']
+        
+
+
+class FilterResource(ModelResource):
+    fractal = fields.ForeignKey(FractalResource, 'fractal')
+    class Meta:
+        queryset = Filter.objects.all()
+        resource_name = 'filter'
+        serializer = PrettyJSONSerializer()
+        authentication = Authentication()
+        authorization = Authorization()
+        always_return_data = True
+
+class ColorStopResource(ModelResource):
+    fractal = fields.ForeignKey(FractalResource, 'fractal')
+    class Meta:
+        queryset = ColorStop.objects.all()
+        resource_name = 'colorstop'
+        serializer = PrettyJSONSerializer()
+        authentication = Authentication()
+        authorization = Authorization()
+        always_return_data = True
