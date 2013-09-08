@@ -21,13 +21,8 @@
     <body>
       {% csrf_token %}
         <div class="header"><h1>Plasma Fractal Creator</h1></div>
-        <div class="content">
-            <div id="contentA"></div>
-            <div id="contentB"></div>
+        <div id="content" class="content">
         </div>
-        <script>
-          MATRIX_API = "{% url "api_dispatch_list" api_name="v1" resource_name="matrix" %}";
-        </script>
         <script data-main='{% static "assets/js/main" %}' src='{% static "assets/js/lib/require.min.js" %}'></script>
     </body>
 </html>

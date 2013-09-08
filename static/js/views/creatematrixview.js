@@ -5,23 +5,22 @@ define([
         'app',
         'models/matrixmod',
         'html5slider',
-        'text!templates/matrixtemplate.html'
+        'text!templates/create/matrixtemplate.html'
 ], function($, _, Backbone, app, MatrixMod, html5slider, matrixTemplate) {
     'use strict';
 
     // The Matrix View
     // ---------------
 
-    app.MatrixView = Backbone.View.extend({
+    app.CreateMatrixView = Backbone.View.extend({
 
-        el: '#contentA',
+        el: '#matrixdiv',
         
         events: {
             'change #sizeSetting': 'editSize',
             'change #roughnessSetting': 'editRoughness',
             'change #perturbanceSetting': 'editPerturbance',
-            'click #createFractal': 'createFractal',
-            'click #showFractal': 'displayFractalImage'
+            'click #createMatrix': 'createMatrix'
         },
 
         initialize: function() {
@@ -32,11 +31,10 @@ define([
             this.$roughnessSetting = this.$('#roughnessSetting');
             this.$perturbance = this.$('#perturbance');
             this.$perturbanceSetting = this.$('#perturbanceSetting');
-
             this.render();
         },
 
-        // Re-render the fractal.
+        // Render the matrix inputs.
         render: function() {
             var compiledTemplate = _.template( matrixTemplate, app.MatrixMod.toJSON() );
             this.$el.html(compiledTemplate);
@@ -52,7 +50,7 @@ define([
                 app.MatrixMod.set("sizeSetting", value);
                 app.MatrixMod.set("size", newsize);
                 this.$(size).text(newsize);
-                this.clearFractal();
+                this.clearMatrixImage();
             } 
         },
 
@@ -65,7 +63,7 @@ define([
                 app.MatrixMod.set("roughnessSetting", value);
                 app.MatrixMod.set("roughness", newRoughness);
                 this.$(roughness).text(newRoughness);
-                this.clearFractal();
+                this.clearMatrixImage();
             } 
         },
         
@@ -75,15 +73,15 @@ define([
 
             if (!isNaN(value)) {
                 var newperturbance = value / 10;
-                app.FractalMod.set("perturbanceSetting", value);
-                app.FractalMod.set("perturbance", newperturbance);
+                app.MatrixMod.set("perturbanceSetting", value);
+                app.MatrixMod.set("perturbance", newperturbance);
                 this.$(perturbance).text(newperturbance);
-                this.clearFractal();
+                this.clearMatrixImage();
             } 
         },
         
-        // displays the fractal image if it is stored in the fractal model
-        displayFractalImage: function() {
+        // displays the matrix image if it is stored in the matrix model
+        displayMatrixImage: function() {
             var image = app.MatrixMod.get("matrixImg");
             if (!image || /^\s*$/.test(image))
             {
@@ -91,35 +89,44 @@ define([
                 image = "";
             } 
             var url = 'url(/static/assets/' + image + ')';
-            this.$("#fractalImage").css("background-image", url);
-            this.$("#fractalImage").css("background-size", "100%");
+            this.$("#matrixImage").css("background-image", url);
+            this.$("#matrixImage").css("background-size", "100%");
         },
         
-        // create the fractal
-        createFractal: function() {
+        // create the matrix
+        createMatrix: function() {
+            console.log("createMatrix");
             var that = this;
             var model = app.MatrixMod;
+            console.log("size", model.get("size"));
+            console.log("roughness", model.get("roughness"));
+            console.log("perturbance", model.get("perturbance"));
             app.MatrixMod.save({
-                size: app.MatrixMod.get("size"),
-                roughness: app.MatrixMod.get("roughness"),
-                perturbance: app.MatrixMod.get("perturbance")
+                size: model.get("size"),
+                sizeSetting: model.get("sizeSetting"),
+                roughness: model.get("roughness"),
+                roughnessSetting: model.get("roughnessSetting"),
+                perturbance: model.get("perturbance"),
+                perturbanceSetting: model.get("perturbanceSetting")
             },
             {
                 success: function(model, response) {
+                    console.log("success!");
                     model.set("matrixImg", response.matrixImg);
-                    that.displayFractalImage();
+                    that.displayMatrixImage();
                 },
                 error: function(model, response) {
-                    that.clearFractal();
+                    console.log("error");
+                    that.clearMatrixImage();
                 }
             });
         },
         
-        // clear fractal preview image
-        clearFractal: function() {
+        // clear matrix preview image
+        clearMatrixImage: function() {
             app.MatrixMod.set("matrixImg", "");
-            this.$("#fractalImage").css("background-image", "none");
+            this.$("#matrixImage").css("background-image", "none");
         }
     });
-    return app.MatrixView;
+    return app.CreateMatrixView;
 });

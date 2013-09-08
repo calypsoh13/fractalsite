@@ -18,6 +18,7 @@ define([
             fractalImg : "",
             title : "",
             matrix : "", 
+            size : 257,
             useHeat : true, 
         }, 
         save: function (attrs, options) { 

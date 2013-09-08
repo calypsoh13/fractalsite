@@ -3,26 +3,25 @@ define([
         'underscore',
         'backbone_tastypie',
         'app',
-        'views/matrixview',
         'views/colorstopview',
         'models/fractalmod',
         'collections/colorstops',
         'collections/filters',
         'html5slider',
-        'text!templates/createtemplate.html'
-], function($, _, Backbone, app, MatrixView, ColorStopView, FractalMod, ColorStops, Filters, html5slider, createTemplate) {
+        'text!templates/create/fractaltemplate.html'
+], function($, _, Backbone, app, ColorStopView, FractalMod, ColorStops, Filters, html5slider, fractalTemplate) {
     'use strict';
 
-    // The Create image view
+    // The create/fractal view
     // ---------------
 
-    app.CreateView = Backbone.View.extend({
+    app.CreateFractalView = Backbone.View.extend({
 
-        el: '#contentB',
+        el: '#fractaldiv',
 
         colorViews: [],
         
-        createTemplate: _.template( $('#create-template').html() ),
+        fractalTemplate: _.template( $('#fractal-template').html() ),
 
         events: {
             'click #filterPlus': 'addFilter',
@@ -41,15 +40,13 @@ define([
         },
 
         initialize: function() {
-            new MatrixView();
             app.ColorStops = ColorStops;
             app.Filters = Filters;
             app.FractalMod = FractalMod;
-            this.listenTo(app.MatrixMod, 'change', this.updateGaussForSize);
+            this.listenTo(app.MatrixMod, 'change', this.applyMatrixChanges);
             this.listenTo(app.ColorStops, 'add', this.addAllColorStops);
             this.listenTo(app.ColorStops, 'remove', this.addAllColorStops);
             this.listenTo(app.ColorStops, 'change', this.updateGradient);
-            this.listenTo(app.MatrixMod, 'change', this.setButtonEnabled);
             this.render();
             // add views for the gradient stops
             if (app.FractalMod.get("useHeat"))
@@ -60,14 +57,15 @@ define([
             {
                 this.useGradient();
             }
+            this.setButtonEnabled();
         },
 
         // Render the create template.
         render: function() {
-            var compiledTemplate = _.template( createTemplate, app.FractalMod.toJSON() );
+            var compiledTemplate = _.template( fractalTemplate, app.FractalMod.toJSON() );
             this.$el.html(compiledTemplate);
-            this.showFilter();
-            this.addAllColorStops();
+            // this.showFilter();
+            // this.addAllColorStops();
             return this;
         },
 
@@ -388,13 +386,22 @@ define([
             }
         }, 
         
+        applyMatrixChanges: function()
+        {
+            app.FractalMod.size = app.MatrixMod.size;
+            this.setButtonEnabled();
+            this.updateGaussForSize();
+        },
+        
         createImage: function()
         {
+            console.log("in createImage");
             var image = app.MatrixMod.get("rawFractImg");
             if (!image || /^\s*$/.test(image))
             {
                 return;
             }
+            console.log("creating image");
             app.FractalMod.save();
             var id = app.FractalMod.id;
             app.Colorstops.each(function(colorstop) {
@@ -408,7 +415,9 @@ define([
             app.FractalMod.save();
         }
     });
-    return app.CreateView;
+    return app.CreateFractalView;
 });
+
+
 
 

@@ -10,7 +10,7 @@ define([
     // the matrix model has a size, roughness, perturbance, server reference and image link attributes.
     app.MatrixMod = Backbone.Model.extend({
         
-        url: MATRIX_API,
+        url: "/api/v1/matrix/",
         
         initialize: function() {
             this.serverAttrs=['size', 'roughness', 'perturbance'];

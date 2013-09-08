@@ -4,7 +4,7 @@ define([
         'backbone_tastypie',
         'spectrum',
         'app',
-        'text!templates/colorstoptemplate.html'
+        'text!templates/create/colorstoptemplate.html'
 ], function($, _, Backbone, spectrum, app, colorStopTemplate) {
     'use strict';
 
